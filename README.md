@@ -1,7 +1,7 @@
 Tip4commit
 ==========
 
-[![tip for next commit](http://tip4commit.com/projects/307.svg)](http://tip4commit.com/projects/307)
+[![tip for next commit](http://tip4commit.com/projects/560.svg)](http://tip4commit.com/projects/560)
 
 Donate bitcoins to open source projects or make commits and get tips for it.
 
