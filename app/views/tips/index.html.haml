@@ -32,11 +32,12 @@
             - if tip.sendmany.nil?
               - if tip.refunded_at
                 Refunded to project's deposit
+              - elsif tip.user.bitcoin_address.blank?
+                User didn't specify withdrawal address
+              - elsif tip.user.balance < CONFIG["min_payout"]
+                User's balance is below withdrawal threshold
               - else
-                - if tip.user.bitcoin_address.blank?
-                  User didn't specify withdrawal address
-                - else
-                  User's balance is below withdrawal threshold
+                Waiting for withdrawal
             - else
               = link_to tip.sendmany.txid, transaction_url(tip.sendmany.txid), target: :blank
   = paginate @tips
