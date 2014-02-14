@@ -1,9 +1,9 @@
 set :application, 't4c'
-set :repo_url, 'git@github.com:tip4commit/tip4commit.git'
+set :repo_url, 'git@github.com:sigmike/peer4commit.git'
 
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 
-set :deploy_to, "/home/apps/t4c"
+set :deploy_to, "/home/apps/p4c"
 set :scm, :git
 
 set :rvm_type, :user

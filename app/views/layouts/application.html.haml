@@ -7,9 +7,9 @@
     %meta{content: "", name: "author"}/
     %link{href: "/favicon.png", rel: "shortcut icon"}/
     
-    %title= "Tip4Commit — " + (content_for?(:title) ? yield(:title) : "Contribute to Open Source")
+    %title= "Peer4Commit — " + (content_for?(:title) ? yield(:title) : "Contribute to Open Source")
 
-    %meta{:name => 'description', :content => (content_for?(:title) ? yield(:title) : "Donate bitcoins to open source projects or make commits and get tips for it.")}
+    %meta{:name => 'description', :content => (content_for?(:title) ? yield(:title) : "Donate peercoins to open source projects or make commits and get tips for it.")}
     %meta{:name => 'keywords', :content => 'open source,cotribute,github,community,git,bitcoin,tips,perks'}
     / %meta{:property => 'og:image', :content => asset_path('logo.png')}
     / %link{:rel => 'image_src', :type => 'image/png', :href => asset_path('logo.png')}
@@ -25,7 +25,7 @@
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-1115214-16', 'tip4commit.com');
+      ga('create', 'UA-11108334-6', 'peer4commit.com');
       ga('send', 'pageview');
     .container
       .masthead
@@ -39,7 +39,7 @@
               = link_to 'Sign Out', destroy_user_session_path, method: :delete
             - else
               %a{href: user_omniauth_authorize_path(:github)} Sign in
-        %h3.text-muted.code-pro Tip4Commit
+        %h3.text-muted.code-pro Peer4Commit
         = render 'common/menu'
       - if flash[:alert]
         %br
@@ -52,11 +52,12 @@
       .footer
         %p
           ©
-          = link_to 'Tip4commit', 'http://tip4commit.com/', target: '_blank'
-          2013-2014. Source code is available at #{link_to('github', 'https://github.com/tip4commit/tip4commit', target: '_blank')}, you can
-          = link_to('support', 'http://tip4commit.com/projects/307')
+          = link_to 'Peer4commit', 'http://peer4commit.com/', target: '_blank'
+          2014. Source code is available at #{link_to('github', 'https://github.com/sigmike/peer4commit', target: '_blank')},
+          based on #{link_to "Tip4commit", "http://tip4commit.com/"}.
+          You can
+          = link_to('support', 'http://tip4commit.com/projects/560')
           its development.
-          = link_to 'Follow @tip4commit', 'https://twitter.com/tip4commit', target: '_blank'
     / /container
     /
       Bootstrap core JavaScript

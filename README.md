@@ -7,9 +7,10 @@ Donate peercoins to open source projects or make commits and get tips for it.
 
 Official site: http://peer4commit.com/
 
-Based on [tip4commit](https://github.com/tip4commit)
 
 License
 =======
 
 [MIT License](https://github.com/sigmike/peer4commit/blob/master/LICENSE)
+
+Based on [Tip4commit](http://tip4commit.com/), [MIT License](https://github.com/tip4commit/tip4commit/blob/master/LICENSE), copyright (c) 2013-2014 tip4commit
