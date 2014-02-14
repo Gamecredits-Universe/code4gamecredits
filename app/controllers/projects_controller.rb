@@ -8,13 +8,7 @@ class ProjectsController < ApplicationController
   def show
     @project = Project.find params[:id]
     if @project && @project.bitcoin_address.nil?
-      uri = URI("https://blockchain.info/merchant/#{CONFIG["blockchain_info"]["guid"]}/new_address")
-      params = { password: CONFIG["blockchain_info"]["password"], label:"#{@project.full_name}@tip4commit" }
-      uri.query = URI.encode_www_form(params)
-      res = Net::HTTP.get_response(uri)
-      if res.is_a?(Net::HTTPSuccess) && (bitcoin_address = JSON.parse(res.body)["address"])
-        @project.update_attribute :bitcoin_address, bitcoin_address
-      end      
+      @project.update_attribute :bitcoin_address, PeercoinDaemon.get_new_address
     end
   end
 

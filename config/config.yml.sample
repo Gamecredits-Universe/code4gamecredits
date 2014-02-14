@@ -7,6 +7,12 @@ blockchain_info:
   password: "111111111111"
   callback_secret: "111111111111"
 
+peercoin:
+  username: rpcuser
+  password: rpcpassword
+  host: localhost
+  port: 9904
+
 devise:
   secret: "111111111111"
 

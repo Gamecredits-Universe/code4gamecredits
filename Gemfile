@@ -64,3 +64,5 @@ group :development do
 end
 
 gem 'airbrake'
+
+gem 'httparty'
