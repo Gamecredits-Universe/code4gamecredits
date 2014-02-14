@@ -40,4 +40,8 @@ class PeercoinDaemon
     end
     result["result"]
   end
+
+  def get_new_address
+    rpc('getnewaddress')
+  end
 end
