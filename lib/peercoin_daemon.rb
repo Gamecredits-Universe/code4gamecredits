@@ -22,7 +22,7 @@ class PeercoinDaemon
       raise "No #{field} provided in peercoin config" if config[field].blank?
     end
 
-    uri = URI::HTTP.build(config.slice('host', 'port').symbolize_keys)
+    uri = URI::HTTP.build(host: config['host'], port: config['port'].to_i)
 
     auth = config.slice('username', 'password').symbolize_keys
 
