@@ -24,13 +24,14 @@ smtp_settings:
   authentication:       plain
   enable_starttls_auto: true
 
+send_all_emails_to: # put an email here if you're testing and you don't want any email sent to others
+exception_email: admin@example.com # an email will be sent to this address if an unhandled exception occurs
+
 # Uncomment to use airbrake/errbit
 
 # airbrake:
 #   api_key: 111111111111
 #   host: errbit.tip4commit.com
-
-exception_email: admin@example.com
 
 tip: 0.01
 min_payout: 1.0 # in PPC
