@@ -6,7 +6,7 @@ class Sendmany < ActiveRecord::Base
 
     update_attribute :is_error, true # it's a lock to prevent duplicates
 
-    txid = PeercoinDaemon.send_many(project.address_label, JSON.parse(data))
+    txid = PeercoinDaemon.instance.send_many(project.address_label, JSON.parse(data))
 
     update_attribute :is_error, false
     update_attribute :txid, txid

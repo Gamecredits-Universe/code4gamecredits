@@ -50,6 +50,10 @@ class PeercoinDaemon
   end
 
   def send_many(account, recipients, minconf = 1)
-    rpc('sendmany', recipients.to_json, minconf)
+    recipients = recipients.dup
+    recipients.each do |address, amount|
+      recipients[address] = amount.to_f
+    end
+    rpc('sendmany', account, recipients, minconf)
   end
 end
