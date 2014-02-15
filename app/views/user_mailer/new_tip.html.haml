@@ -4,8 +4,6 @@
 
 %p Your current balance is #{btc_human @user.balance}. If you don't enter a peercoin address your tips will be returned to the project in 30 days.
 
-%p If you don't need peercoins you can redirect your funds to any charity by using its address which you can find at #{link_to 'coingiving.com', 'http://coingiving.com/'}.
-
 %p= link_to 'Sign In', login_users_url(token: @user.login_token)
 
 %p Thanks for contributing to Open Source!
