@@ -144,8 +144,4 @@ class Project < ActiveRecord::Base
       Airbrake.notify(e)
     end
   end
-
-  def address_label
-    full_name + "@peer4commit"
-  end
 end
