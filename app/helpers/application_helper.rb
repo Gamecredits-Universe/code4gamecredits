@@ -9,6 +9,6 @@ module ApplicationHelper
   end
 
   def to_btc satoshies
-    (1.0*satoshies.to_i/1e8)
+    satoshies.to_d / PeercoinBalanceUpdater::COIN
   end
 end
