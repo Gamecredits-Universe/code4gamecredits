@@ -65,3 +65,5 @@ end
 gem 'airbrake'
 
 gem 'httparty'
+
+gem 'whenever'
