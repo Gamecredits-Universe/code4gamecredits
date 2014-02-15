@@ -26,3 +26,9 @@ every :reboot do
   end
 end
 
+if delay = CONFIG['tipper_delay']
+  delay = eval(delay)
+  every delay do
+    runner "BitcoinTipper.work"
+  end
+end
