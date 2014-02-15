@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 20140215094549) do
     t.string   "name"
     t.string   "full_name"
     t.string   "source_full_name"
-    t.string   "description"
+    t.text     "description"
     t.integer  "watchers_count"
     t.string   "language"
     t.string   "last_commit"
@@ -43,6 +43,9 @@ ActiveRecord::Schema.define(version: 20140215094549) do
     t.string   "github_id"
     t.string   "address_label"
   end
+
+  add_index "projects", ["full_name"], name: "index_projects_on_full_name", unique: true
+  add_index "projects", ["github_id"], name: "index_projects_on_github_id", unique: true
 
   create_table "sendmanies", force: true do |t|
     t.string   "txid"
