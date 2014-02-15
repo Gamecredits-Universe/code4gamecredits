@@ -41,7 +41,7 @@ class PeercoinDaemon
     result["result"]
   end
 
-  def get_new_address
-    rpc('getnewaddress')
+  def get_new_address(account = "")
+    rpc('getnewaddress', account)
   end
 end

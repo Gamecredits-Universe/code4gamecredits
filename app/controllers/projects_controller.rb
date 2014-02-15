@@ -8,7 +8,7 @@ class ProjectsController < ApplicationController
   def show
     @project = Project.find params[:id]
     if @project && @project.bitcoin_address.nil?
-      @project.update_attribute :bitcoin_address, PeercoinDaemon.instance.get_new_address
+      @project.update_attribute :bitcoin_address, PeercoinDaemon.instance.get_new_address(@project.address_label)
     end
   end
 
