@@ -21,3 +21,8 @@
 
 en:
   hello: "Hello world"
+
+  activerecord:
+    attributes:
+      user:
+        bitcoin_address: Peercoin address

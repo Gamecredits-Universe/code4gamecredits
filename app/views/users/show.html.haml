@@ -12,7 +12,7 @@
 %p= @user.email
 = form_for @user, html: {role: 'form', class: 'form-inline"'} do |f|
   - if @user.errors.size > 0
-    .alert.alert-danger Bitcoin address is invalid.
+    .alert.alert-danger Peercoin address is invalid.
   .form-group
     = f.label :bitcoin_address
     = f.text_field :bitcoin_address, class: 'form-control', placeholder: 'Your peercoin address'

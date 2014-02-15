@@ -3,7 +3,7 @@ require 'digest'
 class BitcoinAddressValidator < ActiveModel::EachValidator
   def validate_each(record, field, value)
     unless value.blank? || valid_bitcoin_address?(value)
-      record.errors[field] << "Bitcoin address is invalid"
+      record.errors[field] << "Peercoin address is invalid"
     end
   end
 
