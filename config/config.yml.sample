@@ -12,6 +12,7 @@ peercoin:
   password: rpcpassword
   host: localhost
   port: 9904
+  daemon: /path/to/ppcoin/src/ppcoind
 
 devise:
   secret: "111111111111"

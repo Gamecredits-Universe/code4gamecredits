@@ -18,3 +18,11 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
+
+require File.expand_path('../../config/environment', __FILE__)
+every :reboot do
+  if daemon = CONFIG['peercoin']['daemon']
+    command daemon 
+  end
+end
+
