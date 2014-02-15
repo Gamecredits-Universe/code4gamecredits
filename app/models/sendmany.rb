@@ -1,4 +1,6 @@
 class Sendmany < ActiveRecord::Base
+  belongs_to :project
+
 	def send_transaction
     return if txid || is_error
 

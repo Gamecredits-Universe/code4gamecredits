@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140102095035) do
+ActiveRecord::Schema.define(version: 20140215062842) do
 
   create_table "deposits", force: true do |t|
     t.integer  "project_id"
@@ -49,7 +49,10 @@ ActiveRecord::Schema.define(version: 20140102095035) do
     t.boolean  "is_error"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "project_id"
   end
+
+  add_index "sendmanies", ["project_id"], name: "index_sendmanies_on_project_id"
 
   create_table "tips", force: true do |t|
     t.integer  "user_id"
