@@ -48,4 +48,8 @@ class PeercoinDaemon
   def list_transactions(account = "", count = 10, from = 0)
     rpc('listtransactions', account, count, from)
   end
+
+  def send_many(account, recipients, minconf = 1)
+    rpc('sendmany', recipients.to_json, minconf)
+  end
 end

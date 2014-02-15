@@ -14,16 +14,7 @@ class BitcoinTipper
       end
     end
 
-    Rails.logger.info "Traversing users..."
-    is_sendmany_needed = false
-    User.find_each do |user|
-      if user.bitcoin_address.present? && user.balance > CONFIG["min_payout"]
-        is_sendmany_needed = true
-        Rails.logger.info "Sendmany is needed"
-      end
-    end
-
-    self.create_sendmany if is_sendmany_needed
+    self.create_sendmany
 
     Rails.logger.info "Traversing sendmanies..."
     Sendmany.where(txid: nil).each do |sendmany|
@@ -43,18 +34,20 @@ class BitcoinTipper
   def self.create_sendmany
     Rails.logger.info "Creating sendmany"
     ActiveRecord::Base.transaction do
-      sendmany = Sendmany.create
-      outs = {}
-      User.find_each do |user|
-        if user.bitcoin_address.present? && user.balance > CONFIG["min_payout"]
-          user.tips.unpaid.each do |tip| 
+      Project.find_each do |project|
+        tips = project.tips.unpaid.with_address
+        amount = tips.sum(:amount)
+        if amount > CONFIG["min_payout"]
+          sendmany = Sendmany.create(project_id: project.id)
+          outs = {}
+          tips.each do |tip|
             tip.update_attribute :sendmany_id, sendmany.id
             outs[user.bitcoin_address] = outs[user.bitcoin_address].to_i + tip.amount
           end
+          sendmany.update_attribute :data, outs.to_json
+          Rails.logger.info "  #{sendmany.inspect}"
         end
       end
-      sendmany.update_attribute :data, outs.to_json
-      Rails.logger.info "  #{sendmany.inspect}"
     end   
   end
 
