@@ -5,8 +5,8 @@
   = btc_human @user.balance
 %p
   %small
-    You will get your money when your balance hits the threshold of
-    = btc_human CONFIG["min_payout"]
+    You will get the money of your tips when the project they belong hits the threshold of
+    = btc_human CONFIG["min_payout"].to_d * PeercoinBalanceUpdater::COIN
 %p
   %strong E-mail
 %p= @user.email

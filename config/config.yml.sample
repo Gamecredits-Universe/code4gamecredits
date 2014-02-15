@@ -33,7 +33,7 @@ smtp_settings:
 exception_email: admin@example.com
 
 tip: 0.01
-min_payout: 100000
+min_payout: 1.0 # in PPC
 our_fee: 0.05
 tipper_delay: "1.hour"
 

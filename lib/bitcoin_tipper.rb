@@ -41,9 +41,9 @@ class BitcoinTipper
     Rails.logger.info "Creating sendmany"
     ActiveRecord::Base.transaction do
       Project.find_each do |project|
-        tips = project.tips.unpaid.with_address.readonly(false)
-        amount = tips.sum(:amount).to_d / PeercoinBalanceUpdater::COIN
-        if amount > CONFIG["min_payout"]
+        tips = project.tips_to_pay.readonly(false)
+        amount = tips.sum(:amount).to_d
+        if amount > CONFIG["min_payout"].to_d * PeercoinBalanceUpdater::COIN
           sendmany = Sendmany.create(project_id: project.id)
           outs = {}
           tips.each do |tip|

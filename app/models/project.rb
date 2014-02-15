@@ -144,4 +144,12 @@ class Project < ActiveRecord::Base
       Airbrake.notify(e)
     end
   end
+
+  def tips_to_pay
+    tips.unpaid.with_address
+  end
+
+  def amount_to_pay
+    tips_to_pay.sum(:amount)
+  end
 end
