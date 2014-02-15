@@ -18,8 +18,6 @@ class Tip < ActiveRecord::Base
                              unpaid.
                              where('users.bitcoin_address' => ['', nil]) }
 
-  scope :on_project,    -> (project) { where(project_id: project.id) }
-
   scope :with_address,  -> { joins(:user).where('users.bitcoin_address IS NOT NULL') }
 
   def self.refund_unclaimed
