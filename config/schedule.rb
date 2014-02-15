@@ -29,6 +29,6 @@ end
 if delay = CONFIG['tipper_delay']
   delay = eval(delay)
   every delay do
-    runner "BitcoinTipper.work"
+    runner "PeercoinBalanceUpdater.work; BitcoinTipper.work"
   end
 end
