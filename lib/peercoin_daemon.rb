@@ -44,4 +44,8 @@ class PeercoinDaemon
   def get_new_address(account = "")
     rpc('getnewaddress', account)
   end
+
+  def list_transactions(account = "", count = 10, from = 0)
+    rpc('listtransactions', account, count, from)
+  end
 end
