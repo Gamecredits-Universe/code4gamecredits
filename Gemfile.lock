@@ -149,6 +149,9 @@ GEM
     pg (0.17.1)
     polyglot (0.3.3)
     rack (1.5.2)
+    rack-canonical-host (0.0.8)
+      addressable
+      rack (~> 1.0)
     rack-test (0.6.2)
       rack (>= 1.0)
     rails (4.0.2)
@@ -244,6 +247,7 @@ DEPENDENCIES
   omniauth
   omniauth-github
   pg
+  rack-canonical-host
   rails (= 4.0.2)
   rqrcode-rails3
   sass-rails (~> 4.0.0)
