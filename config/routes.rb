@@ -7,6 +7,11 @@ T4c::Application.routes.draw do
 
   get 'login' => 'home#login'
 
+  devise_for :users,
+    :controllers => {
+      :omniauth_callbacks => "users/omniauth_callbacks"
+    }
+
   resources :users, :only => [:show, :update, :index] do
     collection do
       get :login
@@ -32,9 +37,4 @@ T4c::Application.routes.draw do
   end
   resources :tips, :only => [:index]
   resources :distributions, :only => [:index]
-
-  devise_for :users,
-    :controllers => {
-      :omniauth_callbacks => "users/omniauth_callbacks"
-    }
 end

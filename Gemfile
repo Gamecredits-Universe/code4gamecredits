@@ -44,6 +44,7 @@ gem 'devise'
 gem 'omniauth'
 gem 'omniauth-github', github: 'alexandrz/omniauth-github', branch: 'provide_emails'
 gem 'cancancan'
+gem 'twitter_bootstrap_form_for', github: 'stouset/twitter_bootstrap_form_for'
 
 gem 'octokit'
 
