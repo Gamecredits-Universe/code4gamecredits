@@ -1,7 +1,8 @@
 Peer4commit
 ==========
 
-[![tip for next commit](http://tip4commit.com/projects/560.svg)](http://tip4commit.com/projects/560)
+[![peercoin tip for next commit](http://peer4commit.com/projects/1.svg)](http://peer4commit.com/projects/1)
+[![bitcoin tip for next commit](http://tip4commit.com/projects/560.svg)](http://tip4commit.com/projects/560)
 
 Donate peercoins to open source projects or make commits and get tips for it.
 
