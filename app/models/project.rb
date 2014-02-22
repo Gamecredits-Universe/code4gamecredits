@@ -10,8 +10,7 @@ class Project < ActiveRecord::Base
   has_one :tipping_policies_text, inverse_of: :project
   accepts_nested_attributes_for :tipping_policies_text
 
-  validates :full_name, uniqueness: true, presence: true
-  validates :github_id, uniqueness: true, presence: true
+  validates :full_name, :github_id, uniqueness: true, presence: true
 
   scope :enabled,  -> { where(disabled: false) }
   scope :disabled, -> { where(disabled: true) }
@@ -94,7 +93,7 @@ class Project < ActiveRecord::Base
     user = User.find_by email: email
 
     if (next_tip_amount > 0) &&
-        Tip.find_by_commit(commit.sha).nil?
+        Tip.find_by(commit: commit.sha).nil?
 
       # create user
       unless user

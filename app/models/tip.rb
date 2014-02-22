@@ -26,12 +26,12 @@ class Tip < ActiveRecord::Base
     amount == 0
   end
 
-  scope :paid,          -> { where('sendmany_id is not ?', nil) }
+  scope :paid,          -> { where.not(sendmany_id: nil) }
   def paid?
     !!sendmany_id
   end
 
-  scope :refunded,      -> { where('refunded_at is not ?', nil) }
+  scope :refunded,      -> { where.not(refunded_at: nil) }
   scope :non_refunded,  -> { where(refunded_at: nil) }
   def refunded?
     !!refunded_at
@@ -44,7 +44,7 @@ class Tip < ActiveRecord::Base
                              unpaid.
                              where('users.bitcoin_address' => ['', nil]) }
 
-  scope :with_address,  -> { joins(:user).where('users.bitcoin_address IS NOT NULL AND users.bitcoin_address != ?', "") }
+  scope :with_address,  -> { joins(:user).where.not('users.bitcoin_address' => [nil, ""]) }
   def with_address?
     user.bitcoin_address.present?
   end
