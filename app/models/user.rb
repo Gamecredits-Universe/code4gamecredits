@@ -36,9 +36,13 @@ class User < ActiveRecord::Base
   end
 
   def self.update_cache
-    includes(:tips).find_each do |user|
-      user.update( commits_count: user.tips.size, 
-                   withdrawn_amount: user.tips.select(&:paid?).sum(:amount) )
+    commits_counts = Tip.group(:user_id).count
+    paid_sums = Tip.paid.group(:user_id).sum(:amount)
+
+    find_each do |user|
+      user.commits_count = commits_counts[user.id] || 0
+      user.withdrawn_amount = paid_sums[user.id] || 0
+      user.save
     end
   end
 
