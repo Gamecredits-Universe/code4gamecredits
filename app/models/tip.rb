@@ -18,7 +18,7 @@ class Tip < ActiveRecord::Base
                              unpaid.
                              where('users.bitcoin_address' => ['', nil]) }
 
-  scope :with_address,  -> { joins(:user).where('users.bitcoin_address IS NOT NULL') }
+  scope :with_address,  -> { joins(:user).where('users.bitcoin_address IS NOT NULL AND users.bitcoin_address != ?', "") }
 
   def paid?
     !!sendmany_id
