@@ -42,7 +42,7 @@ end
 
 gem 'devise'
 gem 'omniauth'
-gem 'omniauth-github'
+gem 'omniauth-github', git: 'https://github.com/sigmike/omniauth-github.git', branch: 'provide_emails'
 
 gem 'octokit'
 

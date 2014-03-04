@@ -17,6 +17,15 @@ GIT
       rails (>= 3.1)
       railties (>= 3.1)
 
+GIT
+  remote: https://github.com/sigmike/omniauth-github.git
+  revision: a6a3a48b5bad1f7b677e07340edee95c070da94d
+  branch: provide_emails
+  specs:
+    omniauth-github (1.1.0)
+      omniauth (~> 1.0)
+      omniauth-oauth2 (~> 1.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -96,7 +105,7 @@ GEM
     httparty (0.12.0)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
-    httpauth (0.2.0)
+    httpauth (0.2.1)
     i18n (0.6.9)
     jbuilder (1.5.3)
       activesupport (>= 3.0.0)
@@ -105,7 +114,7 @@ GEM
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.8.1)
-    jwt (0.1.10)
+    jwt (0.1.11)
       multi_json (>= 1.5)
     kaminari (0.15.0)
       actionpack (>= 3.0.0)
@@ -139,9 +148,6 @@ GEM
     omniauth (1.1.4)
       hashie (>= 1.2, < 3)
       rack
-    omniauth-github (1.1.1)
-      omniauth (~> 1.0)
-      omniauth-oauth2 (~> 1.1)
     omniauth-oauth2 (1.1.1)
       oauth2 (~> 0.8.0)
       omniauth (~> 1.0)
@@ -245,7 +251,7 @@ DEPENDENCIES
   mysql2
   octokit
   omniauth
-  omniauth-github
+  omniauth-github!
   pg
   rack-canonical-host
   rails (~> 4.0.2)
