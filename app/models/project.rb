@@ -1,6 +1,7 @@
 class Project < ActiveRecord::Base
   has_many :deposits # todo: only confirmed deposits that have amount > paid_out
   has_many :tips
+  has_many :collaborators
 
   validates :full_name, uniqueness: true, presence: true
   validates :github_id, uniqueness: true, presence: true
@@ -60,6 +61,8 @@ class Project < ActiveRecord::Base
 
       if modifier = TipModifier.find_in_message(commit.commit.message)
         logger.info "Found modifier #{modifier.name} in commit #{commit.sha}"
+
+        next unless collaborators.map(&:login).include?(commit.author.try(:login))
 
         if merged_commits = sha_set.merged_commits(commit.sha)
           merged_commits.each do |modified_commit|
