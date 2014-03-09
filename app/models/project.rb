@@ -17,6 +17,25 @@ class Project < ActiveRecord::Base
     self.save!
   end
 
+  def update_github_collaborators(github_collaborators)
+    github_logins = github_collaborators.map(&:login)
+    existing_logins = collaborators.map(&:login)
+
+    collaborators.each do |collaborator|
+      unless github_logins.include?(collaborator.login)
+        collaborator.mark_for_destruction
+      end
+    end
+
+    github_collaborators.each do |github_collaborator|
+      unless existing_logins.include?(github_collaborator.login)
+        collaborators.build(login: github_collaborator.login)
+      end
+    end
+
+    save!
+  end
+
   def github_url
     "https://github.com/#{full_name}"
   end
@@ -163,9 +182,17 @@ class Project < ActiveRecord::Base
     end
   end
 
+  def github_collaborators
+    client = Octokit::Client.new \
+      :client_id     => CONFIG['github']['key'],
+      :client_secret => CONFIG['github']['secret']
+    client.get("/repos/#{full_name}/collaborators")
+  end
+
   def update_info
     begin
       update_github_info(github_info)
+      update_github_collaborators(github_collaborators)
     rescue Octokit::BadGateway, Octokit::NotFound, Octokit::InternalServerError,
            Errno::ETIMEDOUT, Net::ReadTimeout, Faraday::Error::ConnectionFailed => e
       Rails.logger.info "Project ##{id}: #{e.class} happened"
