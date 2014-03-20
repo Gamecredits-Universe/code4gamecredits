@@ -65,7 +65,7 @@ class Project < ActiveRecord::Base
           to_a
       end
     rescue Octokit::BadGateway, Octokit::NotFound, Octokit::InternalServerError,
-           Errno::ETIMEDOUT, Net::ReadTimeout, Faraday::Error::ConnectionFailed => e
+           Errno::ETIMEDOUT, Faraday::Error::ConnectionFailed => e
       Rails.logger.info "Project ##{id}: #{e.class} happened"
     rescue StandardError => e
       Airbrake.notify(e)
@@ -175,7 +175,7 @@ class Project < ActiveRecord::Base
       update_github_info(github_info)
       update_github_collaborators(github_collaborators)
     rescue Octokit::BadGateway, Octokit::NotFound, Octokit::InternalServerError,
-           Errno::ETIMEDOUT, Net::ReadTimeout, Faraday::Error::ConnectionFailed => e
+           Errno::ETIMEDOUT, Faraday::Error::ConnectionFailed => e
       Rails.logger.info "Project ##{id}: #{e.class} happened"
     rescue StandardError => e
       Airbrake.notify(e)
