@@ -60,6 +60,7 @@ GEM
     arel (4.0.2)
     atomic (1.1.14)
     bcrypt-ruby (3.1.2)
+    bootstrap_forms (4.0.1)
     builder (3.1.4)
     capistrano (3.0.1)
       i18n
@@ -276,6 +277,7 @@ PLATFORMS
 
 DEPENDENCIES
   airbrake
+  bootstrap_forms
   capistrano (~> 3.0)
   capistrano-bundler (>= 1.1.0)
   capistrano-rails

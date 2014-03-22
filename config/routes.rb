@@ -10,7 +10,7 @@ T4c::Application.routes.draw do
       post :send_tips_back
     end
   end
-  resources :projects, :only => [:show, :index, :create] do
+  resources :projects, :only => [:show, :index, :create, :edit, :update] do
     resources :tips, :only => [:index]
     member do
       get :qrcode

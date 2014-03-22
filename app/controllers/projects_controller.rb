@@ -14,6 +14,20 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def edit
+    @project = Project.find params[:id]
+  end
+
+  def update
+    @project = Project.find params[:id]
+    @project.attributes = project_params
+    if @project.save
+      redirect_to project_path(@project), notice: "The project settings have been updated"
+    else
+      render 'edit'
+    end
+  end
+
   def qrcode
     @project = Project.find params[:id]
     respond_to do |format|
@@ -37,5 +51,10 @@ class ProjectsController < ApplicationController
     rescue Octokit::NotFound
       redirect_to projects_path, alert: "Project not found"
     end
+  end
+
+  private
+  def project_params
+    params.require(:project).permit(:hold_tips)
   end
 end

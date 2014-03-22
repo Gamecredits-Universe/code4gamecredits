@@ -3,7 +3,7 @@ class Tip < ActiveRecord::Base
   belongs_to :sendmany
   belongs_to :project
 
-  validates :amount, :numericality => { :greater_than => 0 }
+  validates :amount, numericality: {greater_than: 0, allow_nil: true}
 
   scope :not_sent,      -> { where(sendmany_id: nil) }
 
@@ -23,6 +23,10 @@ class Tip < ActiveRecord::Base
 
   def paid?
     !!sendmany_id
+  end
+
+  def amount_undecided?
+    amount.nil?
   end
 
   def self.refund_unclaimed

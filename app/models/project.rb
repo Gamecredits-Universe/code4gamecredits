@@ -101,16 +101,22 @@ class Project < ActiveRecord::Base
         user.update nickname: commit.author.login
       end
 
+      if hold_tips
+        amount = nil
+      else
+        amount = next_tip_amount
+      end
+
       # create tip
       tip = Tip.create({
         project: self,
         user: user,
-        amount: next_tip_amount,
+        amount: amount,
         commit: commit.sha
       })
 
       # notify user
-      if tip && user.bitcoin_address.blank? && !user.unsubscribed
+      if tip && tip.amount && user.bitcoin_address.blank? && !user.unsubscribed
         if !user.notified_at || (user.notified_at < (Time.now - 30.days))
           UserMailer.new_tip(user, tip).deliver
           user.touch :notified_at

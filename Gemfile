@@ -69,6 +69,7 @@ gem 'whenever'
 gem 'rqrcode-rails3'
 gem 'exception_notification'
 gem 'rack-canonical-host'
+gem 'bootstrap_forms'
 
 group :test do
   gem 'cucumber-rails', :require => false

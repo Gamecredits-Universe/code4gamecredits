@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140309192616) do
+ActiveRecord::Schema.define(version: 20140323072851) do
 
   create_table "collaborators", force: true do |t|
     t.integer  "project_id"
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 20140309192616) do
     t.integer  "available_amount_cache", limit: 8
     t.string   "github_id"
     t.string   "address_label"
+    t.boolean  "hold_tips",                        default: false
   end
 
   add_index "projects", ["full_name"], name: "index_projects_on_full_name", unique: true

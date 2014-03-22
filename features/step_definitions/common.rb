@@ -1,3 +1,10 @@
+Before do
+  ActionMailer::Base.deliveries.clear
+end
+
+Then(/^there should be (\d+) email sent$/) do |arg1|
+  ActionMailer::Base.deliveries.size.should eq(arg1.to_i)
+end
 
 Given(/^the tip for commit is "(.*?)"$/) do |arg1|
   CONFIG["tip"] = arg1.to_f
@@ -8,7 +15,7 @@ Given(/^our fee is "(.*?)"$/) do |arg1|
 end
 
 Given(/^a project$/) do
-  @project = Project.create!(full_name: "example/test", github_id: 123)
+  @project = Project.create!(full_name: "example/test", github_id: 123, bitcoin_address: 'mq4NtnmQoQoPfNWEPbhSvxvncgtGo6L8WY')
 end
 
 Given(/^a deposit of "(.*?)"$/) do |arg1|
@@ -50,6 +57,7 @@ Given(/^the message of commit "(.*?)" is "(.*?)"$/) do |arg1, arg2|
 end
 
 When(/^the new commits are read$/) do
+  @project.reload
   @project.should_receive(:new_commits).and_return(@new_commits.values.map(&:to_ostruct))
   @project.tip_commits
 end
@@ -60,6 +68,10 @@ end
 
 Then(/^there should be a tip of "(.*?)" for commit "(.*?)"$/) do |arg1, arg2|
   (Tip.find_by(commit: arg2).amount.to_d / PeercoinBalanceUpdater::COIN).should eq(arg1.to_d)
+end
+
+Then(/^the tip amount for commit "(.*?)" should be undecided$/) do |arg1|
+  Tip.find_by(commit: arg1).amount_undecided?.should be_true
 end
 
 Then(/^the new last known commit should be "(.*?)"$/) do |arg1|
