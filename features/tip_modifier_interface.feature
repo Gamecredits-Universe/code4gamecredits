@@ -11,13 +11,13 @@ Feature: A project collaborator can change the tips of commits
     And a new commit "CCC" with parent "BBB"
     And the author of commit "BBB" is "yugo"
     And the message of commit "BBB" is "Tiny change"
-    And the author of commit "CCC" is "seldon"
+    And the author of commit "CCC" is "gaal"
 
   Scenario: Without anything modified
     When the new commits are read
     Then there should be a tip of "5" for commit "BBB"
     And there should be a tip of "4.95" for commit "CCC"
-    And there should be 1 email sent
+    And there should be 2 email sent
 
   Scenario: A collaborator wants to alter the tips
     Given I'm logged in as "seldon"
