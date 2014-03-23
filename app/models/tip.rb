@@ -36,6 +36,10 @@ class Tip < ActiveRecord::Base
     amount.nil?
   end
 
+  def decided?
+    !undecided?
+  end
+
   def self.refund_unclaimed
     unclaimed.non_refunded.
     where('tips.created_at < ?', Time.now - 1.month).

@@ -33,7 +33,7 @@
               - if tip.refunded_at
                 Refunded to project's deposit
               - elsif tip.undecided?
-                The amount of tips has not been decided yet
+                The amount of the tip has not been decided yet
               - elsif tip.user.bitcoin_address.blank?
                 User didn't specify withdrawal address
               - elsif tip.project.amount_to_pay < CONFIG["min_payout"].to_d * PeercoinBalanceUpdater::COIN
