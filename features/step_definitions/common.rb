@@ -6,6 +6,10 @@ Then(/^there should be (\d+) email sent$/) do |arg1|
   ActionMailer::Base.deliveries.size.should eq(arg1.to_i)
 end
 
+When(/^the email counters are reset$/) do
+  ActionMailer::Base.deliveries.clear
+end
+
 Given(/^the tip for commit is "(.*?)"$/) do |arg1|
   CONFIG["tip"] = arg1.to_f
 end
@@ -67,11 +71,13 @@ Then(/^there should be no tip for commit "(.*?)"$/) do |arg1|
 end
 
 Then(/^there should be a tip of "(.*?)" for commit "(.*?)"$/) do |arg1, arg2|
-  (Tip.find_by(commit: arg2).amount.to_d / PeercoinBalanceUpdater::COIN).should eq(arg1.to_d)
+  amount = Tip.find_by(commit: arg2).amount
+  amount.should_not be_nil
+  (amount.to_d / PeercoinBalanceUpdater::COIN).should eq(arg1.to_d)
 end
 
 Then(/^the tip amount for commit "(.*?)" should be undecided$/) do |arg1|
-  Tip.find_by(commit: arg1).amount_undecided?.should be_true
+  Tip.find_by(commit: arg1).undecided?.should be_true
 end
 
 Then(/^the new last known commit should be "(.*?)"$/) do |arg1|

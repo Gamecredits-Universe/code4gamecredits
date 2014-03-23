@@ -28,6 +28,21 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def decide_tip_amounts
+    @project = Project.find params[:id]
+    if request.patch?
+      @project.attributes = params.require(:project).permit(tips_attributes: [:id, :amount_percentage])
+      if @project.save
+        message = "The tip amounts have been defined"
+        if @project.has_undecided_tips?
+          redirect_to decide_tip_amounts_project_path(@project), notice: message
+        else
+          redirect_to @project, notice: message
+        end
+      end
+    end
+  end
+
   def qrcode
     @project = Project.find params[:id]
     respond_to do |format|

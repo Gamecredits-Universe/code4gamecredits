@@ -69,7 +69,7 @@ gem 'whenever'
 gem 'rqrcode-rails3'
 gem 'exception_notification'
 gem 'rack-canonical-host'
-gem 'bootstrap_forms'
+gem 'bootstrap_forms', github: 'sigmike/bootstrap_forms', branch: 'sanitize_value_in_radio_label_for'
 
 group :test do
   gem 'cucumber-rails', :require => false

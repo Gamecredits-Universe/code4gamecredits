@@ -1,6 +1,7 @@
 class Project < ActiveRecord::Base
   has_many :deposits # todo: only confirmed deposits that have amount > paid_out
-  has_many :tips
+  has_many :tips, inverse_of: :project
+  accepts_nested_attributes_for :tips
   has_many :collaborators
 
   validates :full_name, uniqueness: true, presence: true
@@ -115,13 +116,7 @@ class Project < ActiveRecord::Base
         commit: commit.sha
       })
 
-      # notify user
-      if tip && tip.amount && user.bitcoin_address.blank? && !user.unsubscribed
-        if !user.notified_at || (user.notified_at < (Time.now - 30.days))
-          UserMailer.new_tip(user, tip).deliver
-          user.touch :notified_at
-        end
-      end
+      tip.notify_user
 
       Rails.logger.info "    Tip created #{tip.inspect}"
     end
@@ -185,10 +180,18 @@ class Project < ActiveRecord::Base
   end
 
   def tips_to_pay
-    tips.unpaid.with_address
+    tips.to_pay
   end
 
   def amount_to_pay
     tips_to_pay.sum(:amount)
+  end
+
+  def has_undecided_tips?
+    tips.undecided.any?
+  end
+
+  def commit_url(commit)
+    "https://github.com/#{full_name}/commit/#{commit}"
   end
 end

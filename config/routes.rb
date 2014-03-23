@@ -14,6 +14,8 @@ T4c::Application.routes.draw do
     resources :tips, :only => [:index]
     member do
       get :qrcode
+      get :decide_tip_amounts
+      patch :decide_tip_amounts
     end
   end
   resources :tips, :only => [:index]
