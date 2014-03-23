@@ -50,3 +50,42 @@ Feature: A project collaborator can change the tips of commits
     And there should be a tip of "0" for commit "CCC"
     And there should be 0 email sent
 
+  Scenario: A non collaborator does not see the settings button
+    Given I'm logged in as "yugo"
+    And I go to the project page
+    Then I should not see "Change project settings"
+
+  Scenario: A non collaborator does not see the decide tip amounts button
+    Given the project has undedided tips
+    And I'm logged in as "yugo"
+    And I go to the project page
+    Then I should not see "Decide tip amounts"
+
+  Scenario: A non collaborator goes to the edit page of a project
+    Given I'm logged in as "yugo"
+    When I go to the edit page of the project
+    Then I should see an access denied
+
+  Scenario: A non collaborator sends a forged update on a project
+    Given I'm logged in as "yugo"
+    When I send a forged request to enable tip holding on the project
+    Then I should see an access denied
+    And the project should not hold tips
+
+  Scenario: A collaborator sends a forged update on a project
+    Given I'm logged in as "daneel"
+    When I send a forged request to enable tip holding on the project
+    Then the project should hold tips
+
+  Scenario Outline: A user sends a forged request to set a tip amount
+    Given the project has 1 undecided tip
+    And I'm logged in as "<user>"
+    And I go to the project page
+    And I send a forged request to set the amount of the first undecided tip of the project
+    Then the project should have <remaining undecided tips> undecided tips
+
+    Examples:
+      | user   | remaining undecided tips |
+      | seldon | 0                        |
+      | yugo   | 1                        |
+

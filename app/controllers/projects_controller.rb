@@ -16,10 +16,12 @@ class ProjectsController < ApplicationController
 
   def edit
     @project = Project.find params[:id]
+    authorize! :update, @project
   end
 
   def update
     @project = Project.find params[:id]
+    authorize! :update, @project
     @project.attributes = project_params
     if @project.save
       redirect_to project_path(@project), notice: "The project settings have been updated"
@@ -30,6 +32,7 @@ class ProjectsController < ApplicationController
 
   def decide_tip_amounts
     @project = Project.find params[:id]
+    authorize! :decide_tip_amounts, @project
     if request.patch?
       @project.attributes = params.require(:project).permit(tips_attributes: [:id, :amount_percentage])
       if @project.save

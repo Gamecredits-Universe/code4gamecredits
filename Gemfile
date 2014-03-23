@@ -43,6 +43,7 @@ end
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-github', github: 'alexandrz/omniauth-github', branch: 'provide_emails'
+gem 'cancancan'
 
 gem 'octokit'
 
@@ -76,4 +77,5 @@ group :test do
   # database_cleaner is not required, but highly recommended
   gem 'database_cleaner'
   gem 'rspec-rails'
+  gem 'factory_girl_rails'
 end
