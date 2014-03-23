@@ -27,11 +27,11 @@ GIT
       railties (>= 3.1)
 
 GIT
-  remote: git://github.com/sigmike/bootstrap_forms.git
-  revision: e69b6834d36b198d36a8f4a892d1bac6633e7545
-  branch: sanitize_value_in_radio_label_for
+  remote: git://github.com/sigmike/rails-bootstrap-forms.git
+  revision: a1c8420ab999df56b13d3de8a097528b77a02217
+  branch: removed_for_on_radio_label
   specs:
-    bootstrap_forms (4.0.1)
+    bootstrap_form (2.0.1)
 
 GEM
   remote: https://rubygems.org/
@@ -289,7 +289,7 @@ PLATFORMS
 
 DEPENDENCIES
   airbrake
-  bootstrap_forms!
+  bootstrap_form!
   cancancan
   capistrano (~> 3.0)
   capistrano-bundler (>= 1.1.0)

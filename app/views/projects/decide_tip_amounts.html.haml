@@ -15,14 +15,13 @@
           %td= tip.user.nickname
           %td= simple_format tip.commit_message
           %td
-            - radios = {}
-            - radios["Undecided"] = ""
-            - radios["Free: 0%"] = "0"
-            - radios["Tiny: 0.1%"] = "0.1"
-            - radios["Small: 0.5%"] = "0.5"
-            - radios["Normal: 1%"] = "1"
-            - radios["Big: 2%"] = "2"
-            - radios["Huge: 5%"] = "5"
-            = tip_fields.radio_buttons(:amount_percentage, radios, inline: true, label: false)
+            = tip_fields.radio_button :amount_percentage,    "", inline: true, label: "Undecided"
+            = tip_fields.radio_button :amount_percentage,   "0", inline: true, label: "Free: 0%"
+            = tip_fields.radio_button :amount_percentage, "0.1", inline: true, label: "Tiny: 0.1%"
+            = tip_fields.radio_button :amount_percentage, "0.5", inline: true, label: "Small: 0.5%"
+            = tip_fields.radio_button :amount_percentage,   "1", inline: true, label: "Normal: 1%"
+            = tip_fields.radio_button :amount_percentage,   "2", inline: true, label: "Big: 2%"
+            = tip_fields.radio_button :amount_percentage,   "5", inline: true, label: "Huge: 5%"
+
   .text-center
     = f.submit 'Send the selected tip amounts'
