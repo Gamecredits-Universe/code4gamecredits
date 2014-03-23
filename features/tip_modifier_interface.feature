@@ -10,6 +10,7 @@ Feature: A project collaborator can change the tips of commits
     And a new commit "BBB" with parent "AAA"
     And a new commit "CCC" with parent "BBB"
     And the author of commit "BBB" is "yugo"
+    And the message of commit "BBB" is "Tiny change"
     And the author of commit "CCC" is "seldon"
 
   Scenario: Without anything modified
@@ -34,6 +35,7 @@ Feature: A project collaborator can change the tips of commits
     When I go to the project page
     And I click on "Decide tip amounts"
     Then I should see "BBB"
+    And I should see "Tiny change"
     And I should see "CCC"
     And I should not see "AAA"
 

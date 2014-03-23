@@ -113,7 +113,8 @@ class Project < ActiveRecord::Base
         project: self,
         user: user,
         amount: amount,
-        commit: commit.sha
+        commit: commit.sha,
+        commit_message: commit.commit.message,
       })
 
       tip.notify_user

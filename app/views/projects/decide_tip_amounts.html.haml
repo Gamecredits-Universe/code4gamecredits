@@ -1,16 +1,19 @@
 = bootstrap_form_for @project, url: decide_tip_amounts_project_path(@project) do |f|
-  %table.table
+  %table.table.table-hover
     %thead
       %tr
         %th Commit
+        %th Author
+        %th Message
         %th Tip (relative to the project balance)
     %tbody
       = f.fields_for(:tips, @project.tips.undecided) do |tip_fields|
         = tip_fields.hidden_field :id
         - tip = tip_fields.object
         %tr
-          %td
-            = link_to tip.commit, tip.commit_url
+          %td= link_to commit_tag(tip.commit), tip.commit_url
+          %td= tip.user.nickname
+          %td= simple_format tip.commit_message
           %td
             - radios = {}
             - radios["Undecided"] = ""

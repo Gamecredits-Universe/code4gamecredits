@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140323072851) do
+ActiveRecord::Schema.define(version: 20140323165816) do
 
   create_table "collaborators", force: true do |t|
     t.integer  "project_id"
@@ -71,13 +71,14 @@ ActiveRecord::Schema.define(version: 20140323072851) do
 
   create_table "tips", force: true do |t|
     t.integer  "user_id"
-    t.integer  "amount",      limit: 8
+    t.integer  "amount",         limit: 8
     t.integer  "sendmany_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "commit"
     t.integer  "project_id"
     t.datetime "refunded_at"
+    t.string   "commit_message"
   end
 
   add_index "tips", ["project_id"], name: "index_tips_on_project_id"
