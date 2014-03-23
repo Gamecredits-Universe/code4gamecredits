@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140323165816) do
+ActiveRecord::Schema.define(version: 20140323173320) do
 
   create_table "collaborators", force: true do |t|
     t.integer  "project_id"
@@ -68,6 +68,17 @@ ActiveRecord::Schema.define(version: 20140323165816) do
   end
 
   add_index "sendmanies", ["project_id"], name: "index_sendmanies_on_project_id"
+
+  create_table "tipping_policies_texts", force: true do |t|
+    t.integer  "project_id"
+    t.integer  "user_id"
+    t.text     "text"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tipping_policies_texts", ["project_id"], name: "index_tipping_policies_texts_on_project_id"
+  add_index "tipping_policies_texts", ["user_id"], name: "index_tipping_policies_texts_on_user_id"
 
   create_table "tips", force: true do |t|
     t.integer  "user_id"

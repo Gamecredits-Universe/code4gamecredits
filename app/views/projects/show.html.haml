@@ -34,6 +34,19 @@
     - if (unconfirmed_amount = @project.unconfirmed_amount) > 0
       (#{btc_human unconfirmed_amount} unconfirmed)
 
+    - if @project.tipping_policies_text.try(:text).present?
+      %h4 Tipping policies
+      = simple_format @project.tipping_policies_text.text
+      %small
+        %em
+          - user = @project.tipping_policies_text.user
+          - name = user.name.presence || user.nickname if user
+          - date = l(@project.tipping_policies_text.updated_at)
+          - if name.present?
+            = "(Last updated by #{name} on #{date})"
+          - else
+            = "(Last updated on #{date})"
+
     %h4 Tips Paid
     = btc_human @project.tips_paid_amount
     - if (tips_paid_unclaimed_amount = @project.tips_paid_unclaimed_amount) > 0

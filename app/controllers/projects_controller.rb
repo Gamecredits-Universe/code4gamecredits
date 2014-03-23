@@ -23,6 +23,9 @@ class ProjectsController < ApplicationController
     @project = Project.find params[:id]
     authorize! :update, @project
     @project.attributes = project_params
+    if @project.tipping_policies_text.try(:text_changed?)
+      @project.tipping_policies_text.user = current_user
+    end
     if @project.save
       redirect_to project_path(@project), notice: "The project settings have been updated"
     else
@@ -73,6 +76,6 @@ class ProjectsController < ApplicationController
 
   private
   def project_params
-    params.require(:project).permit(:hold_tips)
+    params.require(:project).permit(:hold_tips, tipping_policies_text_attributes: [:text])
   end
 end

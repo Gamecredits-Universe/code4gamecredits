@@ -12,6 +12,16 @@ Given(/^I'm logged in as "(.*?)"$/) do |arg1|
   page.should have_content("Successfully authenticated")
 end
 
+Given(/^I'm not logged in$/) do
+  visit root_path
+  if page.has_content?("Sign Out")
+    click_on "Sign Out"
+    page.should have_content("Signed out successfully")
+  else
+    page.should have_content("Sign in")
+  end
+end
+
 Given(/^I go to the project page$/) do
   visit project_path(@project)
 end
@@ -30,5 +40,9 @@ end
 
 Then(/^I should not see "(.*?)"$/) do |arg1|
   page.should have_no_content(arg1)
+end
+
+Given(/^I fill "(.*?)" with:$/) do |arg1, string|
+  fill_in arg1, with: string
 end
 

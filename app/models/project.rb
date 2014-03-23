@@ -4,6 +4,9 @@ class Project < ActiveRecord::Base
   accepts_nested_attributes_for :tips
   has_many :collaborators
 
+  has_one :tipping_policies_text, inverse_of: :project
+  accepts_nested_attributes_for :tipping_policies_text
+
   validates :full_name, uniqueness: true, presence: true
   validates :github_id, uniqueness: true, presence: true
 
