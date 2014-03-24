@@ -40,7 +40,7 @@
       %small
         %em
           - user = @project.tipping_policies_text.user
-          - name = user.name.presence || user.nickname if user
+          - name = user.nickname.presence || user.name if user
           - date = l(@project.tipping_policies_text.updated_at)
           - if name.present?
             = "(Last updated by #{name} on #{date})"
