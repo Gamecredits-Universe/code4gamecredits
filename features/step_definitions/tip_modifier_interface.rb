@@ -60,6 +60,24 @@ Given(/^I send a forged request to set the amount of the first undecided tip of 
   page.driver.browser.process_and_follow_redirects(:patch, decide_tip_amounts_project_path(@project), params)
 end
 
+When(/^I send a forged request to change the percentage of commit "(.*?)" on project "(.*?)" to "(.*?)"$/) do |arg1, arg2, arg3|
+  project = find_project(arg2)
+  tip = project.tips.detect { |t| t.commit == arg1 }
+  tip.should_not be_nil
+  params = {
+    project: {
+      tips_attributes: {
+        "0" => {
+          id: tip.id,
+          amount_percentage: arg3,
+        },
+      },
+    },
+  }
+
+  page.driver.browser.process_and_follow_redirects(:patch, decide_tip_amounts_project_path(project), params)
+end
+
 Then(/^the project should have (\d+) undecided tips$/) do |arg1|
   @project.tips.undecided.size.should eq(arg1.to_i)
 end

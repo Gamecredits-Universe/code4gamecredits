@@ -1,6 +1,6 @@
 Feature: A project collaborator can change the tips of commits
   Background:
-    Given a project
+    Given a project "a"
     And the project collaborators are:
       | seldon  |
       | daneel  |
@@ -103,3 +103,22 @@ Feature: A project collaborator can change the tips of commits
     And I click on "Send the selected tip amounts"
     Then there should be a tip of "25" for commit "BBB"
     And there should be a tip of "8.088338" for commit "last"
+
+  Scenario Outline: A collaborator changes the amount of a tip on another project
+    Given the project holds tips
+    And the new commits are read
+    And a project "fake"
+    And the project collaborators are:
+      | bad guy |
+    And a new commit "fake commit"
+    And the project holds tips
+    When the new commits are read
+    And I'm logged in as "<user>"
+    And I send a forged request to change the percentage of commit "BBB" on project "a" to "5"
+    Then <consequences>
+
+    Examples:
+      | user    | consequences                                        |
+      | seldon  | there should be a tip of "25" for commit "BBB"      |
+      | bad guy | the tip amount for commit "BBB" should be undecided |
+

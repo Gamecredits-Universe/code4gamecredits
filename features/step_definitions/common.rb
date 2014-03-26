@@ -22,6 +22,10 @@ Given(/^a project$/) do
   @project = Project.create!(full_name: "example/test", github_id: 123, bitcoin_address: 'mq4NtnmQoQoPfNWEPbhSvxvncgtGo6L8WY')
 end
 
+Given(/^a project "(.*?)"$/) do |arg1|
+  @project = Project.create!(full_name: "example/#{arg1}", github_id: Digest::SHA1.hexdigest(arg1), bitcoin_address: 'mq4NtnmQoQoPfNWEPbhSvxvncgtGo6L8WY')
+end
+
 Given(/^a deposit of "(.*?)"$/) do |arg1|
   Deposit.create!(project: @project, amount: arg1.to_d * PeercoinBalanceUpdater::COIN, confirmations: 1)
 end

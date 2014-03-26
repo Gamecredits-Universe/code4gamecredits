@@ -3,7 +3,7 @@ Given(/^I'm logged in as "(.*?)"$/) do |arg1|
   OmniAuth.config.mock_auth[:github] = {
     "info" => {
       "nickname" => arg1,
-      "primary_email" => "#{arg1}@example.com",
+      "primary_email" => "#{arg1.gsub(/\s+/,'')}@example.com",
       "verified_emails" => [],
     },
   }
