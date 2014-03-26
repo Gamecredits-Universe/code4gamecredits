@@ -10,6 +10,8 @@ class Project < ActiveRecord::Base
   validates :full_name, uniqueness: true, presence: true
   validates :github_id, uniqueness: true, presence: true
 
+  before_save :check_tips_to_pay_against_avaiable_amount
+
   def update_github_info repo
     self.github_id = repo.id
     self.name = repo.name
@@ -183,11 +185,11 @@ class Project < ActiveRecord::Base
   end
 
   def tips_to_pay
-    tips.to_pay
+    tips.select(&:to_pay?)
   end
 
   def amount_to_pay
-    tips_to_pay.sum(:amount)
+    tips_to_pay.sum(&:amount)
   end
 
   def has_undecided_tips?
@@ -196,5 +198,11 @@ class Project < ActiveRecord::Base
 
   def commit_url(commit)
     "https://github.com/#{full_name}/commit/#{commit}"
+  end
+
+  def check_tips_to_pay_against_avaiable_amount
+    if amount_to_pay > available_amount
+      raise "Not enough funds to pay the pending tips on #{inspect} (#{amount_to_pay} > #{available_amount}"
+    end
   end
 end
