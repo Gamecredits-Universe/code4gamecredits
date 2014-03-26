@@ -56,6 +56,20 @@ Given(/^a new commit "(.*?)" with parent "(.*?)" and "(.*?)"$/) do |arg1, arg2, 
   add_new_commit(arg1, parents: [{sha: arg2}, {sha: arg3}], commit: {message: "Merge #{arg2} and #{arg3}"})
 end
 
+Given(/^(\d+) new commits$/) do |arg1|
+  arg1.to_i.times do
+    add_new_commit(Digest::SHA1.hexdigest(SecureRandom.hex))
+  end
+end
+
+Given(/^a new commit "([^"]*?)"$/) do |arg1|
+  add_new_commit(arg1)
+end
+
+Given(/^the project holds tips$/) do
+  @project.update(hold_tips: true)
+end
+
 Given(/^the message of commit "(.*?)" is "(.*?)"$/) do |arg1, arg2|
   find_new_commit(arg1).deep_merge!(commit: {message: arg2})
 end

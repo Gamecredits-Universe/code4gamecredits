@@ -37,6 +37,7 @@ class ProjectsController < ApplicationController
     @project = Project.find params[:id]
     authorize! :decide_tip_amounts, @project
     if request.patch?
+      @project.available_amount # preload anything required to get the amount, otherwise it's loaded during the assignation and there are undesirable consequences
       @project.attributes = params.require(:project).permit(tips_attributes: [:id, :amount_percentage])
       if @project.save
         message = "The tip amounts have been defined"

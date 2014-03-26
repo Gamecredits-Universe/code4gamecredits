@@ -91,3 +91,15 @@ Feature: A project collaborator can change the tips of commits
       | seldon | 0                        |
       | yugo   | 1                        |
 
+  Scenario: A collaborator sends large amounts in tips
+    Given 20 new commits
+    And a new commit "last"
+    And the project holds tips
+    When the new commits are read
+    And I'm logged in as "seldon"
+    And I go to the project page
+    And I click on "Decide tip amounts"
+    And I choose the amount "Huge: 5%" on all commits
+    And I click on "Send the selected tip amounts"
+    Then there should be a tip of "25" for commit "BBB"
+    And there should be a tip of "8.088338" for commit "last"

@@ -1,6 +1,14 @@
 When(/^I choose the amount "(.*?)" on commit "(.*?)"$/) do |arg1, arg2|
-  within find("tr", text: arg2) do
+  within find(".decide-tip-amounts-table tbody tr", text: arg2) do
     choose arg1
+  end
+end
+
+When(/^I choose the amount "(.*?)" on all commits$/) do |arg1|
+  all(".decide-tip-amounts-table tbody tr").each do |tr|
+    within tr do
+      choose arg1
+    end
   end
 end
 

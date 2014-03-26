@@ -112,8 +112,7 @@ class Project < ActiveRecord::Base
       end
 
       # create tip
-      tip = Tip.create({
-        project: self,
+      tip = tips.create({
         user: user,
         amount: amount,
         commit: commit.sha,
@@ -136,7 +135,7 @@ class Project < ActiveRecord::Base
   end
 
   def tips_paid_amount
-    self.tips.non_refunded.sum(:amount)
+    self.tips.select(&:decided?).reject(&:refunded?).sum(&:amount)
   end
 
   def tips_paid_unclaimed_amount

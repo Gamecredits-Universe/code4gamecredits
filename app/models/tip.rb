@@ -12,10 +12,18 @@ class Tip < ActiveRecord::Base
   scope :to_pay,        -> { unpaid.decided.with_address }
 
   scope :paid,          -> { where('sendmany_id is not ?', nil) }
+  def paid?
+    !!sendmany_id
+  end
 
   scope :refunded,      -> { where('refunded_at is not ?', nil) }
-
   scope :non_refunded,  -> { where(refunded_at: nil) }
+  def refunded?
+    !!refunded_at
+  end
+  def non_refunded?
+    !refunded?
+  end
 
   scope :unclaimed,     -> { joins(:user).
                              unpaid.
@@ -23,22 +31,18 @@ class Tip < ActiveRecord::Base
 
   scope :with_address,  -> { joins(:user).where('users.bitcoin_address IS NOT NULL AND users.bitcoin_address != ?', "") }
 
-  scope :undecided,     -> { where(amount: nil) }
   scope :decided,       -> { where.not(amount: nil) }
+  scope :undecided,     -> { where(amount: nil) }
+  def decided?
+    !!amount
+  end
+  def undecided?
+    !decided?
+  end
+
 
   after_save :notify_user_if_just_decided
 
-  def paid?
-    !!sendmany_id
-  end
-
-  def undecided?
-    amount.nil?
-  end
-
-  def decided?
-    !undecided?
-  end
 
   def self.refund_unclaimed
     unclaimed.non_refunded.
