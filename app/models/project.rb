@@ -116,7 +116,7 @@ class Project < ActiveRecord::Base
         user: user,
         amount: amount,
         commit: commit.sha,
-        commit_message: commit.commit.message,
+        commit_message: ActionController::Base.helpers.truncate(commit.commit.message, length: 100),
       })
 
       tip.notify_user
