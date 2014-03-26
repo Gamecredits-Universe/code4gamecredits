@@ -3,6 +3,7 @@ class Project < ActiveRecord::Base
   has_many :tips, inverse_of: :project
   accepts_nested_attributes_for :tips
   has_many :collaborators
+  has_many :sendmanies, inverse_of: :project
 
   has_one :tipping_policies_text, inverse_of: :project
   accepts_nested_attributes_for :tipping_policies_text

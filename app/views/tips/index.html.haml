@@ -28,7 +28,7 @@
             %td= link_to tip.project.full_name, tip.project
           %td= link_to tip.commit[0..6], "https://github.com/#{tip.project.full_name}/commit/#{tip.commit}", target: :blank
           %td= btc_human tip.amount
-          %td
+          %td{class: tip.sendmany.try(:is_error?) ? "danger" : nil}
             - if tip.sendmany.nil?
               - if tip.refunded_at
                 Refunded to project's deposit
@@ -41,5 +41,8 @@
               - else
                 Waiting for withdrawal
             - else
-              = link_to tip.sendmany.txid, transaction_url(tip.sendmany.txid), target: :blank
+              - if tip.sendmany.is_error?
+                Transaction failed
+              - if tip.sendmany.txid.present?
+                = link_to tip.sendmany.txid, transaction_url(tip.sendmany.txid), target: :blank
   = paginate @tips

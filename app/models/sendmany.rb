@@ -1,6 +1,8 @@
 class Sendmany < ActiveRecord::Base
-  belongs_to :project
+  belongs_to :project, inverse_of: :sendmanies
   has_many :tips
+
+  scope :error, -> { where(is_error: true) }
 
   def total_amount
     JSON.parse(data).values.map(&:to_d).sum if data
