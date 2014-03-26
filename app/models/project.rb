@@ -115,7 +115,7 @@ class Project < ActiveRecord::Base
       end
 
       # create tip
-      tip = tips.create({
+      tip = tips.create!({
         user: user,
         amount: amount,
         commit: commit.sha,
