@@ -9,7 +9,16 @@ class Tip < ActiveRecord::Base
 
   scope :unpaid,        -> { non_refunded.not_sent }
 
-  scope :to_pay,        -> { unpaid.decided.with_address }
+  scope :to_pay,        -> { unpaid.decided.not_free.with_address }
+  def to_pay?
+    unpaid? and decided? and !free? and with_address?
+  end
+
+  scope :free,          -> { where('amount = 0') }
+  scope :not_free,      -> { where('amount > 0') }
+  def free?
+    amount == 0
+  end
 
   scope :paid,          -> { where('sendmany_id is not ?', nil) }
   def paid?
