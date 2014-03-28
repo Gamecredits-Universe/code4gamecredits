@@ -34,6 +34,7 @@
                 Refunded to project's deposit
               - elsif tip.undecided?
                 The amount of the tip has not been decided yet
+              - elsif tip.free?
               - elsif tip.user.bitcoin_address.blank?
                 User didn't specify withdrawal address
               - elsif tip.project.amount_to_pay < CONFIG["min_payout"].to_d * PeercoinBalanceUpdater::COIN
