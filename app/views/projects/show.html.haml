@@ -50,10 +50,10 @@
     %h4 Tips Paid
     = btc_human @project.tips_paid_amount
 
-    - if (failed_sendmanies = @project.sendmanies.error).any?
+    - if (failed_sendmanies = @project.sendmanies.error).any? and (amount = failed_sendmanies.map(&:tips).flatten.sum(&:amount)) > 0
       .alert.alert-danger
         %strong Some tip transactions failed.
-        A total of #{btc_human failed_sendmanies.map(&:tips).flatten.sum(&:amount)} may not have been sent.
+        A total of #{btc_human amount} may not have been sent.
 
     - if (tips_paid_unclaimed_amount = @project.tips_paid_unclaimed_amount) > 0
       (#{btc_human tips_paid_unclaimed_amount} of this is unclaimed, and will be refunded to the project after being unclaimed for 1 month.)
