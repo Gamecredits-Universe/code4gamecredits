@@ -46,3 +46,17 @@ Given(/^I fill "(.*?)" with:$/) do |arg1, string|
   fill_in arg1, with: string
 end
 
+When(/^I visit the project page$/) do
+  visit project_path(@project)
+end
+
+Then(/^I should see the project donation address$/) do
+  address = @project.bitcoin_address
+  address.should_not be_blank
+  page.should have_content(address)
+end
+
+Then(/^I should see the project balance is "(.*?)"$/) do |arg1|
+  page.should have_content("Balance #{arg1}")
+end
+
