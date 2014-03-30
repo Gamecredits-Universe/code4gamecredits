@@ -19,7 +19,7 @@ Given(/^our fee is "(.*?)"$/) do |arg1|
 end
 
 Given(/^a project$/) do
-  @project = Project.create!(full_name: "example/test", github_id: 123, bitcoin_address: 'mq4NtnmQoQoPfNWEPbhSvxvncgtGo6L8WY')
+  @project = Project.create!(full_name: "example/test", github_id: 123, bitcoin_address: 'mq4NtnmQoQoPfNWEPbhSvxvncgtGo6L8WY', address_label: "example_project_account")
 end
 
 Given(/^a project "(.*?)"$/) do |arg1|

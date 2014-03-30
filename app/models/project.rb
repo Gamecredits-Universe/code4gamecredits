@@ -5,6 +5,8 @@ class Project < ActiveRecord::Base
   has_many :collaborators
   has_many :sendmanies, inverse_of: :project
 
+  has_many :cold_storage_transfers
+
   has_one :tipping_policies_text, inverse_of: :project
   accepts_nested_attributes_for :tipping_policies_text
 
@@ -197,5 +199,15 @@ class Project < ActiveRecord::Base
 
   def commit_url(commit)
     "https://github.com/#{full_name}/commit/#{commit}"
+  end
+
+  def cold_storage_amount
+    cold_storage_transfers.to_a.select(&:confirmed?).sum(&:amount)
+  end
+
+  def send_to_cold_storage!(amount)
+    address = CONFIG["cold_storage"].try(:[], "addresses").try(:first)
+    raise "No cold storage address" if address.blank?
+    PeercoinDaemon.instance.send_many(address_label, {address => amount.to_f})
   end
 end

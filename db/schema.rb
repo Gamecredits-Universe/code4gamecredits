@@ -11,7 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140323173320) do
+ActiveRecord::Schema.define(version: 20140401174927) do
+
+  create_table "cold_storage_transfers", force: true do |t|
+    t.integer  "project_id"
+    t.integer  "amount",        limit: 8
+    t.string   "address"
+    t.string   "txid"
+    t.integer  "confirmations"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "cold_storage_transfers", ["project_id"], name: "index_cold_storage_transfers_on_project_id"
 
   create_table "collaborators", force: true do |t|
     t.integer  "project_id"
@@ -48,10 +60,11 @@ ActiveRecord::Schema.define(version: 20140323173320) do
     t.integer  "watchers_count"
     t.string   "language"
     t.string   "last_commit"
-    t.integer  "available_amount_cache", limit: 8
+    t.integer  "available_amount_cache",          limit: 8
     t.string   "github_id"
     t.string   "address_label"
-    t.boolean  "hold_tips",                        default: false
+    t.boolean  "hold_tips",                                 default: false
+    t.string   "cold_storage_withdrawal_address"
   end
 
   add_index "projects", ["full_name"], name: "index_projects_on_full_name", unique: true
