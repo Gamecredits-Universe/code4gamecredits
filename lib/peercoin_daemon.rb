@@ -32,6 +32,7 @@ class PeercoinDaemon
       id: 1,
     }
 
+    Rails.logger.info "RPC Command: #{data.inspect}"
     response = HTTParty.post(uri.to_s, body: data.to_json, basic_auth: auth)
 
     result = JSON.parse(response.body)
