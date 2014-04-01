@@ -40,22 +40,22 @@ Then(/^updating the project balance should raise an error$/) do
 end
 
 Then(/^the project balance should be "(.*?)"$/) do |arg1|
-  (@project.reload.available_amount.to_d / PeercoinBalanceUpdater::COIN).should eq(arg1.to_d)
+  (@project.reload.available_amount.to_d / COIN).should eq(arg1.to_d)
 end
 
 Then(/^the project amount in cold storage should be "(.*?)"$/) do |arg1|
-  (@project.reload.cold_storage_amount / PeercoinBalanceUpdater::COIN).should eq(arg1.to_d)
+  (@project.reload.cold_storage_amount / COIN).should eq(arg1.to_d)
 end
 
 When(/^"(.*?)" peercoins of the project funds are sent to cold storage$/) do |arg1|
-  @project.send_to_cold_storage!((arg1.to_d * PeercoinBalanceUpdater::COIN).to_i)
+  @project.send_to_cold_storage!((arg1.to_d * COIN).to_i)
 end
 
 Then(/^there should be an outgoing transaction of "(.*?)" to address "(.*?)" on the project account$/) do |arg1, arg2|
   transactions = PeercoinDaemon.instance.list_transactions(@project.address_label)
   transactions.map { |t| t["category"] }.should eq(["send"])
   transactions.map { |t| t["address"] }.should eq([arg2])
-  transactions.map { |t| -t["amount"].to_d / PeercoinBalanceUpdater::COIN }.should eq([arg1.to_d])
+  transactions.map { |t| -t["amount"].to_d / COIN }.should eq([arg1.to_d])
 end
 
 Given(/^the project has no cold storage withdrawal address$/) do

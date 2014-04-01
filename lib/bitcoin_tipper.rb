@@ -43,12 +43,12 @@ class BitcoinTipper
       Project.find_each do |project|
         tips = project.tips_to_pay
         amount = tips.sum(&:amount).to_d
-        if amount > CONFIG["min_payout"].to_d * PeercoinBalanceUpdater::COIN
+        if amount > CONFIG["min_payout"].to_d * COIN
           sendmany = Sendmany.create(project_id: project.id)
           outs = Hash.new { 0.to_d }
           tips.each do |tip|
             tip.update_attribute :sendmany_id, sendmany.id
-            outs[tip.user.bitcoin_address] += tip.amount.to_d / PeercoinBalanceUpdater::COIN
+            outs[tip.user.bitcoin_address] += tip.amount.to_d / COIN
           end
           sendmany.update_attribute :data, outs.to_json
           Rails.logger.info "  #{sendmany.inspect}"

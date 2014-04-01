@@ -1,6 +1,4 @@
 module PeercoinBalanceUpdater
-  COIN = 1000000 # ppcoin/src/util.h
-
   def self.work
     Project.all.each do |project|
       start = 0

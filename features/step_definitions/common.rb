@@ -27,7 +27,7 @@ Given(/^a project "(.*?)"$/) do |arg1|
 end
 
 Given(/^a deposit of "(.*?)"$/) do |arg1|
-  Deposit.create!(project: @project, amount: arg1.to_d * PeercoinBalanceUpdater::COIN, confirmations: 1)
+  Deposit.create!(project: @project, amount: arg1.to_d * COIN, confirmations: 1)
 end
 
 Given(/^the last known commit is "(.*?)"$/) do |arg1|
@@ -91,7 +91,7 @@ end
 Then(/^there should be a tip of "(.*?)" for commit "(.*?)"$/) do |arg1, arg2|
   amount = Tip.find_by(commit: arg2).amount
   amount.should_not be_nil
-  (amount.to_d / PeercoinBalanceUpdater::COIN).should eq(arg1.to_d)
+  (amount.to_d / COIN).should eq(arg1.to_d)
 end
 
 Then(/^the tip amount for commit "(.*?)" should be undecided$/) do |arg1|
