@@ -13,6 +13,9 @@ class Project < ActiveRecord::Base
   validates :full_name, uniqueness: true, presence: true
   validates :github_id, uniqueness: true, presence: true
 
+  scope :enabled,  -> { where(disabled: false) }
+  scope :disabled, -> { where(disabled: true) }
+
   def update_github_info repo
     self.github_id = repo.id
     self.name = repo.name
@@ -150,7 +153,7 @@ class Project < ActiveRecord::Base
   end
 
   def self.update_cache
-    find_each do |project|
+    enabled.find_each do |project|
       project.update available_amount_cache: project.available_amount
     end
   end

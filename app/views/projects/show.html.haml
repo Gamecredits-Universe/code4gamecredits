@@ -14,17 +14,27 @@
 
 .row
   .col-md-4
-    .panel.panel-default
-      .panel-heading
-        %h4.panel-title
-          Project Sponsors
-      .panel-body.text-center
-        %p To give to this project, send peercoins to this address:
-        %p
-          = @project.bitcoin_address
-        %p
-          = image_tag qrcode_project_path(@project, format: :svg), alt: @project.bitcoin_address, class: "project qrcode"
-        %p #{100-(CONFIG["our_fee"]*100).round}% of deposited funds will be used to tip for new commits. 
+    - if @project.disabled?
+      .panel.panel-danger
+        .panel-heading
+          %h4.panel-title
+            Project Disabled
+        .panel-body.text-center
+          %p
+            This project has been disabled.
+            It doesn't accept donation and it will not distribute tips.
+    - else
+      .panel.panel-default
+        .panel-heading
+          %h4.panel-title
+            Project Sponsors
+        .panel-body.text-center
+          %p To give to this project, send peercoins to this address:
+          %p
+            = @project.bitcoin_address
+          %p
+            = image_tag qrcode_project_path(@project, format: :svg), alt: @project.bitcoin_address, class: "project qrcode"
+          %p #{100-(CONFIG["our_fee"]*100).round}% of deposited funds will be used to tip for new commits. 
   .col-md-8
     - unless @project.description.blank?
       .well.well-sm= @project.description

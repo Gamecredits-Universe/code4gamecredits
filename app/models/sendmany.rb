@@ -10,6 +10,7 @@ class Sendmany < ActiveRecord::Base
 
   def send_transaction
     return if txid || is_error
+    return if project.disabled?
 
     update_attribute :is_error, true # it's a lock to prevent duplicates
 

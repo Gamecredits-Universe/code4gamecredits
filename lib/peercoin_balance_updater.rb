@@ -1,6 +1,6 @@
 module PeercoinBalanceUpdater
   def self.work
-    Project.all.each do |project|
+    Project.enabled.each do |project|
       start = 0
       count = 10
 

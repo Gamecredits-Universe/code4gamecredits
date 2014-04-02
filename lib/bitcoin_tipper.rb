@@ -7,7 +7,7 @@ class BitcoinTipper
 
   def self.work
     Rails.logger.info "Traversing projects..."
-    Project.find_each do |project|
+    Project.enabled.find_each do |project|
       if project.available_amount > 0
         Rails.logger.info " Project #{project.id} #{project.full_name}"
         project.tip_commits
@@ -15,7 +15,7 @@ class BitcoinTipper
     end
 
     Rails.logger.info "Updating projects info..."
-    Project.all.each do |project|
+    Project.enabled.each do |project|
       Rails.logger.info " Project #{project.id} #{project.full_name}"
       project.update_info
     end
@@ -40,7 +40,7 @@ class BitcoinTipper
   def self.create_sendmany
     Rails.logger.info "Creating sendmany"
     ActiveRecord::Base.transaction do
-      Project.find_each do |project|
+      Project.enabled.find_each do |project|
         tips = project.tips_to_pay
         amount = tips.sum(&:amount).to_d
         if amount > CONFIG["min_payout"].to_d * COIN

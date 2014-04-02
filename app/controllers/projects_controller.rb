@@ -2,7 +2,7 @@ require 'net/http'
 
 class ProjectsController < ApplicationController
   def index
-    @projects = Project.order(available_amount_cache: :desc, watchers_count: :desc, full_name: :asc).page(params[:page]).per(30)
+    @projects = Project.enabled.order(available_amount_cache: :desc, watchers_count: :desc, full_name: :asc).page(params[:page]).per(30)
   end
 
   def show
@@ -15,12 +15,12 @@ class ProjectsController < ApplicationController
   end
 
   def edit
-    @project = Project.find params[:id]
+    @project = Project.enabled.find params[:id]
     authorize! :update, @project
   end
 
   def update
-    @project = Project.find params[:id]
+    @project = Project.enabled.find params[:id]
     authorize! :update, @project
     @project.attributes = project_params
     if @project.tipping_policies_text.try(:text_changed?)
@@ -34,7 +34,7 @@ class ProjectsController < ApplicationController
   end
 
   def decide_tip_amounts
-    @project = Project.find params[:id]
+    @project = Project.enabled.find params[:id]
     authorize! :decide_tip_amounts, @project
     if request.patch?
       @project.available_amount # preload anything required to get the amount, otherwise it's loaded during the assignation and there are undesirable consequences
@@ -51,7 +51,7 @@ class ProjectsController < ApplicationController
   end
 
   def qrcode
-    @project = Project.find params[:id]
+    @project = Project.enabled.find params[:id]
     respond_to do |format|
       format.svg  { render :qrcode => @project.bitcoin_address, level: :l, unit: 4 }
     end
