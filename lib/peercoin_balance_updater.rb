@@ -11,6 +11,8 @@ module PeercoinBalanceUpdater
         project.update!(cold_storage_withdrawal_address: new_address)
       end
 
+      project.update(account_balance: (PeercoinDaemon.instance.get_balance(project.address_label) * COIN).to_i)
+
       loop do
         transactions = PeercoinDaemon.instance.list_transactions(project.address_label, count, start)
         break if transactions.empty?

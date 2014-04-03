@@ -57,4 +57,8 @@ class PeercoinDaemon
     end
     rpc('sendmany', account, recipients, minconf)
   end
+
+  def get_balance(account = "")
+    rpc('getbalance', account).to_f
+  end
 end
