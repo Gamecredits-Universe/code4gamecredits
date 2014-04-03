@@ -1,0 +1,36 @@
+%h1 Audit
+- projects = Project.order(disabled: :asc, account_balance: :desc).includes(:cold_storage_transfers)
+%p
+  %table.table
+    %thead
+      %tr
+        %th Project
+        %th Address
+        %th.money Website balance
+        %th.money Amount in cold storage
+        %th.money Peercoin balance
+    %tbody
+      - projects.each do |project|
+        %tr
+          %td
+            %strong= link_to project.full_name, project
+          %td= link_to project.bitcoin_address, address_url(project.bitcoin_address)
+          %td.money= btc_human project.available_amount_cache
+          %td.money= btc_human project.cold_storage_amount
+          %td.money= btc_human project.account_balance
+      %tr
+        %th{colspan: 2} Total
+        %td.money= btc_human projects.map(&:available_amount_cache).compact.sum
+        %td.money= btc_human projects.map(&:cold_storage_amount).compact.sum
+        %td.money= btc_human projects.map(&:account_balance).compact.sum
+
+%h2 Cold storage
+%p
+  %table.table
+    %thead
+      %tr
+        %th Address
+    %tbody
+      - (CONFIG["cold_storage"].try(:[], "addresses") || []).each do |address|
+        %tr
+          %td= link_to address, address_url(address)

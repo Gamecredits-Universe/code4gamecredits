@@ -17,6 +17,10 @@ module ApplicationHelper
     "http://bkchain.org/ppc/tx/#{txid}"
   end
 
+  def address_url(address)
+    "http://bkchain.org/ppc/address/#{address}"
+  end
+
   def commit_tag(sha1)
     content_tag(:span, truncate(sha1, length: 10, omission: ""), class: "commit-sha")
   end

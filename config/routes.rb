@@ -2,6 +2,8 @@ T4c::Application.routes.draw do
 
   root 'home#index'
 
+  get 'audit' => 'home#audit'
+
   resources :users, :only => [:show, :update, :index] do
     collection do
       get :login
