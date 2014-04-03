@@ -6,10 +6,14 @@
       %tr
         %th Project
         %th Address
-        %th.money Website balance
-        %th.money Amount in cold storage
-        %th.money Peercoin balance
-        %th.money Difference
+        %th.money
+          %abbr{title: "The balance displayed on the website. The amount of the tips is based on this value."} Available balance
+        %th.money
+          %abbr{title: "Amount currently in cold storage (see below)."} Amount in cold storage
+        %th.money
+          %abbr{title: "The balance of the project account as reported by the Peercoin daemon."} Account balance
+        %th.money
+          %abbr{title: "Account balance + cold storage - available balance. If this is negative there is a problem."} Difference
     %tbody
       - projects.each do |project|
         %tr
