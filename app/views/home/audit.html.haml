@@ -7,6 +7,8 @@
         %th Project
         %th Address
         %th.money
+          %abbr{title: "Total amount that was donated to the project."} Donated
+        %th.money
           %abbr{title: "The balance displayed on the website. The amount of the tips is based on this value."} Available balance
         %th.money
           %abbr{title: "Amount currently in cold storage (see below)."} Amount in cold storage
@@ -20,12 +22,14 @@
           %td
             %strong= link_to project.full_name, project
           %td= link_to project.bitcoin_address, address_url(project.bitcoin_address)
+          %td.money= btc_human(donated   = project.deposits.map(&:amount).sum)
           %td.money= btc_human(available = project.available_amount_cache)
           %td.money= btc_human(cold      = project.cold_storage_amount)
           %td.money= btc_human(account   = project.account_balance)
           %td.money= btc_human(account + cold - available) if account and cold and available
       %tr
         %th{colspan: 2} Total
+        %td.money= btc_human(donated   = projects.map(&:deposits).flatten.map(&:amount).sum)
         %td.money= btc_human(available = projects.map(&:available_amount_cache).compact.sum)
         %td.money= btc_human(cold      = projects.map(&:cold_storage_amount).compact.sum)
         %td.money= btc_human(account   = projects.map(&:account_balance).compact.sum)
