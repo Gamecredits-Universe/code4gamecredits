@@ -209,8 +209,8 @@ class Project < ActiveRecord::Base
     cold_storage_transfers.to_a.select(&:confirmed?).sum(&:amount)
   end
 
-  def send_to_cold_storage!(amount)
-    address = CONFIG["cold_storage"].try(:[], "addresses").try(:first)
+  def send_to_cold_storage!(amount, address_index = 0)
+    address = CONFIG["cold_storage"].try(:[], "addresses").try(:[], address_index)
     raise "No cold storage address" if address.blank?
     PeercoinDaemon.instance.send_many(address_label, {address => amount.to_f})
   end
