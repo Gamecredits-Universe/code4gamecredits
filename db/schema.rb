@@ -104,7 +104,7 @@ ActiveRecord::Schema.define(version: 20140403062826) do
     t.string   "commit"
     t.integer  "project_id"
     t.datetime "refunded_at"
-    t.text     "commit_message"
+    t.string   "commit_message"
   end
 
   add_index "tips", ["project_id"], name: "index_tips_on_project_id"
