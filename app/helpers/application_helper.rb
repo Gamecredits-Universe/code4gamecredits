@@ -3,11 +3,19 @@ module ApplicationHelper
     return nil unless amount
     nobr = options.has_key?(:nobr) ? options[:nobr] : true
     currency = options[:currency] || false
-    precision = options[:precision] || 2
+    precision = options[:precision] || @default_precision || 2
     btc = "%.#{precision}f PPC" % to_btc(amount)
     btc = "<span class='convert-from-btc' data-to='#{currency.upcase}'>#{btc}</span>" if currency
     btc = "<nobr>#{btc}</nobr>" if nobr
     btc.html_safe
+  end
+
+  def with_default_precision(precision)
+    @old_default_precisions ||= []
+    @old_default_precisions << @default_precision
+    @default_precision = precision
+    yield
+    @default_precision = @old_default_precisions.pop
   end
 
   def to_btc satoshies
