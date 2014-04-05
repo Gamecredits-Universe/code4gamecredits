@@ -13,7 +13,7 @@
             %th.money
               %abbr{title: "The balance displayed on the website. The amount of the tips is based on this value."} Available balance
             %th.money
-              %abbr{title: "Tips attributed but not sent because they have not been processed yet or the author did not set an address."} Tips not sent
+              %abbr{title: "Tips attributed but not sent because they have not been processed yet or because the author did not set an address."} Tips not sent
             %th.money
               %abbr{title: "Amount currently in cold storage (see below)."} Amount in cold storage
             %th.money
@@ -24,7 +24,7 @@
               %abbr{title: "Account balance - expected account balance. If this is negative there is a problem."} Difference
         %tbody
           - project_slice.each do |project|
-            %tr
+            %tr{class: project.disabled ? "text-muted" : nil}
               %td
                 %strong= link_to project.full_name, project
               %td
