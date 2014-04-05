@@ -18,8 +18,17 @@ module ApplicationHelper
     "http://bkchain.org/ppc/tx/#{txid}"
   end
 
-  def address_url(address)
-    "http://bkchain.org/ppc/address/#{address}"
+  def address_explorers
+    [:bkchain, :blockr, :cryptocoin]
+  end
+
+  def address_url(address, explorer = address_explorers.first)
+    case explorer
+    when :blockr then "http://ppc.blockr.io/address/info/#{address}"
+    when :bkchain then "http://bkchain.org/ppc/address/#{address}"
+    when :cryptocoin then "http://ppc.cryptocoinexplorer.com/address/#{address}"
+    else raise "Unknown provider: #{provider.inspect}"
+    end
   end
 
   def commit_tag(sha1)

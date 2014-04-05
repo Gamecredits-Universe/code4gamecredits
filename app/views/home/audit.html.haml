@@ -26,7 +26,9 @@
           %tr
             %td
               %strong= link_to project.full_name, project
-            %td= link_to project.bitcoin_address, address_url(project.bitcoin_address)
+            %td
+              - address_explorers.each_with_index do |explorer, i|
+                = link_to "[#{i + 1}]", address_url(project.bitcoin_address, explorer)
             %td.money= btc_human(donated   = project.deposits.map(&:amount).sum)
             %td.money= btc_human(available = project.available_amount_cache)
             %td.money= btc_human(not_sent  = project.tips.select(&:not_sent?).map(&:amount).compact.sum)
@@ -53,4 +55,6 @@
     %tbody
       - (CONFIG["cold_storage"].try(:[], "addresses") || []).each do |address|
         %tr
-          %td= link_to address, address_url(address)
+          %td
+            - address_explorers.each_with_index do |explorer, i|
+              = link_to "[#{i + 1}]", address_url(address, explorer)
