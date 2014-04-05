@@ -32,9 +32,9 @@
                   = link_to "[#{i + 1}]", address_url(project.bitcoin_address, explorer)
               %td.money= btc_human(donated   = project.deposits.map(&:amount).sum)
               %td.money= btc_human(available = project.available_amount_cache)
-              %td.money= btc_human(not_sent  = project.tips.select(&:not_sent?).map(&:amount).compact.sum)
+              %td.money= btc_human(unpaid    = project.tips.select(&:unpaid?).map(&:amount).compact.sum)
               %td.money= btc_human(cold      = project.cold_storage_amount)
-              %td.money= btc_human(expected  = available + not_sent - cold) if available and not_sent and cold
+              %td.money= btc_human(expected  = available + unpaid - cold) if available and unpaid and cold
               %td.money= btc_human(account   = project.account_balance)
               %td.money= btc_human(account - expected) if account and expected
       %tbody
@@ -42,9 +42,9 @@
           %th{colspan: 2} Total
           %td.money= btc_human(donated   = projects.map(&:deposits).flatten.map(&:amount).sum)
           %td.money= btc_human(available = projects.map(&:available_amount_cache).compact.sum)
-          %td.money= btc_human(not_sent  = projects.map(&:tips).flatten.select(&:not_sent?).map(&:amount).compact.sum)
+          %td.money= btc_human(unpaid    = projects.map(&:tips).flatten.select(&:unpaid?).map(&:amount).compact.sum)
           %td.money= btc_human(cold      = projects.map(&:cold_storage_amount).compact.sum)
-          %td.money= btc_human(expected  = available + not_sent - cold) if available and not_sent and cold
+          %td.money= btc_human(expected  = available + unpaid - cold) if available and unpaid and cold
           %td.money= btc_human(account   = projects.map(&:account_balance).compact.sum)
           %td.money= btc_human(account - expected) if account and expected
 
