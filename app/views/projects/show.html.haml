@@ -23,6 +23,9 @@
           %p
             This project has been disabled.
             It doesn't accept donation and it will not distribute tips.
+          - if (reason = @project.disabled_reason).present?
+            %p Reason: #{reason}
+
     - else
       .panel.panel-default
         .panel-heading
