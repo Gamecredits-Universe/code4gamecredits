@@ -48,6 +48,9 @@
           %td.money= btc_human(account   = projects.map(&:account_balance).compact.sum)
           %td.money= btc_human(account - expected) if account and expected
 
+  %p
+    Note that some cells are updated in real time and others are cached (#{distance_of_time_in_words eval CONFIG['tipper_delay']})
+
   %h2 Cold storage
   %p
     %table.table
