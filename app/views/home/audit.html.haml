@@ -11,17 +11,19 @@
             %th.money
               %abbr{title: "Total amount that was donated to the project."} Donated
             %th.money
-              %abbr{title: "The balance displayed on the website. The amount of the tips is based on this value."} Available balance
+              %abbr{title: "#{CONFIG["our_fee"]*100}% Peer4commit maintenance fee, used to pay maintenance, hosting and transaction fees."} Fee
+            %th.money
+              %abbr{title: "The balance displayed on the website. The tip amounts are based on this value. This balance includes tips refunded to the project."} Available balance
             %th.money
               %abbr{title: "Tips attributed but not sent because they have not been processed yet or because the author did not set an address."} Tips not sent
             %th.money
               %abbr{title: "Amount currently in cold storage (see below)."} Amount in cold storage
             %th.money
-              %abbr{title: "Available balance + tips not sent - amount in cold storage."} Expected account balance
+              %abbr{title: "Available balance + tips not sent - amount in cold storage + fee."} Expected account balance
             %th.money
               %abbr{title: "The balance of the project account as reported by the Peercoin daemon."} Account balance
             %th.money
-              %abbr{title: "Account balance - expected account balance. If this is negative there is a problem."} Difference
+              %abbr{title: "It is either transaction fees or a real issue."} Difference
         %tbody
           - project_slice.each do |project|
             %tr{class: project.disabled ? "text-muted" : nil}
@@ -31,20 +33,22 @@
                 - address_explorers.each_with_index do |explorer, i|
                   = link_to "[#{i + 1}]", address_url(project.bitcoin_address, explorer)
               %td.money= btc_human(donated   = project.deposits.map(&:amount).sum)
+              %td.money= btc_human(fee       = donated - project.deposits.map(&:available_amount).sum)
               %td.money= btc_human(available = project.available_amount_cache)
               %td.money= btc_human(unpaid    = project.tips.select(&:unpaid?).map(&:amount).compact.sum)
               %td.money= btc_human(cold      = project.cold_storage_amount)
-              %td.money= btc_human(expected  = available + unpaid - cold) if available and unpaid and cold
+              %td.money= btc_human(expected  = available + unpaid - cold + fee) if available and unpaid and cold and fee
               %td.money= btc_human(account   = project.account_balance)
               %td.money= btc_human(account - expected) if account and expected
       %tbody
         %tr
           %th{colspan: 2} Total
           %td.money= btc_human(donated   = projects.map(&:deposits).flatten.map(&:amount).sum)
+          %td.money= btc_human(fee       = donated - projects.map(&:deposits).flatten.map(&:available_amount).sum)
           %td.money= btc_human(available = projects.map(&:available_amount_cache).compact.sum)
           %td.money= btc_human(unpaid    = projects.map(&:tips).flatten.select(&:unpaid?).map(&:amount).compact.sum)
           %td.money= btc_human(cold      = projects.map(&:cold_storage_amount).compact.sum)
-          %td.money= btc_human(expected  = available + unpaid - cold) if available and unpaid and cold
+          %td.money= btc_human(expected  = available + unpaid - cold + fee) if available and unpaid and cold and fee
           %td.money= btc_human(account   = projects.map(&:account_balance).compact.sum)
           %td.money= btc_human(account - expected) if account and expected
 
