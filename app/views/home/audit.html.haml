@@ -1,6 +1,9 @@
 - cache_time = 1.minute
 - cache("audit-#{Time.now.to_i / cache_time}") do
   %h1 Audit
+  %p
+    Some cells may take up to #{distance_of_time_in_words eval CONFIG['tipper_delay']} to be updated.
+
   - projects = Project.order(disabled: :asc, account_balance: :desc).includes(:cold_storage_transfers, :sendmanies, :tips, :deposits)
   - with_btc_human_defaults(precision: 0, display_currency: false) do
     %p
@@ -57,9 +60,6 @@
             %td.money= btc_human(expected  = available + unpaid - cold + fee - txfee) if available and unpaid and cold and fee and txfee
             %td.money= btc_human(account   = projects.map(&:account_balance).compact.sum)
             %td.money= btc_human(account - expected, precision: 2) if account and expected
-
-    %p
-      Some cells are updated at different intervals.
 
     %h2 Cold storage
     %p
