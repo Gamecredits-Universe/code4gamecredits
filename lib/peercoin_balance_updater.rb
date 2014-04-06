@@ -37,7 +37,9 @@ module PeercoinBalanceUpdater
           end
 
           if cold_storage_transfer = ColdStorageTransfer.find_by_txid(txid)
-            cold_storage_transfer.update(confirmations: confirmations, fee: -fee * COIN)
+            cold_storage_transfer.confirmations = confirmations
+            cold_storage_transfer.fee = -fee * COIN if fee
+            cold_storage_transfer.save!
             next
           end
 
