@@ -24,7 +24,10 @@ module PeercoinBalanceUpdater
           confirmations = transaction["confirmations"]
           category = transaction["category"]
 
-          next if Sendmany.where(txid: txid).any?
+          if sendmany = Sendmany.where(txid: txid).first
+            sendmany.update(fee: -transaction["fee"] * COIN)
+            next
+          end
 
           if deposit = Deposit.find_by_txid(txid)
             deposit.update_attribute(:confirmations, confirmations)

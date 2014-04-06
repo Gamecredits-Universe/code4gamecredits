@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140405084351) do
+ActiveRecord::Schema.define(version: 20140406064344) do
 
   create_table "cold_storage_transfers", force: true do |t|
     t.integer  "project_id"
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 20140405084351) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "project_id"
+    t.integer  "fee"
   end
 
   add_index "sendmanies", ["project_id"], name: "index_sendmanies_on_project_id"
