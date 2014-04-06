@@ -38,7 +38,7 @@
               %td.money= btc_human(fee       = donated - project.deposits.map(&:available_amount).sum)
               %td.money= btc_human(available = project.available_amount_cache)
               %td.money= btc_human(unpaid    = project.tips.select(&:unpaid?).map(&:amount).compact.sum)
-              %td.money= btc_human(txfee     = project.sendmanies.map(&:fee).compact.sum, precision: 2)
+              %td.money= btc_human(txfee     = project.sendmanies.map(&:fee).compact.sum + project.cold_storage_transfers.map(&:fee).sum, precision: 2)
               %td.money= btc_human(cold      = project.cold_storage_amount)
               %td.money= btc_human(expected  = available + unpaid - cold + fee - txfee) if available and unpaid and cold and fee and txfee
               %td.money= btc_human(account   = project.account_balance)
@@ -50,7 +50,7 @@
           %td.money= btc_human(fee       = donated - projects.map(&:deposits).flatten.map(&:available_amount).sum)
           %td.money= btc_human(available = projects.map(&:available_amount_cache).compact.sum)
           %td.money= btc_human(unpaid    = projects.map(&:tips).flatten.select(&:unpaid?).map(&:amount).compact.sum)
-          %td.money= btc_human(txfee     = projects.map(&:sendmanies).flatten.map(&:fee).compact.sum, precision: 2)
+          %td.money= btc_human(txfee     = projects.map(&:sendmanies).flatten.map(&:fee).compact.sum + projects.map(&:cold_storage_transfers).flatten.map(&:fee).compact.sum, precision: 2)
           %td.money= btc_human(cold      = projects.map(&:cold_storage_amount).compact.sum)
           %td.money= btc_human(expected  = available + unpaid - cold + fee - txfee) if available and unpaid and cold and fee and txfee
           %td.money= btc_human(account   = projects.map(&:account_balance).compact.sum)

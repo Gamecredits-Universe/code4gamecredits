@@ -23,10 +23,11 @@ module PeercoinBalanceUpdater
           txid = transaction["txid"]
           confirmations = transaction["confirmations"]
           category = transaction["category"]
+          fee = transaction["fee"]
 
           if category == "send" and sendmany = Sendmany.where(txid: txid).first
-            raise "No fee on sendmany #{sendmany.inspect}" unless transaction["fee"]
-            sendmany.update(fee: -transaction["fee"] * COIN)
+            raise "No fee on sendmany #{sendmany.inspect}" unless fee
+            sendmany.update(fee: -fee * COIN)
             next
           end
 
@@ -36,7 +37,7 @@ module PeercoinBalanceUpdater
           end
 
           if cold_storage_transfer = ColdStorageTransfer.find_by_txid(txid)
-            cold_storage_transfer.update_attribute(:confirmations, confirmations)
+            cold_storage_transfer.update(confirmations: confirmations, fee: fee)
             next
           end
 
@@ -74,6 +75,7 @@ module PeercoinBalanceUpdater
               txid: txid,
               confirmations: confirmations,
               amount: -amount,
+              fee: fee,
             )
             next
           end
