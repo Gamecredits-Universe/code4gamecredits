@@ -55,6 +55,10 @@ class PeercoinDaemonMock
   def get_addresses_by_account(account)
     @addresses_by_account[account] || []
   end
+
+  def get_balance(account)
+    0
+  end
 end
 
 Before do

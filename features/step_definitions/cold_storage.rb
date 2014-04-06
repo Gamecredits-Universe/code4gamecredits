@@ -12,7 +12,7 @@ Given(/^the project cold storage withdrawal address is "(.*?)"$/) do |arg1|
 end
 
 When(/^there's a new incoming transaction of "([^"]*?)" on the project account$/) do |arg1|
-  PeercoinDaemon.instance.add_transaction(account: @project.address_label, amount: arg1.to_d)
+  PeercoinDaemon.instance.add_transaction(account: @project.address_label, amount: arg1.to_d, address: @project.bitcoin_address)
 end
 
 When(/^there's a new incoming transaction of "(.*?)" to address "(.*?)" on the project account$/) do |arg1, arg2|
