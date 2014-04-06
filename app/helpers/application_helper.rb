@@ -45,4 +45,16 @@ module ApplicationHelper
   def commit_tag(sha1)
     content_tag(:span, truncate(sha1, length: 10, omission: ""), class: "commit-sha")
   end
+
+  def render_flash_message
+    html = []
+    flash.each do |_type, _message|
+      alert_type = case _type
+        when :notice then :success
+        when :alert  then :danger
+      end
+      html << content_tag(:div, class: "text-center alert alert-#{alert_type}"){ _message }
+    end
+    html.join("\n").html_safe
+  end
 end
