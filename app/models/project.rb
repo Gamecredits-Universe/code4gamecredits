@@ -10,7 +10,8 @@ class Project < ActiveRecord::Base
   has_one :tipping_policies_text, inverse_of: :project
   accepts_nested_attributes_for :tipping_policies_text
 
-  validates :full_name, :github_id, uniqueness: true, presence: true
+  validates :full_name, uniqueness: true, presence: true
+  validates :github_id, uniqueness: true, presence: true
 
   scope :enabled,  -> { where(disabled: false) }
   scope :disabled, -> { where(disabled: true) }
