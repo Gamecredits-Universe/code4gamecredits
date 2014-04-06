@@ -48,12 +48,12 @@ module ApplicationHelper
 
   def render_flash_message
     html = []
-    flash.each do |_type, _message|
-      alert_type = case _type
+    flash.each do |type, message|
+      alert_type = case type
         when :notice then :success
         when :alert  then :danger
       end
-      html << content_tag(:div, class: "text-center alert alert-#{alert_type}"){ _message }
+      html << content_tag(:div, message, class: "flash-message text-center alert alert-#{alert_type}")
     end
     html.join("\n").html_safe
   end
