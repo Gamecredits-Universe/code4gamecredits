@@ -1,21 +1,24 @@
 module ApplicationHelper
   def btc_human amount, options = {}
     return nil unless amount
+    options = (@default_btc_human_options || {}).merge(options)
     nobr = options.has_key?(:nobr) ? options[:nobr] : true
     currency = options[:currency] || false
-    precision = options[:precision] || @default_precision || 2
-    btc = "%.#{precision}f PPC" % to_btc(amount)
+    precision = options[:precision] || 2
+    display_currency = options.fetch(:display_currency, true)
+    btc = "%.#{precision}f" % to_btc(amount)
+    btc += " PPC" if display_currency
     btc = "<span class='convert-from-btc' data-to='#{currency.upcase}'>#{btc}</span>" if currency
     btc = "<nobr>#{btc}</nobr>" if nobr
     btc.html_safe
   end
 
-  def with_default_precision(precision)
-    @old_default_precisions ||= []
-    @old_default_precisions << @default_precision
-    @default_precision = precision
+  def with_btc_human_defaults(defaults)
+    @old_btc_human_defaults ||= []
+    @old_btc_human_defaults << @default_btc_human_options
+    @default_btc_human_options = defaults.dup
     yield
-    @default_precision = @old_default_precisions.pop
+    @default_btc_human_options = @old_btc_human_defaults.pop
   end
 
   def to_btc satoshies

@@ -1,6 +1,6 @@
 %h1 Audit
 - projects = Project.order(disabled: :asc, account_balance: :desc).includes(:cold_storage_transfers)
-- with_default_precision(0) do
+- with_btc_human_defaults(precision: 0, display_currency: false) do
   %p
     %table.table
       - projects.each_slice(15) do |project_slice|
