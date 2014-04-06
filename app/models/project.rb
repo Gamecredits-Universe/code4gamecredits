@@ -214,4 +214,11 @@ class Project < ActiveRecord::Base
     raise "No cold storage address" if address.blank?
     PeercoinDaemon.instance.send_many(address_label, {address => amount.to_f})
   end
+
+  def paid_fee
+    [
+      sendmanies.map(&:fee),
+      cold_storage_transfers.map(&:fee),
+    ].flatten.compact.sum
+  end
 end
