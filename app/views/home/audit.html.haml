@@ -65,9 +65,11 @@
       %thead
         %tr
           %th Address
+          %th Explorers
       %tbody
         - (CONFIG["cold_storage"].try(:[], "addresses") || []).each do |address|
           %tr
+            %td= address
             %td
               - address_explorers.each_with_index do |explorer, i|
                 = link_to "[#{i + 1}]", address_url(address, explorer)
