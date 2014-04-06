@@ -24,7 +24,7 @@ module PeercoinBalanceUpdater
           confirmations = transaction["confirmations"]
           category = transaction["category"]
 
-          if sendmany = Sendmany.where(txid: txid).first
+          if category == "send" and sendmany = Sendmany.where(txid: txid).first
             raise "No fee on sendmany #{sendmany.inspect}" unless transaction["fee"]
             sendmany.update(fee: -transaction["fee"] * COIN)
             next
