@@ -6,7 +6,7 @@ daemon:
   username: rpcuser
   password: rpcpassword
   host: localhost
-  port: 9904
+  port: 9914
   path: /path/to/primecoin/src/primecoind
 
 devise:
