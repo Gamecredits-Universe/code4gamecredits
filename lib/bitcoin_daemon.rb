@@ -19,7 +19,7 @@ class BitcoinDaemon
 
   def rpc(command, *params)
     %w( username password port host ).each do |field|
-      raise "No #{field} provided in peercoin config" if config[field].blank?
+      raise "No #{field} provided in daemon config" if config[field].blank?
     end
 
     uri = URI::HTTP.build(host: config['host'], port: config['port'].to_i)
