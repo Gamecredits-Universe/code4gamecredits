@@ -26,18 +26,16 @@ module ApplicationHelper
   end
 
   def transaction_url(txid)
-    "http://bkchain.org/ppc/tx/#{txid}"
+    "https://coinplorer.com/XPM/Transactions/#{txid}"
   end
 
   def address_explorers
-    [:bkchain, :blockr, :cryptocoin]
+    [:coinplorer]
   end
 
   def address_url(address, explorer = address_explorers.first)
     case explorer
-    when :blockr then "http://ppc.blockr.io/address/info/#{address}"
-    when :bkchain then "http://bkchain.org/ppc/address/#{address}"
-    when :cryptocoin then "http://ppc.cryptocoinexplorer.com/address/#{address}"
+    when :coinplorer then "https://coinplorer.com/XPM/Addresses/#{address}"
     else raise "Unknown provider: #{provider.inspect}"
     end
   end
