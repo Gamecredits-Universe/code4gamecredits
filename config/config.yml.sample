@@ -38,7 +38,7 @@ min_payout: 1.0 # in PPC
 our_fee: 0.05
 tipper_delay: "1.hour"
 
-address_versions: # 55/117 for peercoin, 111/196 for testnet, see base58.h
+address_versions: # 23/83 for primecoin, 111/196 for testnet, see base58.h
   - 111
   - 196
 
