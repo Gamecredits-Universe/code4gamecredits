@@ -16,7 +16,7 @@ class Sendmany < ActiveRecord::Base
 
     raise "Not enough funds on Sendmany##{id}" if total_amount > project.available_amount
 
-    txid = PeercoinDaemon.instance.send_many(project.address_label, JSON.parse(data))
+    txid = BitcoinDaemon.instance.send_many(project.address_label, JSON.parse(data))
 
     update_attribute :is_error, false
     update_attribute :txid, txid

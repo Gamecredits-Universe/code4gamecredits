@@ -1,4 +1,4 @@
-class PeercoinDaemonMock
+class BitcoinDaemonMock
   def initialize
     @transactions = []
     @addresses_by_account = Hash.new
@@ -62,7 +62,7 @@ class PeercoinDaemonMock
 end
 
 Before do
-  PeercoinDaemon.instance_eval do
-    @peercoin_daemon = PeercoinDaemonMock.new
+  BitcoinDaemon.instance_eval do
+    @bitcoin_daemon = BitcoinDaemonMock.new
   end
 end

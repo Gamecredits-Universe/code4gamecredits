@@ -212,7 +212,7 @@ class Project < ActiveRecord::Base
   def send_to_cold_storage!(amount, address_index = 0)
     address = CONFIG["cold_storage"].try(:[], "addresses").try(:[], address_index)
     raise "No cold storage address" if address.blank?
-    PeercoinDaemon.instance.send_many(address_label, {address => amount.to_f})
+    BitcoinDaemon.instance.send_many(address_label, {address => amount.to_f})
   end
 
   def paid_fee

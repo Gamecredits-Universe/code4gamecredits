@@ -6,17 +6,17 @@ module BalanceUpdater
 
       raise "Project without address label: #{project.inspect}" if project.address_label.blank?
 
-      project.update(account_balance: (PeercoinDaemon.instance.get_balance(project.address_label) * COIN).to_i)
+      project.update(account_balance: (BitcoinDaemon.instance.get_balance(project.address_label) * COIN).to_i)
 
       next if project.disabled?
 
       if project.cold_storage_withdrawal_address.blank?
-        new_address = PeercoinDaemon.instance.get_new_address(project.address_label)
+        new_address = BitcoinDaemon.instance.get_new_address(project.address_label)
         project.update!(cold_storage_withdrawal_address: new_address)
       end
 
       loop do
-        transactions = PeercoinDaemon.instance.list_transactions(project.address_label, count, start)
+        transactions = BitcoinDaemon.instance.list_transactions(project.address_label, count, start)
         break if transactions.empty?
 
         transactions.each do |transaction|
