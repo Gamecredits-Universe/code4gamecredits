@@ -47,7 +47,7 @@ Then(/^the project amount in cold storage should be "(.*?)"$/) do |arg1|
   (@project.reload.cold_storage_amount / COIN).should eq(arg1.to_d)
 end
 
-When(/^"(.*?)" peercoins of the project funds are sent to cold storage$/) do |arg1|
+When(/^"(.*?)" coins of the project funds are sent to cold storage$/) do |arg1|
   @project.send_to_cold_storage!((arg1.to_d * COIN).to_i)
 end
 

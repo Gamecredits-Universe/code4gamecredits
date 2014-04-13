@@ -41,7 +41,7 @@ Feature: Some funds are transfered to cold storage
     And the project amount in cold storage should be "0"
 
   Scenario: Sending funds to cold storage
-    When "50" peercoins of the project funds are sent to cold storage
+    When "50" coins of the project funds are sent to cold storage
     Then there should be an outgoing transaction of "50" to address "mpjDVmvCgsi2WW9qZJDQN6WgpDTP5iGbpD" on the project account
 
   Scenario: Cold storage withdrawal address is created at balance update time if it doesn't exist
