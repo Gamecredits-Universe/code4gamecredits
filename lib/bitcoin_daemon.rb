@@ -1,6 +1,6 @@
 class BitcoinDaemon
   def self.instance
-    @bitcoin_daemon ||= BitcoinDaemon.new(CONFIG['peercoin'])
+    @bitcoin_daemon ||= BitcoinDaemon.new(CONFIG['daemon'])
   end
 
   class RPCError < StandardError

@@ -2,12 +2,12 @@ github:
   key: "111111111111"
   secret: "111111111111"  
 
-peercoin:
+daemon:
   username: rpcuser
   password: rpcpassword
   host: localhost
   port: 9904
-  daemon: /path/to/ppcoin/src/ppcoind
+  path: /path/to/ppcoin/src/ppcoind
 
 devise:
   secret: "111111111111"

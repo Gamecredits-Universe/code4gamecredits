@@ -21,7 +21,7 @@
 
 require File.expand_path('../../config/environment', __FILE__)
 every :reboot do
-  if daemon = CONFIG['peercoin']['daemon']
+  if daemon = CONFIG['daemon']['path']
     command daemon 
   end
 end
