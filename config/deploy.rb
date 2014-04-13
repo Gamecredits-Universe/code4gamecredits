@@ -1,5 +1,5 @@
 set :application, 't4c'
-set :repo_url, 'git@github.com:sigmike/peer4commit.git'
+set :repo_url, 'git@github.com:sigmike/prime4commit.git'
 
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 

@@ -10,6 +10,6 @@ class UserMailer < ActionMailer::Base
 
   def security_issue(user)
     @user = user
-    mail to: user.email, subject: "Security issue on peer4commit.com"
+    mail to: user.email, subject: "Security issue on prime4commit.com"
   end
 end
