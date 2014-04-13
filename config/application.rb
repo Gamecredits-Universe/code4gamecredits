@@ -8,7 +8,7 @@ Bundler.require(:default, Rails.env)
 
 CONFIG ||= YAML::load(File.open("config/config.yml"))
 
-COIN = 1000000 # ppcoin/src/util.h
+COIN = 100000000 # primecoin/src/util.h
 
 module T4c
   class Application < Rails::Application
