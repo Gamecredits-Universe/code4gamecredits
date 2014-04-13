@@ -18,7 +18,7 @@ class UsersController < ApplicationController
     if @user.update_attributes(users_params)
       redirect_to @user, notice: 'Your information saved!'
     else
-      render :show, alert: 'Error updating peercoin address'
+      render :show, alert: 'Error updating primecoin address'
     end
   end
 
@@ -28,7 +28,7 @@ class UsersController < ApplicationController
       sign_in_and_redirect @user, :event => :authentication
       if params[:unsubscribe]
         @user.update unsubscribed: true
-        flash[:alert] = 'You unsubscribed! Sorry for bothering you. Although, you still can leave us your peercoin address to get your tips.'
+        flash[:alert] = 'You unsubscribed! Sorry for bothering you. Although, you still can leave us your primecoin address to get your tips.'
       end
     else
       redirect_to root_url, alert: 'User not found'

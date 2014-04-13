@@ -33,7 +33,7 @@
           %h4.panel-title
             Project Sponsors
         .panel-body.text-center
-          %p To give to this project, send peercoins to this address:
+          %p To give to this project, send primecoins to this address:
           %p
             = @project.bitcoin_address
           %p
@@ -103,15 +103,15 @@
       = btc_human @project.next_tip_amount
 
     %h4 Contribute and Earn
-    Donate peercoins to this project or
+    Donate primecoins to this project or
     = link_to 'make commits', @project.github_url, target: '_blank'
-    and get tips for it. If your commit is accepted by project maintainer and there are peercoins on its balance, you will get a tip!
+    and get tips for it. If your commit is accepted by project maintainer and there are primecoins on its balance, you will get a tip!
 
     - if current_user
       - if current_user.bitcoin_address.blank?
         Just 
         = link_to 'tell us', current_user
-        your peercoin address.      
+        your primecoin address.      
     - else
       Just check your email or 
       %a{href: user_omniauth_authorize_path(:github)} Sign In.

@@ -25,4 +25,4 @@ en:
   activerecord:
     attributes:
       user:
-        bitcoin_address: Peercoin address
+        bitcoin_address: Primecoin address
