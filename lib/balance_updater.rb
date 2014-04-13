@@ -1,4 +1,4 @@
-module PeercoinBalanceUpdater
+module BalanceUpdater
   def self.work
     Project.all.each do |project|
       start = 0

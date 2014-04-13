@@ -32,11 +32,11 @@ When(/^there's a new outgoing transaction of "(.*?)" to address "(.*?)" on the p
 end
 
 When(/^the project balance is updated$/) do
-  PeercoinBalanceUpdater.work
+  BalanceUpdater.work
 end
 
 Then(/^updating the project balance should raise an error$/) do
-  expect { PeercoinBalanceUpdater.work }.to raise_error
+  expect { BalanceUpdater.work }.to raise_error
 end
 
 Then(/^the project balance should be "(.*?)"$/) do |arg1|
