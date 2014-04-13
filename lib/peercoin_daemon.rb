@@ -32,6 +32,7 @@ class PeercoinDaemon
       id: 1,
     }
 
+    Rails.logger.info "RPC Command: #{data.inspect}"
     response = HTTParty.post(uri.to_s, body: data.to_json, basic_auth: auth)
 
     result = JSON.parse(response.body)
@@ -55,5 +56,9 @@ class PeercoinDaemon
       recipients[address] = amount.to_f
     end
     rpc('sendmany', account, recipients, minconf)
+  end
+
+  def get_balance(account = "")
+    rpc('getbalance', account).to_f
   end
 end

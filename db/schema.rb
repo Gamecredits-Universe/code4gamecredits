@@ -11,7 +11,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140215094549) do
+ActiveRecord::Schema.define(version: 20140406071705) do
+
+  create_table "cold_storage_transfers", force: true do |t|
+    t.integer  "project_id"
+    t.integer  "amount",        limit: 8
+    t.string   "address"
+    t.string   "txid"
+    t.integer  "confirmations"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "fee"
+  end
+
+  add_index "cold_storage_transfers", ["project_id"], name: "index_cold_storage_transfers_on_project_id"
+
+  create_table "collaborators", force: true do |t|
+    t.integer  "project_id"
+    t.string   "login"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "collaborators", ["project_id"], name: "index_collaborators_on_project_id"
 
   create_table "deposits", force: true do |t|
     t.integer  "project_id"
@@ -39,9 +61,14 @@ ActiveRecord::Schema.define(version: 20140215094549) do
     t.integer  "watchers_count"
     t.string   "language"
     t.string   "last_commit"
-    t.integer  "available_amount_cache"
+    t.integer  "available_amount_cache",          limit: 8
     t.string   "github_id"
     t.string   "address_label"
+    t.boolean  "hold_tips",                                 default: false
+    t.string   "cold_storage_withdrawal_address"
+    t.boolean  "disabled",                                  default: false
+    t.integer  "account_balance",                 limit: 8
+    t.string   "disabled_reason"
   end
 
   add_index "projects", ["full_name"], name: "index_projects_on_full_name", unique: true
@@ -55,19 +82,32 @@ ActiveRecord::Schema.define(version: 20140215094549) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "project_id"
+    t.integer  "fee"
   end
 
   add_index "sendmanies", ["project_id"], name: "index_sendmanies_on_project_id"
 
+  create_table "tipping_policies_texts", force: true do |t|
+    t.integer  "project_id"
+    t.integer  "user_id"
+    t.text     "text"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tipping_policies_texts", ["project_id"], name: "index_tipping_policies_texts_on_project_id"
+  add_index "tipping_policies_texts", ["user_id"], name: "index_tipping_policies_texts_on_user_id"
+
   create_table "tips", force: true do |t|
     t.integer  "user_id"
-    t.integer  "amount",      limit: 8
+    t.integer  "amount",         limit: 8
     t.integer  "sendmany_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "commit"
     t.integer  "project_id"
     t.datetime "refunded_at"
+    t.string   "commit_message"
   end
 
   add_index "tips", ["project_id"], name: "index_tips_on_project_id"

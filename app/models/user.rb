@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 
   devise :omniauthable, :omniauth_providers => [:github]
 
-  validates :bitcoin_address, :bitcoin_address => true
+  validates :bitcoin_address, bitcoin_address: true
 
   has_many :tips
 
@@ -18,21 +18,14 @@ class User < ActiveRecord::Base
   	tips.unpaid.sum(:amount)
   end
 
-  after_create :generate_login_token!
-  def generate_login_token!
-    if login_token.blank?
-      self.update login_token: SecureRandom.urlsafe_base64
-    end
+  after_create :generate_login_token, unless: :login_token
+
+  def generate_login_token
+    self.update login_token: SecureRandom.urlsafe_base64
   end
 
   def full_name
-    if !name.blank?
-      name
-    elsif !nickname.blank?
-      nickname
-    else
-      email
-    end
+    name.presence || nickname.presence || email
   end
 
   def self.update_cache
