@@ -78,6 +78,10 @@ Given(/^the message of commit "(.*?)" is "(.*?)"$/) do |arg1, arg2|
   find_new_commit(arg1).deep_merge!(commit: {message: arg2})
 end
 
+Given(/^the email of commit "(.*?)" is "(.*?)"$/) do |arg1, arg2|
+  find_new_commit(arg1).deep_merge!(commit: {author: {email: arg2}})
+end
+
 When(/^the new commits are read$/) do
   @project.reload
   @project.should_receive(:new_commits).and_return(@new_commits.values.map(&:to_ostruct))
