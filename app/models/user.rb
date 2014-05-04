@@ -10,7 +10,6 @@ class User < ActiveRecord::Base
 
   has_many :tips
 
-  # Callbacks
   before_create :generate_login_token!, unless: :login_token?
 
   def github_url
@@ -41,7 +40,7 @@ class User < ActiveRecord::Base
   def generate_login_token!
     loop do
       self.login_token = SecureRandom.urlsafe_base64
-      break login_token unless User.exists?(login_token: login_token)
+      break unless User.exists?(login_token: login_token)
     end
   end
 
