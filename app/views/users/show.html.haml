@@ -10,13 +10,13 @@
 %p
   %strong E-mail
 %p= @user.email
-= form_for @user, html: {role: 'form', class: 'form-inline'} do |f|
+= form_for @user, html: {role: 'form'} do |f|
   - if @user.errors.size > 0
     .alert.alert-danger Primecoin address is invalid.
   .form-group
     = f.label :bitcoin_address
     = f.text_field :bitcoin_address, class: 'form-control', placeholder: 'Your primecoin address'
-  = f.button :update, class: 'btn btn-default'
+  = f.button "Update", class: 'btn btn-default'
 
 - if @user.balance > 0
   .send-tips-back-block
