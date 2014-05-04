@@ -1,13 +1,20 @@
 require 'net/http'
 
 class ProjectsController < ApplicationController
+
+  before_action :load_project, only: [:qrcode, :edit, :update, :decide_tip_amounts]
+
   def index
     @projects = Project.enabled.order(available_amount_cache: :desc, watchers_count: :desc, full_name: :asc).page(params[:page]).per(30)
   end
 
   def show
-    @project = Project.find params[:id]
-    if @project and @project.bitcoin_address.nil? and (github_id = @project.github_id).present?
+    @project = Project.where(id: params[:id]).first
+    unless @project
+      redirect_to root_path, alert: "Project not found"
+      return
+    end
+    if @project.bitcoin_address.nil? and (github_id = @project.github_id).present?
       label = "#{github_id}@prime4commit"
       address = BitcoinDaemon.instance.get_new_address(label)
       @project.update_attributes(bitcoin_address: address, address_label: label)
@@ -15,12 +22,10 @@ class ProjectsController < ApplicationController
   end
 
   def edit
-    @project = Project.enabled.find params[:id]
     authorize! :update, @project
   end
 
   def update
-    @project = Project.enabled.find params[:id]
     authorize! :update, @project
     @project.attributes = project_params
     if @project.tipping_policies_text.try(:text_changed?)
@@ -34,7 +39,6 @@ class ProjectsController < ApplicationController
   end
 
   def decide_tip_amounts
-    @project = Project.enabled.find params[:id]
     authorize! :decide_tip_amounts, @project
     if request.patch?
       @project.available_amount # preload anything required to get the amount, otherwise it's loaded during the assignation and there are undesirable consequences
@@ -51,9 +55,8 @@ class ProjectsController < ApplicationController
   end
 
   def qrcode
-    @project = Project.enabled.find params[:id]
     respond_to do |format|
-      format.svg  { render :qrcode => @project.bitcoin_address, level: :l, unit: 4 }
+      format.svg  { render qrcode: @project.bitcoin_address, level: :l, unit: 4 }
     end
   end
 
@@ -78,5 +81,12 @@ class ProjectsController < ApplicationController
   private
   def project_params
     params.require(:project).permit(:hold_tips, tipping_policies_text_attributes: [:text])
+  end
+
+  def load_project
+    @project = Project.enabled.where(id: params[:id]).first
+    unless @project
+      redirect_to root_path, alert: "Project not found"
+    end
   end
 end

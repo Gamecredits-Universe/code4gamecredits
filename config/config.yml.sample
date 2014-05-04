@@ -24,6 +24,7 @@ smtp_settings:
   authentication:       plain
   enable_starttls_auto: true
 
+default_from: contact@example.com
 send_all_emails_to: # put an email here if you're testing and you don't want any email sent to others
 exception_email: admin@example.com # an email will be sent to this address if an unhandled exception occurs
 
