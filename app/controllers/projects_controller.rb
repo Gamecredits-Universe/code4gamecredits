@@ -9,6 +9,11 @@ class ProjectsController < ApplicationController
   end
 
   def show
+    @project = Project.where(id: params[:id]).first
+    unless @project
+      redirect_to root_path, alert: "Project not found"
+      return
+    end
     if @project.bitcoin_address.nil? and (github_id = @project.github_id).present?
       label = "#{github_id}@peer4commit"
       address = BitcoinDaemon.instance.get_new_address(label)
