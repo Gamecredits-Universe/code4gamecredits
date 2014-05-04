@@ -2,7 +2,7 @@ require 'net/http'
 
 class ProjectsController < ApplicationController
 
-  before_action :load_project, only: [:show, :qrcode]
+  before_action :load_project, only: [:show, :qrcode, :edit, :update, :decide_tip_amounts]
 
   def index
     @projects = Project.enabled.order(available_amount_cache: :desc, watchers_count: :desc, full_name: :asc).page(params[:page]).per(30)
@@ -17,12 +17,10 @@ class ProjectsController < ApplicationController
   end
 
   def edit
-    @project = Project.enabled.find params[:id]
     authorize! :update, @project
   end
 
   def update
-    @project = Project.enabled.find params[:id]
     authorize! :update, @project
     @project.attributes = project_params
     if @project.tipping_policies_text.try(:text_changed?)
@@ -36,7 +34,6 @@ class ProjectsController < ApplicationController
   end
 
   def decide_tip_amounts
-    @project = Project.enabled.find params[:id]
     authorize! :decide_tip_amounts, @project
     if request.patch?
       @project.available_amount # preload anything required to get the amount, otherwise it's loaded during the assignation and there are undesirable consequences
