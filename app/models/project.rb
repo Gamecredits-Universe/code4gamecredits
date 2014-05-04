@@ -102,12 +102,12 @@ class Project < ActiveRecord::Base
       # create user
       unless user
         generated_password = Devise.friendly_token.first(8)
-          user = User.create({
+        user = User.create(
           email: email,
           password: generated_password,
           name: commit.commit.author.name,
           nickname: nickname,
-        })
+        )
       end
 
       if nickname
