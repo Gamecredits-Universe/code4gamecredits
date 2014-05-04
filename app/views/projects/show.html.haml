@@ -53,7 +53,7 @@
 
     - if @project.tipping_policies_text.try(:text).present?
       %h4 Tipping policies
-      = simple_format @project.tipping_policies_text.text
+      = auto_link simple_format @project.tipping_policies_text.text
       %small
         %em
           - user = @project.tipping_policies_text.user

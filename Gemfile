@@ -72,6 +72,7 @@ gem 'exception_notification'
 gem 'rack-canonical-host'
 gem 'bootstrap_form', github: 'sigmike/rails-bootstrap-forms', branch: 'removed_for_on_radio_label'
 gem 'html_pipeline_rails'
+gem 'rails_autolink'
 
 group :test do
   gem 'cucumber-rails', :require => false
