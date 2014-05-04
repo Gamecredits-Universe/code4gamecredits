@@ -28,13 +28,13 @@
             %p Reason: #{reason}
 
     - else
-      .panel.panel-default
+      .panel.panel-default.project-panel
         .panel-heading
           %h4.panel-title
             Project Sponsors
         .panel-body.text-center
           %p To give to this project, send peercoins to this address:
-          %p
+          %p.bitcoin-address
             = @project.bitcoin_address
           %p
             = image_tag qrcode_project_path(@project, format: :svg), alt: @project.bitcoin_address, class: 'project qrcode'
