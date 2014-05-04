@@ -2,7 +2,7 @@ require 'net/http'
 
 class ProjectsController < ApplicationController
 
-  before_action :load_project, only: [:show, :qrcode, :edit, :update, :decide_tip_amounts]
+  before_action :load_project, only: [:qrcode, :edit, :update, :decide_tip_amounts]
 
   def index
     @projects = Project.enabled.order(available_amount_cache: :desc, watchers_count: :desc, full_name: :asc).page(params[:page]).per(30)
