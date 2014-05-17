@@ -122,3 +122,45 @@ Feature: A project collaborator can change the tips of commits
       | seldon  | there should be a tip of "25" for commit "BBB"      |
       | bad guy | the tip amount for commit "BBB" should be undecided |
 
+  Scenario: A collaborator sends a free amount as tip
+    Given the project holds tips
+    And the new commits are read
+    And I'm logged in as "seldon"
+    And I go to the project page
+    And I click on "Decide tip amounts"
+    When I fill the free amount with "10" on commit "BBB"
+    And I click on "Send the selected tip amounts"
+    Then there should be a tip of "10" for commit "BBB"
+    And the tip amount for commit "CCC" should be undecided
+
+  Scenario: A collaborator sends too big free amounts
+    Given the project holds tips
+    And the new commits are read
+    And I'm logged in as "seldon"
+    And I go to the project page
+    And I click on "Decide tip amounts"
+    When I choose the amount "Tiny: 0.1%" on commit "BBB"
+    And I fill the free amount with "499.500001" on commit "CCC"
+    And I click on "Send the selected tip amounts"
+    Then I should see "The project has insufficient funds"
+    And the tip amount for commit "BBB" should be undecided
+    And the tip amount for commit "CCC" should be undecided
+
+    When I fill the free amount with "499.5" on commit "CCC"
+    And I click on "Send the selected tip amounts"
+    Then there should be a tip of "0.5" for commit "BBB"
+    And there should be a tip of "499.5" for commit "CCC"
+    And the project balance should be "0"
+
+  Scenario: A collaborator changes the amount of an already decided tip
+    Given the project holds tips
+    And the new commits are read
+    And I'm logged in as "seldon"
+    And I go to the project page
+    And I click on "Decide tip amounts"
+    When I fill the free amount with "10" on commit "BBB"
+    And I click on "Send the selected tip amounts"
+    Then there should be a tip of "10" for commit "BBB"
+    And the tip amount for commit "CCC" should be undecided
+    And I send a forged request to change the percentage of commit "BBB" on project "a" to "5"
+    Then there should be a tip of "10" for commit "BBB"

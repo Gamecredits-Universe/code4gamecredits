@@ -41,8 +41,19 @@ class ProjectsController < ApplicationController
   def decide_tip_amounts
     authorize! :decide_tip_amounts, @project
     if request.patch?
-      @project.available_amount # preload anything required to get the amount, otherwise it's loaded during the assignation and there are undesirable consequences
-      @project.attributes = params.require(:project).permit(tips_attributes: [:id, :amount_percentage])
+      @project.attributes = params.require(:project).permit(tips_attributes: [:id, :decided_amount_percentage, :decided_free_amount])
+      @project.tips.each do |tip|
+        next if tip.decided?
+        if tip.decided_amount_percentage.present?
+          tip.amount = @project.available_amount * (tip.decided_amount_percentage.to_f / 100)
+        elsif tip.decided_free_amount.present?
+          tip.amount = tip.decided_free_amount.to_d * COIN
+        end
+      end
+      if @project.available_amount < 0
+        flash.now[:error] = "The project has insufficient funds"
+        return
+      end
       if @project.save
         message = "The tip amounts have been defined"
         if @project.has_undecided_tips?

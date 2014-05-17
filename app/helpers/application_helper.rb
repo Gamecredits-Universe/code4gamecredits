@@ -51,7 +51,7 @@ module ApplicationHelper
     flash.each do |type, message|
       alert_type = case type
         when :notice then :success
-        when :alert  then :danger
+        when :alert, :error then :danger
       end
       html << content_tag(:div, message, class: "flash-message text-center alert alert-#{alert_type}")
     end

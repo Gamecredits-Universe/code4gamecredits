@@ -57,6 +57,9 @@ class Tip < ActiveRecord::Base
   def undecided?
     !decided?
   end
+  def was_undecided?
+    amount_was.nil?
+  end
 
 
   before_save :check_amount_against_project
@@ -75,15 +78,8 @@ class Tip < ActiveRecord::Base
     project.commit_url(commit)
   end
 
-  def amount_percentage
-    nil
-  end
-
-  def amount_percentage=(percentage)
-    if undecided? and percentage.present?
-      self.amount = project.available_amount * (percentage.to_f / 100)
-    end
-  end
+  attr_accessor :decided_amount_percentage
+  attr_accessor :decided_free_amount
 
   def notify_user
     if amount and amount > 0 and user.bitcoin_address.blank? and !user.unsubscribed
@@ -99,12 +95,8 @@ class Tip < ActiveRecord::Base
   end
 
   def check_amount_against_project
-    if amount
-      available_amount = project.available_amount
-      available_amount -= amount_was if amount_was
-      if amount > available_amount
-        raise "Not enough funds on project to save #{inspect} (available: #{available_amount})"
-      end
+    if project.available_amount < 0
+      raise "Not enough funds on project to save #{inspect} (available: #{available_amount})"
     end
   end
 end
