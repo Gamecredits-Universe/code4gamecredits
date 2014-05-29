@@ -17,36 +17,6 @@ class Project < ActiveRecord::Base
   scope :enabled,  -> { where(disabled: false) }
   scope :disabled, -> { where(disabled: true) }
 
-  def update_github_info repo
-    self.github_id = repo.id
-    self.name = repo.name
-    self.full_name = repo.full_name
-    self.source_full_name = repo.source.full_name rescue ''
-    self.description = repo.description
-    self.watchers_count = repo.watchers_count
-    self.language = repo.language
-    self.save!
-  end
-
-  def update_github_collaborators(github_collaborators)
-    github_logins = github_collaborators.map(&:login)
-    existing_logins = collaborators.map(&:login)
-
-    collaborators.each do |collaborator|
-      unless github_logins.include?(collaborator.login)
-        collaborator.mark_for_destruction
-      end
-    end
-
-    github_collaborators.each do |github_collaborator|
-      unless existing_logins.include?(github_collaborator.login)
-        collaborators.build(login: github_collaborator.login)
-      end
-    end
-
-    save!
-  end
-
   def github_url
     "https://github.com/#{full_name}" if full_name.present?
   end
@@ -161,37 +131,6 @@ class Project < ActiveRecord::Base
   def self.update_cache
     find_each do |project|
       project.update available_amount_cache: project.available_amount
-    end
-  end
-
-  def github_info
-    client = Octokit::Client.new \
-      :client_id     => CONFIG['github']['key'],
-      :client_secret => CONFIG['github']['secret']
-    if github_id.present?
-      client.get("/repositories/#{github_id}")
-    else
-      client.repo(full_name)
-    end
-  end
-
-  def github_collaborators
-    client = Octokit::Client.new \
-      :client_id     => CONFIG['github']['key'],
-      :client_secret => CONFIG['github']['secret']
-    client.get("/repos/#{full_name}/collaborators") +
-    (client.get("/orgs/#{full_name.split('/').first}/members") rescue [])
-  end
-
-  def update_info
-    begin
-      update_github_info(github_info)
-      update_github_collaborators(github_collaborators)
-    rescue Octokit::BadGateway, Octokit::NotFound, Octokit::InternalServerError,
-           Errno::ETIMEDOUT, Faraday::Error::ConnectionFailed => e
-      Rails.logger.info "Project ##{id}: #{e.class} happened"
-    rescue StandardError => e
-      Airbrake.notify(e)
     end
   end
 
