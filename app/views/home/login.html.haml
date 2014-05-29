@@ -1,0 +1,7 @@
+- content_for :title do
+  Log in
+
+.row
+  .col-md-12
+    %p.text-center
+      %a.btn.btn-default{href: user_omniauth_authorize_path(:github, origin: params[:return_url])} Log in with GitHub

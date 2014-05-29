@@ -26,3 +26,5 @@ en:
     attributes:
       user:
         bitcoin_address: Peercoin address
+      project:
+        github_url: GitHub URL

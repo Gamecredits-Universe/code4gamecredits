@@ -23,26 +23,30 @@
 
 / Example row of columns
 .row
-  .col-lg-4
+  .col-lg-3
     %h2 How it works?
-    %p People donate peercoins to projects. When someone's commit is accepted to the project repository, we automatically tip the author.
+    %p
+      Fundraisers create projects and collect funds to make something happen.
     %p
       %a.btn.btn-primary{href: faq_path} Frequently Asked Questions »
-  .col-lg-4
+  .col-lg-3
     %h2 Donate
     %p
-      Find a project you like and deposit peercoins to it. Your money will be accumulated with money of other donators to tip for new commits.
+      Donate to projects to make them happen.
     %p
-      %a.btn.btn-primary{href: projects_path} Find or add a project »
-  .col-lg-4
+      %a.btn.btn-primary{href: projects_path} See projects »
+  .col-lg-3
     %h2 Contribute
     %p
-      Go and fix something! If your commit is accepted by project maintainer, you will get a tip!
-      - if !current_user
-        Just check your email or 
-        %a{href: user_omniauth_authorize_path(:github)} Sign In.
+      Get paid to contribute to a project.
     %p
-      %a.btn.btn-primary{href: projects_path} Supported projects »
+      %a.btn.btn-primary{href: projects_path} See projects »
+  .col-lg-3
+    %h2 Raise funds
+    %p
+      Make something great happen by raising funds and distributing them.
+    %p
+      %a.btn.btn-primary{href: new_project_path} Create a project »
 / - if current_user
 /         %a.btn.btn-primary{href: user_path(current_user)} Change your peercoin address »
 /       - else

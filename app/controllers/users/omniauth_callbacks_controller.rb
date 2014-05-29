@@ -24,7 +24,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     @user.image = info['image']
     @user.save
     
-    sign_in_and_redirect @user, :event => :authentication
+    sign_in(@user)
+    redirect_to request.env["omniauth.origin"].presence || after_sign_in_path_for(@user)
     set_flash_message(:notice, :success, :kind => "GitHub") if is_navigational_format?
   end
 end

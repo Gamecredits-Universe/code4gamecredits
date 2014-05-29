@@ -10,8 +10,9 @@ class Project < ActiveRecord::Base
   has_one :tipping_policies_text, inverse_of: :project
   accepts_nested_attributes_for :tipping_policies_text
 
-  validates :full_name, uniqueness: true, presence: true
-  validates :github_id, uniqueness: true, presence: true
+  validates :name, presence: true
+
+  before_validation :strip_full_name
 
   scope :enabled,  -> { where(disabled: false) }
   scope :disabled, -> { where(disabled: true) }
@@ -223,5 +224,11 @@ class Project < ActiveRecord::Base
       sendmanies.map(&:fee),
       cold_storage_transfers.map(&:fee),
     ].flatten.compact.sum
+  end
+
+  def strip_full_name
+    if full_name_changed? and full_name.present?
+      self.full_name = full_name.gsub(/https?\:\/\/github.com\//, '')
+    end
   end
 end

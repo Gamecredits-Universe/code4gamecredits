@@ -21,6 +21,14 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def new
+    unless user_signed_in?
+      redirect_to login_path(return_url: request.original_url), flash: {info: "You must be logged in to create a new project"}
+      return
+    end
+    @project = Project.new(params[:project])
+  end
+
   def edit
     authorize! :update, @project
   end
@@ -72,26 +80,21 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    project_name = params[:full_name].
-      gsub(/https?\:\/\/github.com\//, '').
-      gsub(/\#.+$/, '').
-      gsub(' ', '')
-    client = Octokit::Client.new \
-      :client_id     => CONFIG['github']['key'],
-      :client_secret => CONFIG['github']['secret']
-    begin
-      repo = client.repo project_name
-      @project = Project.find_or_create_by full_name: repo.full_name
-      @project.update_github_info repo
-      redirect_to @project
-    rescue Octokit::NotFound
-      redirect_to projects_path, alert: "Project not found"
+    @project = Project.new(project_params)
+    @project.hold_tips = true
+    @project.collaborators.build(login: current_user.nickname)
+    authorize! :create, @project
+
+    if @project.save
+      redirect_to @project, notice: "The project was created"
+    else
+      render "new"
     end
   end
 
   private
   def project_params
-    params.require(:project).permit(:hold_tips, tipping_policies_text_attributes: [:text])
+    params.require(:project).permit(:name, :description, :full_name, :hold_tips, tipping_policies_text_attributes: [:text])
   end
 
   def load_project

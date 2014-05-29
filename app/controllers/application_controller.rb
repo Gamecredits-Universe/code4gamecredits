@@ -6,4 +6,10 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_path, :alert => "Access denied"
   end
+
+  protected
+  def after_sign_in_path_for(user)
+    params[:return_url].presence ||
+      root_path
+  end
 end

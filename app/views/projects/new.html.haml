@@ -1,0 +1,12 @@
+- content_for :title do
+  New project
+
+%h1 New project
+.row
+  .col-md-12
+    = bootstrap_form_for @project do |f|
+      = f.alert_message "Please fix the errors below."
+      = f.text_field :name
+      = f.text_area :description, rows: 10
+      = f.url_field :full_name, label: "GitHub URL (optional)"
+      = f.submit "Save"

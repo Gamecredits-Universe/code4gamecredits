@@ -12,6 +12,17 @@ Given(/^I'm logged in as "(.*?)"$/) do |arg1|
   page.should have_content("Successfully authenticated")
 end
 
+Given(/^I'm logged in on GitHub as "(.*?)"$/) do |arg1|
+  OmniAuth.config.test_mode = true
+  OmniAuth.config.mock_auth[:github] = {
+    "info" => {
+      "nickname" => arg1,
+      "primary_email" => "#{arg1.gsub(/\s+/,'')}@example.com",
+      "verified_emails" => [],
+    },
+  }
+end
+
 Given(/^I'm not logged in$/) do
   visit root_path
   if page.has_content?("Sign Out")
@@ -20,6 +31,14 @@ Given(/^I'm not logged in$/) do
   else
     page.should have_content("Sign in")
   end
+end
+
+When(/^I visit the home page$/) do
+  visit '/'
+end
+
+When(/^I fill "(.*?)" with "(.*?)"$/) do |arg1, arg2|
+  fill_in arg1, with: arg2
 end
 
 Given(/^I go to the project page$/) do
