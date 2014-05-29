@@ -94,7 +94,7 @@ class ProjectsController < ApplicationController
 
   private
   def project_params
-    params.require(:project).permit(:name, :description, :full_name, :auto_tip_commits, :hold_tips, tipping_policies_text_attributes: [:text])
+    params.require(:project).permit(:name, :description, :detailed_description, :full_name, :auto_tip_commits, :hold_tips, tipping_policies_text_attributes: [:text])
   end
 
   def load_project

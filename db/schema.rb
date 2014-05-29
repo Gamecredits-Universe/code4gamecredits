@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140406071705) do
+ActiveRecord::Schema.define(version: 20140529135156) do
 
   create_table "cold_storage_transfers", force: true do |t|
     t.integer  "project_id"
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 20140406071705) do
     t.boolean  "disabled",                                  default: false
     t.integer  "account_balance",                 limit: 8
     t.string   "disabled_reason"
+    t.text     "detailed_description"
   end
 
   add_index "projects", ["full_name"], name: "index_projects_on_full_name", unique: true

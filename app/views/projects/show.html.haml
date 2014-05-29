@@ -44,8 +44,9 @@
           %p #{100-(CONFIG["our_fee"]*100).round}% of deposited funds will be used to tip for new commits. 
   .col-md-8
     - unless @project.description.blank?
-      %h4 Project description
-      %p= @project.description
+      %h3= @project.description
+    - unless @project.detailed_description.blank?
+      %p= @project.detailed_description
     %h4 Balance
     = btc_human @project.available_amount
     - if @project.auto_tip_commits?
