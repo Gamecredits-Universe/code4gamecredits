@@ -28,3 +28,11 @@ Then(/^the project single collaborators should be "(.*?)"$/) do |arg1|
   @project.collaborators.map(&:login).should eq([arg1])
 end
 
+Then(/^the project address label should be "(.*?)"$/) do |arg1|
+  @project.address_label.should eq(arg1)
+end
+
+Then(/^the project donation address should be the same as account "(.*?)"$/) do |arg1|
+  @project.bitcoin_address.should eq(BitcoinDaemon.instance.get_addresses_by_account(arg1).first)
+end
+

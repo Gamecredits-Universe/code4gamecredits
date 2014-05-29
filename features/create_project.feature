@@ -18,6 +18,8 @@ Feature: An user can create a project, linked with GitHub or not.
       """
     And the project should hold tips
     And the project single collaborators should be "seldon"
+    And the project address label should be "peer4commit-1"
+    And the project donation address should be the same as account "peer4commit-1"
     And I should be on the project page
 
   Scenario: Create a project without name

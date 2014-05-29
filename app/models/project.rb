@@ -13,6 +13,7 @@ class Project < ActiveRecord::Base
   validates :name, presence: true
 
   before_validation :strip_full_name
+  after_create :generate_address!
 
   scope :enabled,  -> { where(disabled: false) }
   scope :disabled, -> { where(disabled: true) }
@@ -183,5 +184,12 @@ class Project < ActiveRecord::Base
                      when false, nil, "0" then true
                      else false
                      end
+  end
+
+  def generate_address!
+    return if bitcoin_address.present? or address_label.present?
+    self.address_label = "peer4commit-#{id}"
+    self.bitcoin_address = BitcoinDaemon.instance.get_new_address(address_label)
+    save(validate: false)
   end
 end
