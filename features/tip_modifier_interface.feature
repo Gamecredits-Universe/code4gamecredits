@@ -22,7 +22,7 @@ Feature: A project collaborator can change the tips of commits
   Scenario: A collaborator wants to alter the tips
     Given I'm logged in as "seldon"
     And I go to the project page
-    And I click on "Change project settings"
+    And I click on "Edit project"
     And I uncheck "Automatically send 1% of the balance to each commit added to the default branch of the GitHub project"
     And I click on "Save"
     Then I should see "The project has been updated"
@@ -55,7 +55,7 @@ Feature: A project collaborator can change the tips of commits
   Scenario: A non collaborator does not see the settings button
     Given I'm logged in as "yugo"
     And I go to the project page
-    Then I should not see "Change project settings"
+    Then I should not see "Edit project"
 
   Scenario: A non collaborator does not see the decide tip amounts button
     Given the project has undedided tips
