@@ -1,14 +1,24 @@
 Feature: Project detailed description is markdown formatted
-  Scenario:
+  Background:
     Given a project
     And the project single collaborator is "bob"
     And I'm logged in as "bob"
     And I go to the project page
     And I click on "Edit project"
-    And I fill "Detailed description" with:
+
+  Scenario: Standard markdown
+    When I fill "Detailed description" with:
       """
       foo [bar](http://foo.example.com/)
       """
     And I click on "Save"
     Then I should see a link "bar" to "http://foo.example.com/"
+
+  Scenario: XSS attempt
+    When I fill "Detailed description" with:
+      """
+      foo [bar](javascript:alert('xss'))
+      """
+    And I click on "Save"
+    Then I should not see a link "bar" to "javascript:alert('xss')"
 

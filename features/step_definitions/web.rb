@@ -88,3 +88,8 @@ Then(/^I should see a link "(.*?)" to "(.*?)"$/) do |arg1, arg2|
   link["href"].should eq(arg2)
 end
 
+Then(/^I should not see a link "(.*?)" to "(.*?)"$/) do |arg1, arg2|
+  link = all("a", text: arg1, exact: true).first
+  (link.nil? or link["href"] != arg2).should be_true
+end
+
