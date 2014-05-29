@@ -23,7 +23,7 @@ Feature: A project collaborator can change the tips of commits
     Given I'm logged in as "seldon"
     And I go to the project page
     And I click on "Change project settings"
-    And I check "Do not send the tips immediatly. Give collaborators the ability to modify the tips before they're sent"
+    And I uncheck "Automatically send 1% of the balance to each commit added to the default branch of the GitHub project"
     And I click on "Save"
     Then I should see "The project has been updated"
 

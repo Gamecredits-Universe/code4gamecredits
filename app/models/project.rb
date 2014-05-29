@@ -233,4 +233,15 @@ class Project < ActiveRecord::Base
       self.full_name = full_name.gsub(/https?\:\/\/github.com\//, '')
     end
   end
+
+  def auto_tip_commits
+    !hold_tips
+  end
+
+  def auto_tip_commits=(value)
+    self.hold_tips = case value
+                     when false, nil, "0" then true
+                     else false
+                     end
+  end
 end
