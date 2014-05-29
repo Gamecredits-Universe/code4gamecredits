@@ -15,8 +15,8 @@ Feature: A project collaborator can display the tipping policies of the project
 
       Blah blah
       """
-    And I click on "Save the project settings"
-    Then I should see "The project settings have been updated"
+    And I click on "Save"
+    Then I should see "The project has been updated"
 
     Given I'm not logged in
     And I go to the project page

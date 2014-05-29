@@ -24,8 +24,8 @@ Feature: A project collaborator can change the tips of commits
     And I go to the project page
     And I click on "Change project settings"
     And I check "Do not send the tips immediatly. Give collaborators the ability to modify the tips before they're sent"
-    And I click on "Save the project settings"
-    Then I should see "The project settings have been updated"
+    And I click on "Save"
+    Then I should see "The project has been updated"
 
     When the new commits are read
     Then the tip amount for commit "BBB" should be undecided

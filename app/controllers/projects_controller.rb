@@ -40,7 +40,7 @@ class ProjectsController < ApplicationController
       @project.tipping_policies_text.user = current_user
     end
     if @project.save
-      redirect_to project_path(@project), notice: "The project settings have been updated"
+      redirect_to project_path(@project), notice: "The project has been updated"
     else
       render 'edit'
     end
