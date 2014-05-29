@@ -27,7 +27,7 @@ Given(/^a project "(.*?)"$/) do |arg1|
 end
 
 Given(/^a deposit of "(.*?)"$/) do |arg1|
-  Deposit.create!(project: @project, amount: arg1.to_d * COIN, confirmations: 1)
+  Deposit.create!(project: @project, amount: arg1.to_d * COIN, confirmations: 1, created_at: 2.minutes.ago)
 end
 
 Given(/^the last known commit is "(.*?)"$/) do |arg1|
@@ -35,7 +35,7 @@ Given(/^the last known commit is "(.*?)"$/) do |arg1|
 end
 
 def add_new_commit(id, params = {})
-  @new_commits ||= {}
+  @commits ||= {}
   defaults = {
     sha: id,
     commit: {
@@ -43,13 +43,16 @@ def add_new_commit(id, params = {})
       author: {
         email: "anonymous@example.com",
       },
+      committer: {
+        date: Time.now,
+      }
     },
   }
-  @new_commits[id] = defaults.deep_merge(params)
+  @commits[id] = defaults.deep_merge(params)
 end
 
 def find_new_commit(id)
-  @new_commits[id]
+  @commits[id]
 end
 
 Given(/^a new commit "(.*?)" with parent "([^"]*?)"$/) do |arg1, arg2|
@@ -84,7 +87,7 @@ end
 
 When(/^the new commits are read$/) do
   @project.reload
-  @project.should_receive(:new_commits).and_return(@new_commits.values.map(&:to_ostruct))
+  @project.should_receive(:get_commits).and_return(@commits.values.map(&:to_ostruct))
   @project.tip_commits
 end
 

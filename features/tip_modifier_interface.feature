@@ -108,6 +108,7 @@ Feature: A project collaborator can change the tips of commits
     Given the project holds tips
     And the new commits are read
     And a project "fake"
+    And a deposit of "500"
     And the project collaborators are:
       | bad guy |
     And a new commit "fake commit"

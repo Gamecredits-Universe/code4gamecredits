@@ -55,21 +55,14 @@ class Project < ActiveRecord::Base
     "https://github.com/#{source_full_name}"
   end
 
-  def new_commits
+  def get_commits
     begin
       commits = Timeout::timeout(90) do
         client = Octokit::Client.new \
           :client_id     => CONFIG['github']['key'],
           :client_secret => CONFIG['github']['secret'],
           :per_page      => 100
-        client.commits(full_name).
-          # Filter merge request
-          select{|c| !(c.commit.message =~ /^(Merge\s|auto\smerge)/)}.
-          # Filter fake emails
-          select{|c| c.commit.author.email =~ Devise::email_regexp }.
-          # Filter commited after t4c project creation
-          select{|c| c.commit.committer.date > self.deposits.first.created_at }.
-          to_a
+        client.commits(full_name)
       end
     rescue Octokit::BadGateway, Octokit::NotFound, Octokit::InternalServerError,
            Errno::ETIMEDOUT, Faraday::Error::ConnectionFailed => e
@@ -82,7 +75,16 @@ class Project < ActiveRecord::Base
   end
 
   def tip_commits
-    new_commits.each do |commit|
+    return unless self.deposits.any?
+
+    get_commits.each do |commit|
+      # Filter merge request
+      next if commit.commit.message =~ /^(Merge\s|auto\smerge)/
+      # Filter fake emails
+      next unless commit.commit.author.email =~ Devise::email_regexp
+      # Filter commited after t4c project creation
+      next unless commit.commit.committer.date > self.deposits.first.created_at
+
       Project.transaction do
         tip_for commit
         update_attribute :last_commit, commit.sha
