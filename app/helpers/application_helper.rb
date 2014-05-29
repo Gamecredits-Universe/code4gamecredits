@@ -58,4 +58,9 @@ module ApplicationHelper
     end
     html.join("\n").html_safe
   end
+
+  def render_markdown(source)
+    markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
+    markdown.render(source).html_safe
+  end
 end

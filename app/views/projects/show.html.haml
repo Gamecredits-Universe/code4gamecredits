@@ -12,7 +12,7 @@
         %small= link_to glyph(:github), url, target: '_blank'
       .pull-right
         - if can? :update, @project
-          = link_to "Change project settings", edit_project_path(@project), class: "btn btn-primary"
+          = link_to "Edit project", edit_project_path(@project), class: "btn btn-primary"
         - if can? :decide_tip_amounts, @project and @project.has_undecided_tips?
           = link_to "Decide tip amounts", decide_tip_amounts_project_path(@project), class: "btn btn-warning"
 
@@ -46,7 +46,7 @@
     - unless @project.description.blank?
       %h3= @project.description
     - unless @project.detailed_description.blank?
-      %p= @project.detailed_description
+      = render_markdown @project.detailed_description
     %h4 Balance
     = btc_human @project.available_amount
     - if @project.auto_tip_commits?

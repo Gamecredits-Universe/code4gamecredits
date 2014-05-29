@@ -83,3 +83,8 @@ Then(/^I should see the project balance is "(.*?)"$/) do |arg1|
   page.should have_content("Balance #{arg1}")
 end
 
+Then(/^I should see a link "(.*?)" to "(.*?)"$/) do |arg1, arg2|
+  link = find("a", text: arg1, exact: true)
+  link["href"].should eq(arg2)
+end
+

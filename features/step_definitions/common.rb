@@ -117,6 +117,12 @@ Given(/^the project collaborators are:$/) do |table|
   end
 end
 
+Given(/^the project single collaborator is "(.*?)"$/) do |arg1|
+  @project.reload
+  @project.collaborators.each(&:destroy)
+  @project.collaborators.create!(login: arg1)
+end
+
 Given(/^the author of commit "(.*?)" is "(.*?)"$/) do |arg1, arg2|
   find_new_commit(arg1).deep_merge!(author: {login: arg2}, commit: {author: {email: "#{arg2}@example.com"}})
 end

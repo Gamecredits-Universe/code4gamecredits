@@ -28,3 +28,4 @@ en:
         bitcoin_address: Peercoin address
       project:
         github_url: GitHub URL
+        detailed_description: Detailed description
