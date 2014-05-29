@@ -237,6 +237,7 @@ class Project < ActiveRecord::Base
   def auto_tip_commits
     !hold_tips
   end
+  alias_method :auto_tip_commits?, :auto_tip_commits
 
   def auto_tip_commits=(value)
     self.hold_tips = case value
