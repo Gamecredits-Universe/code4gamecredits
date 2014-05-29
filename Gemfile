@@ -74,6 +74,7 @@ gem 'bootstrap_form', github: 'sigmike/rails-bootstrap-forms', branch: 'removed_
 gem 'html_pipeline_rails'
 gem 'rails_autolink'
 gem 'redcarpet'
+gem 'sanitize'
 
 group :test do
   gem 'cucumber-rails', :require => false

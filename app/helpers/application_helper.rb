@@ -61,6 +61,8 @@ module ApplicationHelper
 
   def render_markdown(source)
     markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(safe_links_only: true, filter_html: true))
-    markdown.render(source).html_safe
+    html = markdown.render(source)
+    clean = Sanitize.clean(html, Sanitize::Config::RELAXED)
+    clean.html_safe
   end
 end
