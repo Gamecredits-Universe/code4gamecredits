@@ -48,7 +48,7 @@ class Project < ActiveRecord::Base
   end
 
   def github_url
-    "https://github.com/#{full_name}"
+    "https://github.com/#{full_name}" if full_name.present?
   end
 
   def source_github_url

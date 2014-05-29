@@ -7,8 +7,9 @@
 .row
   .col-md-12
     %h1
-      = @project.full_name
-      %small= link_to glyph(:github), @project.github_url, target: '_blank'
+      = @project.name
+      - if (url = @project.github_url).present?
+        %small= link_to glyph(:github), url, target: '_blank'
       .pull-right
         - if can? :update, @project
           = link_to "Change project settings", edit_project_path(@project), class: "btn btn-primary"
