@@ -93,3 +93,6 @@ Then(/^I should not see a link "(.*?)" to "(.*?)"$/) do |arg1, arg2|
   (link.nil? or link["href"] != arg2).should be_true
 end
 
+Then(/^I should not see the image "(.*?)"$/) do |arg1|
+  find("img[src=\"#{arg1}\"]")
+end

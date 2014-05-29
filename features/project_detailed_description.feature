@@ -30,3 +30,11 @@ Feature: Project detailed description is markdown formatted
     And I click on "Save"
     Then I should not see a link "bar" to "javascript:alert('xss')"
 
+  Scenario: Inline external image
+    When I fill "Detailed description" with:
+      """
+      ![foo](http://example.com/img.jpg)
+      """
+    And I click on "Save"
+    Then I should not see the image "http://example.com/img.jpg"
+
