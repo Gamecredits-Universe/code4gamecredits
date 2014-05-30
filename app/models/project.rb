@@ -39,7 +39,11 @@ class Project < ActiveRecord::Base
            Errno::ETIMEDOUT, Faraday::Error::ConnectionFailed => e
       Rails.logger.info "Project ##{id}: #{e.class} happened"
     rescue StandardError => e
-      Airbrake.notify(e)
+      if CONFIG["airbrake"]
+        Airbrake.notify(e)
+      else
+        raise
+      end
     end
     sleep(1)
     commits || []
