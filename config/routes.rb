@@ -24,7 +24,7 @@ T4c::Application.routes.draw do
     end
   end
   resources :tips, :only => [:index]
-  resources :withdrawals, :only => [:index]
+  resources :distributions, :only => [:index]
 
   devise_for :users,
     :controllers => {
