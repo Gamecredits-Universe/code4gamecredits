@@ -1,0 +1,12 @@
+= bootstrap_form_for [@project, @distribution] do |f|
+  %table.table
+    %thead
+      %th Recipient
+      %th Amount
+    %tbody#recipients
+  = f.submit "Save"
+
+.form-group
+  %label{for: "add-recipients-input"} Add recipient(s)
+  %input.form-control#add-recipients-input{type: "text", autocomplete: "off", data: {suggestion_url: recipient_suggestions_project_distributions_path(@project)}}
+  #recipient-suggestions

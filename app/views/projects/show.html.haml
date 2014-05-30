@@ -15,6 +15,8 @@
           = link_to "Edit project", edit_project_path(@project), class: "btn btn-primary"
         - if can? :decide_tip_amounts, @project and @project.has_undecided_tips?
           = link_to "Decide tip amounts", decide_tip_amounts_project_path(@project), class: "btn btn-warning"
+        - if can? :create, @project.distributions.build
+          = link_to "New distribution", new_project_distribution_path(@project), class: "btn btn-warning"
 
 .row
   .col-md-4
@@ -96,8 +98,9 @@
               = btc_human tip.amount
             - else
               will receive a tip
-            for commit
-            = link_to tip.commit[0..6], "https://github.com/#{@project.full_name}/commit/#{tip.commit}", target: :blank
+            - if tip.commit.present?
+              for commit
+              = link_to tip.commit[0..6], "https://github.com/#{@project.full_name}/commit/#{tip.commit}", target: :blank
             - if tip.undecided?
               when its amount is decided
 

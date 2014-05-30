@@ -99,4 +99,16 @@ class Tip < ActiveRecord::Base
       raise "Not enough funds on project to save #{inspect} (available: #{available_amount})"
     end
   end
+
+  def coin_amount
+    amount.to_f / COIN if amount
+  end
+
+  def coin_amount=(coin_amount)
+    if coin_amount
+      self.amount = (coin_amount.to_f * COIN).round
+    else
+      self.amount = nil
+    end
+  end
 end

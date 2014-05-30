@@ -14,11 +14,18 @@ class BitcoinTipper
       end
     end
 
-    self.create_distributions
-
-    Rails.logger.info "Traversing sendmanies..."
-    Distribution.where(txid: nil).each do |distribution|
-      distribution.send_transaction
+    Rails.logger.info "Sending tips to commits..."
+    Project.enabled.find_each do |project|
+      tips = project.tips_to_pay
+      amount = tips.sum(&:amount).to_d
+      if amount > CONFIG["min_payout"].to_d * COIN
+        distribution = Distribution.create(project_id: project.id)
+        tips.each do |tip|
+          tip.update_attribute :distribution_id, distribution.id
+        end
+        distribution.reload.send_transaction!
+        Rails.logger.info "  #{distribution.inspect}"
+      end
     end
 
     Rails.logger.info "Refunding unclaimed tips..."
@@ -34,20 +41,6 @@ class BitcoinTipper
   def self.create_distributions
     Rails.logger.info "Creating distribution"
     ActiveRecord::Base.transaction do
-      Project.enabled.find_each do |project|
-        tips = project.tips_to_pay
-        amount = tips.sum(&:amount).to_d
-        if amount > CONFIG["min_payout"].to_d * COIN
-          distribution = Distribution.create(project_id: project.id)
-          outs = Hash.new { 0.to_d }
-          tips.each do |tip|
-            tip.update_attribute :distribution_id, distribution.id
-            outs[tip.user.bitcoin_address] += tip.amount.to_d / COIN
-          end
-          distribution.update_attribute :data, outs.to_json
-          Rails.logger.info "  #{distribution.inspect}"
-        end
-      end
     end   
   end
 

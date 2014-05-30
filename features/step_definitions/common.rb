@@ -123,6 +123,12 @@ Given(/^the project single collaborator is "(.*?)"$/) do |arg1|
   @project.collaborators.create!(login: arg1)
 end
 
+Given(/^a project managed by "(.*?)"$/) do |arg1|
+  create(:user, email: "#{arg1}@example.com", nickname: arg1)
+  @project = Project.create!(name: "#{arg1} project", bitcoin_address: 'mq4NtnmQoQoPfNWEPbhSvxvncgtGo6L8WY', address_label: "example_project_account")
+  @project.collaborators.create!(login: arg1)
+end
+
 Given(/^the author of commit "(.*?)" is "(.*?)"$/) do |arg1, arg2|
   find_new_commit(arg1).deep_merge!(author: {login: arg2}, commit: {author: {email: "#{arg2}@example.com"}})
 end

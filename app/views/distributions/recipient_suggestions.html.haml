@@ -1,0 +1,12 @@
+= bootstrap_form_for Distribution.new do |f|
+  %ul.list-unstyled
+    - User.where('nickname LIKE ?', "%#{params[:text]}%").each do |user|
+      %li
+        - recipients = capture_haml do
+          = f.fields_for :tips, Tip.new(user_id: user.id), child_index: rand(1<<160) do |fields|
+            %tr
+              %td
+                = fields.hidden_field :user_id
+                = "#{user.nickname} (GitHub user)"
+              %td= fields.text_field :coin_amount, hide_label: true
+        %a.btn.btn-default.add-recipient-button{href: "#", data: {recipients: recipients}}= "#{user.nickname} (GitHub user)"

@@ -12,6 +12,9 @@ Given(/^the commits on GitHub for project "(.*?)" are$/) do |arg1, table|
   table.hashes.each do |row|
     commit = OpenStruct.new(
       sha: row["sha"],
+      author: OpenStruct.new(
+        login: row["author"],
+      ),
       commit: OpenStruct.new(
         message: row["message"] || "Some changes",
         author: OpenStruct.new(

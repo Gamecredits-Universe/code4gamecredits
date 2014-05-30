@@ -17,6 +17,10 @@ T4c::Application.routes.draw do
   end
   resources :projects, :only => [:new, :show, :index, :create, :edit, :update] do
     resources :tips, :only => [:index]
+    resources :distributions, :only => [:new, :create, :show] do
+      get :recipient_suggestions, on: :collection
+      post :send_transaction, on: :member
+    end
     member do
       get :qrcode
       get :decide_tip_amounts

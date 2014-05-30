@@ -24,7 +24,7 @@ class BitcoinDaemonMock
   end
 
   def list_transactions(account = "", count = 10, from = 0)
-    @transactions.select { |t| t["account"] == account }[from, count]
+    @transactions.select { |t| account == "*" ? true : (t["account"] == account) }[from, count]
   end
 
   def send_many(account, recipients, minconf = 1)

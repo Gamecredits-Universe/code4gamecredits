@@ -29,3 +29,5 @@ en:
       project:
         github_url: GitHub URL
         detailed_description: Detailed description
+      tip:
+        coin_amount: Amount
