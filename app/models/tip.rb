@@ -1,13 +1,13 @@
 class Tip < ActiveRecord::Base
   belongs_to :user
-  belongs_to :sendmany
+  belongs_to :distribution
   belongs_to :project, inverse_of: :tips
 
   validates :amount, numericality: {greater_or_equal_than: 0, allow_nil: true}
 
-  scope :not_sent,      -> { where(sendmany_id: nil) }
+  scope :not_sent,      -> { where(distribution_id: nil) }
   def not_sent?
-    sendmany_id.nil?
+    distribution_id.nil?
   end
 
   scope :unpaid,        -> { non_refunded.not_sent }
@@ -26,9 +26,9 @@ class Tip < ActiveRecord::Base
     amount == 0
   end
 
-  scope :paid,          -> { where.not(sendmany_id: nil) }
+  scope :paid,          -> { where.not(distribution_id: nil) }
   def paid?
-    !!sendmany_id
+    !!distribution_id
   end
 
   scope :refunded,      -> { where.not(refunded_at: nil) }

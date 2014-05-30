@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140529135156) do
+ActiveRecord::Schema.define(version: 20140530132209) do
 
   create_table "cold_storage_transfers", force: true do |t|
     t.integer  "project_id"
@@ -49,6 +49,19 @@ ActiveRecord::Schema.define(version: 20140529135156) do
 
   add_index "deposits", ["project_id"], name: "index_deposits_on_project_id"
 
+  create_table "distributions", force: true do |t|
+    t.string   "txid"
+    t.text     "data"
+    t.string   "result"
+    t.boolean  "is_error"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "project_id"
+    t.integer  "fee"
+  end
+
+  add_index "distributions", ["project_id"], name: "index_distributions_on_project_id"
+
   create_table "projects", force: true do |t|
     t.string   "url"
     t.string   "bitcoin_address"
@@ -75,19 +88,6 @@ ActiveRecord::Schema.define(version: 20140529135156) do
   add_index "projects", ["full_name"], name: "index_projects_on_full_name", unique: true
   add_index "projects", ["github_id"], name: "index_projects_on_github_id", unique: true
 
-  create_table "sendmanies", force: true do |t|
-    t.string   "txid"
-    t.text     "data"
-    t.string   "result"
-    t.boolean  "is_error"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "project_id"
-    t.integer  "fee"
-  end
-
-  add_index "sendmanies", ["project_id"], name: "index_sendmanies_on_project_id"
-
   create_table "tipping_policies_texts", force: true do |t|
     t.integer  "project_id"
     t.integer  "user_id"
@@ -101,8 +101,8 @@ ActiveRecord::Schema.define(version: 20140529135156) do
 
   create_table "tips", force: true do |t|
     t.integer  "user_id"
-    t.integer  "amount",         limit: 8
-    t.integer  "sendmany_id"
+    t.integer  "amount",          limit: 8
+    t.integer  "distribution_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "commit"
@@ -111,8 +111,8 @@ ActiveRecord::Schema.define(version: 20140529135156) do
     t.string   "commit_message"
   end
 
+  add_index "tips", ["distribution_id"], name: "index_tips_on_distribution_id"
   add_index "tips", ["project_id"], name: "index_tips_on_project_id"
-  add_index "tips", ["sendmany_id"], name: "index_tips_on_sendmany_id"
   add_index "tips", ["user_id"], name: "index_tips_on_user_id"
 
   create_table "users", force: true do |t|

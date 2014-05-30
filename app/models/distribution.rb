@@ -1,5 +1,5 @@
-class Sendmany < ActiveRecord::Base
-  belongs_to :project, inverse_of: :sendmanies
+class Distribution < ActiveRecord::Base
+  belongs_to :project, inverse_of: :distributions
   has_many :tips
 
   scope :error, -> { where(is_error: true) }
@@ -14,7 +14,7 @@ class Sendmany < ActiveRecord::Base
 
     update_attribute :is_error, true # it's a lock to prevent duplicates
 
-    raise "Not enough funds on Sendmany##{id}" if total_amount > project.available_amount
+    raise "Not enough funds on Distribution##{id}" if total_amount > project.available_amount
 
     txid = BitcoinDaemon.instance.send_many(project.address_label, JSON.parse(data))
 

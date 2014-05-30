@@ -3,7 +3,7 @@ class Project < ActiveRecord::Base
   has_many :tips, inverse_of: :project
   accepts_nested_attributes_for :tips
   has_many :collaborators
-  has_many :sendmanies, inverse_of: :project
+  has_many :distributions, inverse_of: :project
 
   has_many :cold_storage_transfers
 
@@ -163,7 +163,7 @@ class Project < ActiveRecord::Base
 
   def paid_fee
     [
-      sendmanies.map(&:fee),
+      distributions.map(&:fee),
       cold_storage_transfers.map(&:fee),
     ].flatten.compact.sum
   end

@@ -70,7 +70,7 @@
     %h4 Tips Paid
     = btc_human @project.tips_paid_amount
 
-    - if (failed_sendmanies = @project.sendmanies.error).any? and (amount = failed_sendmanies.map(&:tips).flatten.sum(&:amount)) > 0
+    - if (failed_distributions = @project.distributions.error).any? and (amount = failed_distributions.map(&:tips).flatten.sum(&:amount)) > 0
       .alert.alert-danger
         %strong Some tip transactions failed.
         A total of #{btc_human amount} may not have been sent.

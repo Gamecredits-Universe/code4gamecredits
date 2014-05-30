@@ -7,8 +7,8 @@
         %th Transaction
         %th Result
     %tbody
-      - @sendmanies.each do |sendmany|
+      - @distributions.each do |distribution|
         %tr
-          %td= l sendmany.created_at, format: :short
-          %td= link_to sendmany.txid, transaction_url(sendmany.txid), target: '_blank'
-          %td= sendmany.is_error ? "Error" : "Success"
+          %td= l distribution.created_at, format: :short
+          %td= link_to distribution.txid, transaction_url(distribution.txid), target: '_blank'
+          %td= distribution.is_error ? "Error" : "Success"

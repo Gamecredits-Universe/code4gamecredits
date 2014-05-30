@@ -25,9 +25,9 @@ module BalanceUpdater
           category = transaction["category"]
           fee = transaction["fee"]
 
-          if category == "send" and sendmany = Sendmany.where(txid: txid).first
-            raise "No fee on sendmany #{sendmany.inspect}" unless fee
-            sendmany.update(fee: -fee * COIN)
+          if category == "send" and distribution = Distribution.where(txid: txid).first
+            raise "No fee on distribution #{distribution.inspect}" unless fee
+            distribution.update(fee: -fee * COIN)
             next
           end
 
