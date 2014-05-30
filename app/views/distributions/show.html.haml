@@ -1,6 +1,7 @@
 #distribution-show-page
+  - total = @distribution.tips.map(&:amount).sum
   %p
-    Total amount: #{btc_human @distribution.tips.map(&:amount).sum}
+    Total amount: #{btc_human total}
   %table.table
     %thead
       %tr
@@ -14,8 +15,8 @@
           %td.recipient= "#{tip.user.nickname} (GitHub user)"
           %td.address= tip.user.bitcoin_address
           %td.amount= btc_human tip.amount
-          %td.percentage 100
+          %td.percentage= number_to_percentage(tip.amount.to_f * 100 / total, precision: 1)
   - if @distribution.sent?
     Sent
   - elsif can? :send_transaction, @distribution
-    = button_to "Send the transaction", send_transaction_project_distribution_path(@project, @distribution), class: "btn btn-primary", data: {confirm: "#{@distribution.tips.map(&:amount).sum.to_f / COIN} peercoins will be sent. Are you sure?"}
+    = button_to "Send the transaction", send_transaction_project_distribution_path(@project, @distribution), class: "btn btn-primary", data: {confirm: "#{total.to_f / COIN} peercoins will be sent. Are you sure?"}

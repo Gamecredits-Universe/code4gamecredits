@@ -14,7 +14,7 @@ Given(/^I select the recipient "(.*?)"$/) do |arg1|
 end
 
 Given(/^I fill the amount to "(.*?)" with "(.*?)"$/) do |arg1, arg2|
-  within "#recipients tr", text: arg1, exact: true do
+  within "#recipients tr", text: /^#{Regexp.escape arg1}/ do
     fill_in "Amount", with: arg2
   end
 end
