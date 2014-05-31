@@ -139,7 +139,10 @@
                     %li.distribution-link
                       - label = btc_human(distribution.total_amount)
                       - if distribution.sent?
-                        - label << " sent #{time_ago_in_words(distribution.sent_at)} ago"
+                        - if distribution.sent_at
+                          - label << " sent #{time_ago_in_words(distribution.sent_at)} ago"
+                        - else
+                          - label << " sent"
                       - else
                         - label << " not sent"
                       = link_to label, [@project, distribution]
