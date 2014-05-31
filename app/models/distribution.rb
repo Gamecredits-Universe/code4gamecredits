@@ -7,21 +7,21 @@ class Distribution < ActiveRecord::Base
   scope :error, -> { where(is_error: true) }
 
   def sent?
-    !!txid
+    sent_at or txid
   end
 
   def total_amount
-    JSON.parse(data).values.map(&:to_d).sum if data
+    tips.map(&:amount).compact.sum
   end
 
   def send_transaction!
     Distribution.transaction do
       lock!
-      return if sent?
-      return if is_error?
-      return if project.disabled?
+      raise "Already sent" if sent?
+      raise "Transaction already sent and failed" if is_error?
+      raise "Project disabled" if project.disabled?
 
-      update_attribute :is_error, true # it's a lock to prevent duplicates
+      update!(sent_at: Time.now, is_error: true) # it's a lock to prevent duplicates
     end
 
     data = generate_data
@@ -31,8 +31,7 @@ class Distribution < ActiveRecord::Base
 
     txid = BitcoinDaemon.instance.send_many(project.address_label, JSON.parse(data))
 
-    update_attribute :txid, txid
-    update_attribute :is_error, false
+    update!(txid: txid, is_error: false)
   end
 
   def generate_data
@@ -41,5 +40,9 @@ class Distribution < ActiveRecord::Base
       outs[tip.user.bitcoin_address] += tip.amount.to_d / COIN
     end
     outs.to_json
+  end
+
+  def all_addresses_known?
+    tips.all? { |tip| tip.user.bitcoin_address.present? }
   end
 end

@@ -91,6 +91,7 @@ class Tip < ActiveRecord::Base
   end
 
   def notify_user_if_just_decided
+    return if distribution_id
     notify_user if amount_was.nil? and amount
   end
 

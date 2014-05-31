@@ -1,14 +1,20 @@
-%h1 Last Withdrawals
+%h1 Distributions
+- if @project
+  %h2= @project.name
 %p
   %table.table
     %thead
       %tr
         %th Created At
+        %th Sent at
         %th Transaction
         %th Result
+        %th
     %tbody
       - @distributions.each do |distribution|
         %tr
           %td= l distribution.created_at, format: :short
-          %td= link_to distribution.txid, transaction_url(distribution.txid), target: '_blank'
-          %td= distribution.is_error ? "Error" : "Success"
+          %td= l distribution.sent_at, format: :short if distribution.sent_at
+          %td= link_to distribution.txid, transaction_url(distribution.txid), target: '_blank' if distribution.txid.present?
+          %td= distribution.is_error ? "Error" : "Success" if distribution.sent?
+          %td= link_to "Details", [distribution.project, distribution], class: "btn btn-success"

@@ -3,6 +3,10 @@ Given(/^a GitHub user "(.*?)" who has set his address to "(.*?)"$/) do |arg1, ar
   create(:user, email: "#{arg1}@example.com", nickname: arg1, bitcoin_address: arg2)
 end
 
+Given(/^a GitHub user "([^"]*?)"$/) do |arg1|
+  create(:user, email: "#{arg1}@example.com", nickname: arg1, bitcoin_address: nil)
+end
+
 Given(/^I type "(.*?)" in the recipient field$/) do |arg1|
   fill_in "add-recipients-input", with: arg1
 end
@@ -23,7 +27,7 @@ Then(/^I should see these distribution lines:$/) do |table|
   table.hashes.each do |row|
     tr = find("#distribution-show-page tr", text: row["recipient"])
     tr.find(".recipient").should have_content(row["recipient"])
-    tr.find(".address").should have_content(row["address"])
+    tr.find(".address").text.should eq(row["address"])
     tr.find(".amount").should have_content(row["amount"])
     tr.find(".percentage").should have_content(row["percentage"])
   end
@@ -46,5 +50,16 @@ end
 
 Then(/^no coins should have been sent$/) do
   BitcoinDaemon.instance.list_transactions("*").should eq([])
+end
+
+When(/^I set my address to "(.*?)"$/) do |arg1|
+  visit user_path(@current_user)
+  fill_in "Peercoin address", with: arg1
+  click_on "Update"
+  page.should have_content "Your information was saved"
+end
+
+When(/^I click on the last distribution$/) do
+  find("#distribution-list .distribution-link:first-child").click
 end
 

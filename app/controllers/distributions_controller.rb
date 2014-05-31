@@ -30,9 +30,9 @@ class DistributionsController < ApplicationController
 
   def send_transaction
     @distribution.send_transaction!
-    redirect_to [@project, @distribution], notice: "Transaction sent"
+    redirect_to [@project, @distribution], flash: {notice: "Transaction sent"}
   rescue RuntimeError => e
-    redirect_to [@project, @distribution], error: e.message
+    redirect_to [@project, @distribution], flash: {error: e.message}
   end
 
   private

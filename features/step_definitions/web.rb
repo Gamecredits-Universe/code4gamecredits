@@ -10,6 +10,7 @@ Given(/^I'm logged in as "(.*?)"$/) do |arg1|
   visit root_path
   click_on "Sign in"
   page.should have_content("Successfully authenticated")
+  @current_user = User.find_by(nickname: arg1)
 end
 
 Given(/^I'm logged in on GitHub as "(.*?)"$/) do |arg1|
@@ -32,6 +33,16 @@ Given(/^I'm not logged in$/) do
     page.should have_content("Sign in")
   end
 end
+
+When(/^I log out$/) do
+  click_on "Sign Out"
+  page.should have_content "Signed out successfully"
+end
+
+When(/^I log in as "(.*?)"$/) do |arg1|
+  step "I'm logged in as \"#{arg1}\""
+end
+
 
 When(/^I visit the home page$/) do
   visit '/'
@@ -80,7 +91,7 @@ Then(/^I should see the project donation address$/) do
 end
 
 Then(/^I should see the project balance is "(.*?)"$/) do |arg1|
-  page.should have_content("Balance #{arg1}")
+  page.should have_content("Funds #{arg1}")
 end
 
 Then(/^I should see a link "(.*?)" to "(.*?)"$/) do |arg1, arg2|

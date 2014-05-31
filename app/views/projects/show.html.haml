@@ -19,42 +19,11 @@
           = link_to "New distribution", new_project_distribution_path(@project), class: "btn btn-warning"
 
 .row
-  .col-md-4
-    - if @project.disabled?
-      .panel.panel-danger
-        .panel-heading
-          %h4.panel-title
-            Project Disabled
-        .panel-body.text-center
-          %p
-            This project has been disabled.
-            It doesn't accept donation and it will not distribute tips.
-          - if (reason = @project.disabled_reason).present?
-            %p Reason: #{reason}
-
-    - else
-      .panel.panel-default.project-panel
-        .panel-heading
-          %h4.panel-title
-            Project Sponsors
-        .panel-body.text-center
-          %p To give to this project, send peercoins to this address:
-          %p.bitcoin-address
-            = @project.bitcoin_address
-          %p
-            = image_tag qrcode_project_path(@project, format: :svg), alt: @project.bitcoin_address, class: 'project qrcode'
-          %p #{100-(CONFIG["our_fee"]*100).round}% of deposited funds will be used to tip for new commits. 
   .col-md-8
     - unless @project.description.blank?
       %h3= @project.description
     - unless @project.detailed_description.blank?
       = render_markdown @project.detailed_description
-    %h4 Balance
-    = btc_human @project.available_amount
-    - if @project.auto_tip_commits?
-      (each new commit receives #{(CONFIG["tip"]*100).round}% of available balance)
-    - if (unconfirmed_amount = @project.unconfirmed_amount) > 0
-      (#{btc_human unconfirmed_amount} unconfirmed)
 
     - if @project.tipping_policies_text.try(:text).present?
       %h4 Tipping policies
@@ -138,3 +107,53 @@
     %p= link_to image_tag(project_url(@project, format: :svg), alt: 'Peer4Commit'), project_url(@project)
     %p
       %input.form-control{type: 'text', value: "[![tip for next commit](#{project_url(@project, format: :svg)})](#{project_url(@project)})"}
+
+  .col-md-4
+    - if @project.disabled?
+      .panel.panel-danger
+        .panel-heading
+          %h4.panel-title
+            Project Disabled
+        .panel-body.text-center
+          %p
+            This project has been disabled.
+            It doesn't accept donation and it will not distribute tips.
+          - if (reason = @project.disabled_reason).present?
+            %p Reason: #{reason}
+
+    - else
+      .panel.panel-default.project-panel
+        .panel-heading
+          %h4.panel-title
+            Project informations
+        .panel-body.text-center
+          %table.table.text-left
+            %tr
+              %td Funds
+              %td= btc_human @project.available_amount
+            %tr
+              %td Distributions
+              %td
+                %ul.list-unstyled#distribution-list
+                  - @project.distributions.order(created_at: :desc).limit(5).each do |distribution|
+                    %li.distribution-link
+                      - label = btc_human(distribution.total_amount)
+                      - if distribution.sent?
+                        - label << " sent #{time_ago_in_words(distribution.sent_at)} ago"
+                      - else
+                        - label << " not sent"
+                      = link_to label, [@project, distribution]
+                = link_to "All distributions", project_distributions_path(@project)
+
+
+      .panel.panel-default.project-panel
+        .panel-heading
+          %h4.panel-title
+            Donate
+        .panel-body.text-center
+          %p To give to this project, send peercoins to this address:
+          %p.bitcoin-address
+            = @project.bitcoin_address
+          %p
+            = image_tag qrcode_project_path(@project, format: :svg), alt: @project.bitcoin_address, class: 'project qrcode'
+          %p #{100-(CONFIG["our_fee"]*100).round}% of deposited funds will be used to tip for new commits. 

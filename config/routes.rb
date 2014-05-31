@@ -17,7 +17,7 @@ T4c::Application.routes.draw do
   end
   resources :projects, :only => [:new, :show, :index, :create, :edit, :update] do
     resources :tips, :only => [:index]
-    resources :distributions, :only => [:new, :create, :show] do
+    resources :distributions, :only => [:new, :create, :show, :index] do
       get :recipient_suggestions, on: :collection
       post :send_transaction, on: :member
     end

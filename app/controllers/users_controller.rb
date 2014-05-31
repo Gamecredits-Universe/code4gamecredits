@@ -16,7 +16,7 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(users_params)
-      redirect_to @user, notice: 'Your information saved!'
+      redirect_to @user, notice: 'Your information was saved.'
     else
       render :show, alert: 'Error updating peercoin address'
     end

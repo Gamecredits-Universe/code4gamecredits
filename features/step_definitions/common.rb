@@ -6,6 +6,10 @@ Then(/^there should be (\d+) email sent$/) do |arg1|
   ActionMailer::Base.deliveries.size.should eq(arg1.to_i)
 end
 
+Then(/^no email should have been sent$/) do
+  ActionMailer::Base.deliveries.should eq([])
+end
+
 When(/^the email counters are reset$/) do
   ActionMailer::Base.deliveries.clear
 end
@@ -136,3 +140,12 @@ end
 Given(/^an illustration of the history is:$/) do |string|
   # not checked
 end
+
+Given(/^the current time is "(.*?)"$/) do |arg1|
+  Timecop.travel(Time.parse(arg1))
+end
+
+After do
+  Timecop.return
+end
+
