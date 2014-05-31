@@ -38,60 +38,7 @@
           - else
             = "(Last updated on #{date})"
 
-    %h4 Tips Paid
-    = btc_human @project.tips_paid_amount
-
-    - if (failed_distributions = @project.distributions.error).any? and (amount = failed_distributions.map(&:tips).flatten.sum(&:amount)) > 0
-      .alert.alert-danger
-        %strong Some tip transactions failed.
-        A total of #{btc_human amount} may not have been sent.
-
-    - if (tips_paid_unclaimed_amount = @project.tips_paid_unclaimed_amount) > 0
-      (#{btc_human tips_paid_unclaimed_amount} of this is unclaimed, and will be refunded to the project after being unclaimed for 1 month.)
-
-    - if @project.tips.count > 0
-      %h4
-        Last Tips
-        - if @project.tips.count > 5
-          = link_to 'see all', project_tips_path(@project)
-      %ul
-        - @project.tips.includes(:user).order(created_at: :desc).first(5).each do |tip|
-          %li
-            = l tip.created_at, format: :short
-            - if tip.user.nickname.blank?
-              = tip.user.full_name
-            - else
-              = link_to tip.user.full_name, "https://github.com/#{tip.user.nickname}", target: '_blank'
-            - if tip.decided?
-              received
-              = btc_human tip.amount
-            - else
-              will receive a tip
-            - if tip.commit.present?
-              for commit
-              = link_to tip.commit[0..6], "https://github.com/#{@project.full_name}/commit/#{tip.commit}", target: :blank
-            - if tip.undecided?
-              when its amount is decided
-
-    - if @project.next_tip_amount > 0
-      %h4 Next Tip
-      = btc_human @project.next_tip_amount
-
-    %h4 Contribute and Earn
-    Donate peercoins to this project or
-    = link_to 'make commits', @project.github_url, target: '_blank'
-    and get tips for it. If your commit is accepted by project maintainer and there are peercoins on its balance, you will get a tip!
-
-    - if current_user
-      - if current_user.bitcoin_address.blank?
-        Just 
-        = link_to 'tell us', current_user
-        your peercoin address.      
-    - else
-      Just check your email or 
-      %a{href: user_omniauth_authorize_path(:github)} Sign In.
-
-    %h4 Promote #{@project.full_name}
+    %h4 Promote #{@project.name}
     %p
       / AddThis Button BEGIN
       .addthis_toolbox.addthis_default_style.addthis_32x32_style(addthis:data_track_clickback="false" addthis:data_track_addressbar="false")
