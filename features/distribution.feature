@@ -133,8 +133,8 @@ Feature: Fundraisers can distribute funds
     And I click on "Save"
 
     Then I should see these distribution lines:
-      | recipient                               | address                                  | amount | percentage |
-      | bob@example.com                         | Send email request to provide an address |     10 |      100.0 |
+      | recipient                               | address  | amount | percentage |
+      | bob@example.com                         |          |     10 |      100.0 |
     And I should see "The transaction cannot be sent because some addresses are missing"
 
     And no email should have been sent
@@ -145,8 +145,8 @@ Feature: Fundraisers can distribute funds
 
     When I click on "Send email request to provide an address"
     Then I should see these distribution lines:
-      | recipient                                                     | address                            | amount | percentage |
-      | bob@example.com (address request sent less than a minute ago) | Send request to provide an address |     10 |      100.0 |
+      | recipient                                                     | address | amount | percentage |
+      | bob@example.com (address request sent less than a minute ago) |         |     10 |      100.0 |
 
     And an email should have been sent to "bob@example.com"
     When I visit the link to register from the email

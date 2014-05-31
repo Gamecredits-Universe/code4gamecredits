@@ -13,6 +13,7 @@ T4c::Application.routes.draw do
     end
     member do
       post :send_tips_back
+      post :send_email_address_request
     end
   end
   resources :projects, :only => [:new, :show, :index, :create, :edit, :update] do
