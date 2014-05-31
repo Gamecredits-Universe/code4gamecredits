@@ -5,21 +5,11 @@
   = @project.description
   
 .row
-  .col-md-12
+  .col-md-8
     %h1
       = @project.name
       - if (url = @project.github_url).present?
         %small= link_to glyph(:github), url, target: '_blank'
-      .pull-right
-        - if can? :update, @project
-          = link_to "Edit project", edit_project_path(@project), class: "btn btn-primary"
-        - if can? :decide_tip_amounts, @project and @project.has_undecided_tips?
-          = link_to "Decide tip amounts", decide_tip_amounts_project_path(@project), class: "btn btn-warning"
-        - if can? :create, @project.distributions.build
-          = link_to "New distribution", new_project_distribution_path(@project), class: "btn btn-warning"
-
-.row
-  .col-md-8
     - unless @project.description.blank?
       %h3= @project.description
     - unless @project.detailed_description.blank?
@@ -95,6 +85,12 @@
                       = link_to label, [@project, distribution]
                 = link_to "All distributions", project_distributions_path(@project)
 
+          - if can? :update, @project
+            = link_to "Edit project", edit_project_path(@project), class: "btn btn-default btn-sm btn-block"
+          - if can? :decide_tip_amounts, @project and @project.has_undecided_tips?
+            = link_to "Decide tip amounts", decide_tip_amounts_project_path(@project), class: "btn btn-default btn-sm btn-block"
+          - if can? :create, @project.distributions.build
+            = link_to "New distribution", new_project_distribution_path(@project), class: "btn btn-default btn-sm btn-block"
 
       .panel.panel-default.project-panel
         .panel-heading
