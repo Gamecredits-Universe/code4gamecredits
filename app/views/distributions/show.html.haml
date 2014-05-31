@@ -10,7 +10,7 @@
     %tbody
       - @distribution.tips.each do |tip|
         %tr
-          %td.recipient= "#{tip.user.nickname} (GitHub user)"
+          %td.recipient= tip.user.recipient_label
           %td.address= tip.user.bitcoin_address
           %td.amount= btc_human tip.amount
           %td.percentage= number_to_percentage(tip.amount.to_f * 100 / total, precision: 1)

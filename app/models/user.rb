@@ -35,6 +35,24 @@ class User < ActiveRecord::Base
     end
   end
 
+  def password_required?
+    false
+  end
+
+  def recipient_label
+    if nickname.present?
+      "#{nickname} (GitHub user)"
+    elsif email.present?
+      if new_record?
+        "#{email} (unknown email address)"
+      else
+        email
+      end
+    else
+      "Unknown user"
+    end
+  end
+
   private
 
   def generate_login_token!

@@ -25,7 +25,12 @@ end
 
 Then(/^I should see these distribution lines:$/) do |table|
   table.hashes.each do |row|
-    tr = find("#distribution-show-page tr", text: row["recipient"])
+    begin
+      tr = find("#distribution-show-page tbody tr", text: row["recipient"])
+    rescue
+      puts "Rows: " + all("#distribution-show-page tbody tr").map(&:text).inspect
+      raise
+    end
     tr.find(".recipient").should have_content(row["recipient"])
     tr.find(".address").text.should eq(row["address"])
     tr.find(".amount").should have_content(row["amount"])
@@ -61,5 +66,21 @@ end
 
 When(/^I click on the last distribution$/) do
   find("#distribution-list .distribution-link:first-child").click
+end
+
+Then(/^an email should have been sent to "(.*?)"$/) do |arg1|
+  ActionMailer::Base.deliveries.map(&:to).should include([arg1])
+end
+
+When(/^I visit the link to register from the email$/) do
+    pending # express the regexp above with the code you wish you had
+end
+
+Then(/^the user with email "(.*?)" should have "(.*?)" as password$/) do |arg1, arg2|
+    pending # express the regexp above with the code you wish you had
+end
+
+Then(/^the user with email "(.*?)" should have "(.*?)" as peercoin address$/) do |arg1, arg2|
+    pending # express the regexp above with the code you wish you had
 end
 
