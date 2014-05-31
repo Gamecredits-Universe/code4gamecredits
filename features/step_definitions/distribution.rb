@@ -7,6 +7,10 @@ Given(/^a GitHub user "([^"]*?)"$/) do |arg1|
   create(:user, email: "#{arg1}@example.com", nickname: arg1, bitcoin_address: nil)
 end
 
+Given(/^an user with email "(.*?)"$/) do |arg1|
+  create(:user, email: arg1, nickname: nil, bitcoin_address: nil)
+end
+
 Given(/^I type "(.*?)" in the recipient field$/) do |arg1|
   fill_in "add-recipients-input", with: arg1
 end

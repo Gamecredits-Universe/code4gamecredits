@@ -11,14 +11,17 @@
               %td= fields.text_field :coin_amount, hide_label: true
         %a.btn.btn-default.add-recipient-button{href: "#", data: {recipients: recipients}}= "#{user.nickname} (GitHub user)"
     - if params[:text] =~ Devise::email_regexp
-      - recipient_name = "#{params[:text]} (unknown email address)"
+      - user = User.where(email: params[:text]).first_or_initialize
       %li
         - recipients = capture_haml do
-          = f.fields_for :tips, Tip.new(user: User.new(email: params[:text])), child_index: rand(1<<160) do |fields|
+          = f.fields_for :tips, Tip.new(user: user), child_index: rand(1<<160) do |fields|
             %tr
               %td
-                = fields.fields_for :user do |user_fields|
-                  = user_fields.hidden_field :email
-                = recipient_name
+                - if user.new_record?
+                  = fields.fields_for :user do |user_fields|
+                    = user_fields.hidden_field :email
+                - else
+                  = fields.hidden_field :user_id
+                = user.recipient_label
               %td= fields.text_field :coin_amount, hide_label: true
-        %a.btn.btn-default.add-recipient-button{href: "#", data: {recipients: recipients}}= recipient_name
+        %a.btn.btn-default.add-recipient-button{href: "#", data: {recipients: recipients}}= user.recipient_label
