@@ -1,7 +1,5 @@
 #distribution-show-page
   - total = @distribution.tips.map(&:amount).sum
-  %p
-    Total amount: #{btc_human total}
   %table.table
     %thead
       %tr
@@ -16,6 +14,11 @@
           %td.address= tip.user.bitcoin_address
           %td.amount= btc_human tip.amount
           %td.percentage= number_to_percentage(tip.amount.to_f * 100 / total, precision: 1)
+
+  %p
+    %strong
+      Total amount: #{btc_human total}
+
   - if @distribution.is_error?
     %p.alert.alert-danger
       The transaction failed.
@@ -29,7 +32,3 @@
       The transaction cannot be sent because some addresses are missing. Ask the recipients to log in with their GitHub account.
   - elsif can? :send_transaction, @distribution
     = button_to "Send the transaction", send_transaction_project_distribution_path(@project, @distribution), class: "btn btn-primary", data: {confirm: "#{total.to_f / COIN} peercoins will be sent. Are you sure?"}
-
-  - if @distribution.data.present?
-    %h4 Raw data
-    %pre= @distribution.data
