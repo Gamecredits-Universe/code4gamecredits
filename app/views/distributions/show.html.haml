@@ -16,7 +16,7 @@
               = tip.user.bitcoin_address
             - else
               - if tip.user.email.present?
-                = button_to "Send email request to provide an address", send_email_address_request_user_path(tip.user), class: "btn btn-default"
+                = button_to "Send email request to provide an address", send_email_address_request_user_path(tip_id: tip.id, return_url: request.url), class: "btn btn-default"
           %td.amount= btc_human tip.amount
           %td.percentage= number_to_percentage(tip.amount.to_f * 100 / total, precision: 1)
 

@@ -145,18 +145,20 @@ Feature: Fundraisers can distribute funds
 
     When I click on "Send email request to provide an address"
     Then I should see these distribution lines:
-      | recipient                                                     | address | amount | percentage |
-      | bob@example.com (address request sent less than a minute ago) |         |     10 |      100.0 |
+      | recipient       | address | amount | percentage |
+      | bob@example.com |         |     10 |      100.0 |
 
     And an email should have been sent to "bob@example.com"
-    When I visit the link to register from the email
+    And the email should include "alice"
+    And the email should include a link to the last distribution
+    When I visit the link to set my password and address from the email
     And I fill "Password" with "password"
     And I fill "Password confirmation" with "password"
-    And I click on "Save"
     And I fill "Peercoin address" with "mubmzLrtTgDE2WrHkiwSFKuTh2VTSXboYK"
     And I click on "Save"
 
-    Then the user with email "bob@example.com" should have "password" as password
+    Then I should see "Information saved"
+    And the user with email "bob@example.com" should have "password" as password
     And the user with email "bob@example.com" should have "mubmzLrtTgDE2WrHkiwSFKuTh2VTSXboYK" as peercoin address
 
     When I log out
@@ -173,3 +175,7 @@ Feature: Fundraisers can distribute funds
       | address                            | amount |
       | mubmzLrtTgDE2WrHkiwSFKuTh2VTSXboYK |   10.0 |
     And the project balance should be "490.00"
+
+  Scenario: Send to someone who doesn't want to be notified
+  Scenario: Cannot login from email link if a password has already been set
+  Scenario: Cannot login from an old email link

@@ -70,17 +70,34 @@ end
 
 Then(/^an email should have been sent to "(.*?)"$/) do |arg1|
   ActionMailer::Base.deliveries.map(&:to).should include([arg1])
+  @email = ActionMailer::Base.deliveries.detect { |email| email.to == [arg1] }
 end
 
-When(/^I visit the link to register from the email$/) do
-    pending # express the regexp above with the code you wish you had
+Then(/^the email should include "(.*?)"$/) do |arg1|
+  @email.body.should include(arg1)
+end
+
+Then(/^the email should include a link to the last distribution$/) do
+  distribution = Distribution.last
+  @email.body.should include(project_distribution_url(distribution.project, distribution))
+end
+
+When(/^I visit the link to set my password and address from the email$/) do
+  begin
+    link = Nokogiri::HTML.parse(@email.body.decoded).css("a").detect { |el| el.text == "Set your password and address" }
+    link.should_not be_nil
+  rescue
+    puts @email.body
+    raise
+  end
+  visit URI.parse(link["href"]).request_uri
 end
 
 Then(/^the user with email "(.*?)" should have "(.*?)" as password$/) do |arg1, arg2|
-    pending # express the regexp above with the code you wish you had
+  User.find_by(email: arg1).valid_password?(arg2).should eq(true)
 end
 
 Then(/^the user with email "(.*?)" should have "(.*?)" as peercoin address$/) do |arg1, arg2|
-    pending # express the regexp above with the code you wish you had
+  User.find_by(email: arg1).bitcoin_address.should eq(arg2)
 end
 

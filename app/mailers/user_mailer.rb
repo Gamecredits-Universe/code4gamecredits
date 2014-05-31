@@ -12,4 +12,11 @@ class UserMailer < ActionMailer::Base
     @user = user
     mail to: user.email, subject: "Security issue on peer4commit.com"
   end
+
+  def address_request(tip, collaborator)
+    @collaborator = collaborator
+    @tip = tip
+    @user = tip.user
+    mail to: @user.email, subject: "[#{tip.project.name}] Provide an address to get your reward"
+  end
 end

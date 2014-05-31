@@ -1,4 +1,4 @@
-if (SEND_ALL_EMAILS_TO = CONFIG["send_all_emails_to"]).present?
+if (SEND_ALL_EMAILS_TO = CONFIG["send_all_emails_to"]).present? and !Rails.env.test?
   class MailInterceptor
     def self.delivering_email(message)  
       message.subject = "[#{CONFIG['smtp_settings']['domain']} to #{message.to.join(", ")}] #{message.subject}"

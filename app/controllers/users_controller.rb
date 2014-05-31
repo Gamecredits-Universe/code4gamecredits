@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_action except: [:login, :index] do
+  before_action except: [:login, :index, :send_email_address_request, :set_password_and_address] do
     @user = User.where(id: params[:id]).first
     unless current_user && current_user == @user
       redirect_to root_path
@@ -40,6 +40,26 @@ class UsersController < ApplicationController
       tip.touch :refunded_at
     end
     redirect_to @user, notice: 'All your tips have been refunded to their project'
+  end
+
+  def send_email_address_request
+    tip = Tip.find(params[:tip_id])
+    authorize! :update, tip.distribution
+    UserMailer.address_request(tip, current_user).deliver
+    redirect_to params[:return_url], notice: "Request sent"
+  end
+
+  def set_password_and_address
+    @user = User.find(params[:id])
+    raise "Invalid token" unless Devise.secure_compare(params[:token], @user.login_token)
+    if params[:user]
+      @user.attributes = params.require(:user).permit(:password, :password_confirmation, :bitcoin_address)
+      if @user.password.present? and @user.bitcoin_address.present? and @user.save
+        redirect_to root_path, notice: "Information saved"
+      else
+        flash.now[:alert] = "Please fill all the information"
+      end
+    end
   end
 
   private
