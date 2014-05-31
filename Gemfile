@@ -85,7 +85,3 @@ group :test do
   gem 'poltergeist'
   gem 'timecop'
 end
-
-group :development, :test do
-  gem 'letters'
-end
