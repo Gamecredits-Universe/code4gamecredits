@@ -25,6 +25,21 @@ class DistributionsController < ApplicationController
     end
   end
 
+  def edit
+  end
+
+  def update
+    @distribution.attributes = distribution_params
+    @distribution.tips.each do |tip|
+      tip.project = @project
+    end
+    if @distribution.save
+      redirect_to [@project, @distribution], notice: "Distribution updated"
+    else
+      render "edit"
+    end
+  end
+
   def show
   end
 
@@ -38,7 +53,6 @@ class DistributionsController < ApplicationController
   private
 
   def distribution_params
-    params.require(:distribution).permit(tips_attributes: [:coin_amount, :user_id, {user_attributes: [:email]}])
+    params.require(:distribution).permit(tips_attributes: [:id, :coin_amount, :user_id, {user_attributes: [:email]}])
   end
-
 end

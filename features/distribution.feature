@@ -177,5 +177,54 @@ Feature: Fundraisers can distribute funds
     And the project balance should be "490.00"
 
   Scenario: Send to someone who doesn't want to be notified
+    Then pending
+
   Scenario: Cannot login from email link if a password has already been set
+    Then pending
+
   Scenario: Cannot login from an old email link
+    Then pending
+
+  @javascript
+  Scenario: Edit a distribution
+    Given a GitHub user "bob" who has set his address to "mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1"
+
+    Given a project managed by "alice"
+    And our fee is "0"
+    And a deposit of "500"
+
+    Given I'm logged in as "alice"
+    And I go to the project page
+    And I click on "New distribution"
+    And I type "bob" in the recipient field
+    And I select the recipient "bob (GitHub user)"
+    And I fill the amount to "bob (GitHub user)" with "10"
+    And I click on "Save"
+
+    Then I should see these distribution lines:
+      | recipient         | address                            | amount | percentage |
+      | bob (GitHub user) | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 |     10 |        100 |
+    And I should see "Total amount: 10.00 PPC"
+
+    Given a GitHub user "carol" who has set his address to "mi9SLroAgc8eUNuLwnZmdyqWdShbNtvr3n"
+
+    And I click on "Edit"
+    And I fill the amount to "bob (GitHub user)" with "15"
+    And I type "carol" in the recipient field
+    And I select the recipient "carol (GitHub user)"
+    And I fill the amount to "carol (GitHub user)" with "5"
+    And I click on "Save"
+
+    Then I should see these distribution lines:
+      | recipient           | address                            | amount | percentage |
+      | bob (GitHub user)   | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 |     15 |       75.0 |
+      | carol (GitHub user) | mi9SLroAgc8eUNuLwnZmdyqWdShbNtvr3n |      5 |       25.0 |
+
+    When I click on "Send the transaction"
+    Then I should see "Transaction sent"
+    And these amounts should have been sent from the account of the project:
+      | address                            | amount |
+      | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 |   15.0 |
+      | mi9SLroAgc8eUNuLwnZmdyqWdShbNtvr3n |    5.0 |
+    And the project balance should be "480"
+

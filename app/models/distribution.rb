@@ -43,6 +43,10 @@ class Distribution < ActiveRecord::Base
   end
 
   def all_addresses_known?
-    tips.all? { |tip| tip.user.bitcoin_address.present? }
+    tips.all? { |tip| tip.user.try(:bitcoin_address).present? }
+  end
+
+  def can_be_sent?
+    !sent? and all_addresses_known?
   end
 end

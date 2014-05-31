@@ -10,12 +10,12 @@
     %tbody
       - @distribution.tips.each do |tip|
         %tr
-          %td.recipient= tip.user.recipient_label
+          %td.recipient= tip.user.try(:recipient_label)
           %td.address
-            - if tip.user.bitcoin_address.present?
+            - if tip.user.try(:bitcoin_address).present?
               = tip.user.bitcoin_address
             - else
-              - if tip.user.email.present?
+              - if tip.user.try(:email).present?
                 = button_to "Send email request to provide an address", send_email_address_request_user_path(tip_id: tip.id, return_url: request.url), class: "btn btn-default"
           %td.amount= btc_human tip.amount
           %td.percentage= number_to_percentage(tip.amount.to_f * 100 / total, precision: 1)
@@ -35,5 +35,10 @@
   - elsif !@distribution.all_addresses_known?
     %p.alert.alert-warning
       The transaction cannot be sent because some addresses are missing. Ask the recipients to log in with their GitHub account.
-  - elsif can? :send_transaction, @distribution
-    = button_to "Send the transaction", send_transaction_project_distribution_path(@project, @distribution), class: "btn btn-primary", data: {confirm: "#{total.to_f / COIN} peercoins will be sent. Are you sure?"}
+  .distribution-actions
+    - if can? :send_transaction, @distribution
+      .distribution-action
+        = button_to "Send the transaction", send_transaction_project_distribution_path(@project, @distribution), class: "btn btn-default", data: {confirm: "#{total.to_f / COIN} peercoins will be sent. Are you sure?"}
+    - if can? :update, @distribution
+      .distribution-action
+        = link_to "Edit", edit_project_distribution_path(@project, @distribution), class: "btn btn-default"
