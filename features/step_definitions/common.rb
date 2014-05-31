@@ -149,3 +149,7 @@ After do
   Timecop.return
 end
 
+Then(/^pending$/) do
+  pending
+end
+
