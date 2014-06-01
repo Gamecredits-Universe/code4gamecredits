@@ -10,6 +10,8 @@ class Project < ActiveRecord::Base
   has_one :tipping_policies_text, inverse_of: :project
   accepts_nested_attributes_for :tipping_policies_text
 
+  has_paper_trail
+
   validates :name, presence: true
 
   before_validation :strip_full_name

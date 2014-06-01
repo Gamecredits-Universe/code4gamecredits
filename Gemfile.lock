@@ -206,6 +206,9 @@ GEM
       oauth2 (~> 0.8.0)
       omniauth (~> 1.0)
     orm_adapter (0.5.0)
+    paper_trail (3.0.2)
+      activerecord (>= 3.0, < 5.0)
+      activesupport (>= 3.0, < 5.0)
     pg (0.17.1)
     poltergeist (1.5.1)
       capybara (~> 2.1)
@@ -340,6 +343,7 @@ DEPENDENCIES
   octokit
   omniauth
   omniauth-github!
+  paper_trail (~> 3.0.2)
   pg
   poltergeist
   quiet_assets

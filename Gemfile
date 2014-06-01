@@ -76,6 +76,7 @@ gem 'html_pipeline_rails'
 gem 'rails_autolink'
 gem 'redcarpet'
 gem 'sanitize'
+gem 'paper_trail', '~> 3.0.2'
 
 group :test do
   gem 'cucumber-rails', :require => false

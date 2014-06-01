@@ -4,6 +4,8 @@ class Tip < ActiveRecord::Base
   belongs_to :distribution
   belongs_to :project, inverse_of: :tips
 
+  has_paper_trail
+
   validates :amount, numericality: {greater_or_equal_than: 0, allow_nil: true}
 
   scope :not_sent,      -> { where(distribution_id: nil) }

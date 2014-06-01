@@ -3,6 +3,8 @@ class Distribution < ActiveRecord::Base
   has_many :tips
   accepts_nested_attributes_for :tips
 
+  has_paper_trail
+
   scope :to_send, -> { where(txid: nil) }
   scope :error, -> { where(is_error: true) }
 
