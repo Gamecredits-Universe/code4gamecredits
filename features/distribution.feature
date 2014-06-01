@@ -117,7 +117,7 @@ Feature: Fundraisers can distribute funds
     And the project balance should be "490.00"
 
   @javascript
-  Scenario: Send to an email address
+  Scenario: Send to an unknown email address
     Given the current time is "2014-03-01 12:35:02 UTC"
 
     Given a project managed by "alice"
@@ -263,14 +263,17 @@ Feature: Fundraisers can distribute funds
     And an email should have been sent to "bob@example.com"
     And the email should include "alice"
     And the email should include a link to the last distribution
-    When I visit the link to set my password and address from the email
+    When I log out
+    And I click on the "Set your Peercoin address" link in the email
+    Then I should see "Forgot your password?"
+    When I fill "Email" with "bob@example.com"
     And I fill "Password" with "password"
-    And I fill "Password confirmation" with "password"
-    And I fill "Peercoin address" with "mubmzLrtTgDE2WrHkiwSFKuTh2VTSXboYK"
-    And I click on "Save"
+    And I click on "Sign in" in the sign in form
+    Then I should see "Peercoin address"
+    When I fill "Peercoin address" with "mubmzLrtTgDE2WrHkiwSFKuTh2VTSXboYK"
+    And I click on "Update"
+    Then I should see "Your information was saved"
 
-    Then I should see "Information saved"
-    And the user with email "bob@example.com" should have "password" as password
     And the user with email "bob@example.com" should have "mubmzLrtTgDE2WrHkiwSFKuTh2VTSXboYK" as peercoin address
 
     When I log out

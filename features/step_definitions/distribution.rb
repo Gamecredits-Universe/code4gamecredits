@@ -42,17 +42,6 @@ Then(/^I should see these distribution lines:$/) do |table|
   end
 end
 
-Then(/^these amounts should have been sent from the account of the project:$/) do |table|
-  BitcoinDaemon.instance.list_transactions(@project.address_label).map do |tx|
-    if tx["category"] == "send"
-      {
-        "address" => tx["address"],
-        "amount" => (-tx["amount"]).to_s,
-      }
-    end
-  end.compact.should eq(table.hashes)
-end
-
 When(/^the tipper is started$/) do
   BitcoinTipper.work
 end
@@ -87,14 +76,7 @@ Then(/^the email should include a link to the last distribution$/) do
 end
 
 When(/^I visit the link to set my password and address from the email$/) do
-  begin
-    link = Nokogiri::HTML.parse(@email.body.decoded).css("a").detect { |el| el.text == "Set your password and address" }
-    link.should_not be_nil
-  rescue
-    puts @email.body
-    raise
-  end
-  visit URI.parse(link["href"]).request_uri
+  step "I click on the \"Set your password and Peercoin address\" link in the email"
 end
 
 Then(/^the user with email "(.*?)" should have "(.*?)" as password$/) do |arg1, arg2|

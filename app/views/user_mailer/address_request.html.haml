@@ -5,9 +5,12 @@
   = link_to "More details on the distribution", project_distribution_url(@tip.project, @tip.distribution)
 
 %p
-  To get your reward you must provide a Peercoin address and lock it with a password.
+  To get your reward you must provide a Peercoin address.
 
-%p= link_to 'Set your password and address', set_password_and_address_user_url(@user, token: @user.login_token)
+- if @user.confirmed?
+  %p= link_to "Set your Peercoin address", user_url(@user)
+- else
+  %p= link_to 'Set your password and Peercoin address', set_password_and_address_user_url(@user, token: @user.confirmation_token)
 
 %p Thank you.
 

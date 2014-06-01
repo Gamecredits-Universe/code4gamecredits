@@ -9,6 +9,11 @@ Then(/^there should be (\d+) email sent$/) do |arg1|
     p ActionMailer::Base.deliveries
     raise
   end
+  @email = ActionMailer::Base.deliveries.first
+end
+
+Then(/^(\d+) email should have been sent$/) do |arg1|
+  step "there should be #{arg1} email sent"
 end
 
 Then(/^no email should have been sent$/) do
@@ -159,3 +164,17 @@ Then(/^pending$/) do
   pending
 end
 
+Then(/^these amounts should have been sent from the account of the project:$/) do |table|
+  BitcoinDaemon.instance.list_transactions(@project.address_label).map do |tx|
+    if tx["category"] == "send"
+      {
+        "address" => tx["address"],
+        "amount" => (-tx["amount"]).to_s,
+      }
+    end
+  end.compact.should eq(table.hashes)
+end
+
+When(/^the transaction history is cleared$/) do
+  BitcoinDaemon.instance.clear_transaction_history
+end

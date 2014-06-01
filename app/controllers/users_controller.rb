@@ -2,8 +2,12 @@ class UsersController < ApplicationController
 
   before_action except: [:login, :index, :send_email_address_request, :set_password_and_address] do
     @user = User.where(id: params[:id]).first
-    unless current_user && current_user == @user
-      redirect_to root_path
+    if current_user
+      if current_user != @user
+        redirect_to root_path, alert: "Access denied"
+      end
+    else
+      redirect_to new_user_session_path(return_url: request.url)
     end
   end
 
@@ -51,10 +55,12 @@ class UsersController < ApplicationController
 
   def set_password_and_address
     @user = User.find(params[:id])
-    raise "Invalid token" unless Devise.secure_compare(params[:token], @user.login_token)
+    raise "Blank token" if params[:token].blank?
+    raise "Invalid token" unless Devise.secure_compare(params[:token], @user.confirmation_token)
     if params[:user]
       @user.attributes = params.require(:user).permit(:password, :password_confirmation, :bitcoin_address)
       if @user.password.present? and @user.bitcoin_address.present? and @user.save
+        @user.confirm!
         redirect_to root_path, notice: "Information saved"
       else
         flash.now[:alert] = "Please fill all the information"

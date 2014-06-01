@@ -61,6 +61,12 @@ Given(/^I click on "(.*?)"$/) do |arg1|
   click_on(arg1)
 end
 
+Given(/^I click on "(.*?)" in the sign in form$/) do |arg1|
+  within ".form-devise" do
+    click_on(arg1)
+  end
+end
+
 Given(/^I check "(.*?)"$/) do |arg1|
   check(arg1)
 end
@@ -108,3 +114,20 @@ end
 Then(/^I should not see the image "(.*?)"$/) do |arg1|
   find("img[src=\"#{arg1}\"]")
 end
+
+When(/^I click on the "(.*?)" link in the email$/) do |arg1|
+  begin
+    link = Nokogiri::HTML.parse(@email.body.decoded).css("a").detect { |el| el.text == arg1 }
+    link.should_not be_nil
+  rescue
+    puts @email.body
+    raise
+  end
+  url = URI.parse(link["href"]).request_uri
+  visit url
+end
+
+Then(/^the user with email "(.*?)" should have his email confirmed$/) do |arg1|
+  User.find_by(email: arg1).confirmed?.should be_true
+end
+

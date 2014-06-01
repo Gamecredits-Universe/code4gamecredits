@@ -18,7 +18,7 @@ Given(/^the commits on GitHub for project "(.*?)" are$/) do |arg1, table|
       commit: OpenStruct.new(
         message: row["message"] || "Some changes",
         author: OpenStruct.new(
-          email: "author@example.com",
+          email: row["email"] || "author@example.com",
         ),
         committer: OpenStruct.new(
           date: Time.now,

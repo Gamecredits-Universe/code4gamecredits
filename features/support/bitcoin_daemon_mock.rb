@@ -27,6 +27,10 @@ class BitcoinDaemonMock
     @transactions.select { |t| account == "*" ? true : (t["account"] == account) }[from, count]
   end
 
+  def clear_transaction_history
+    @transactions.clear
+  end
+
   def send_many(account, recipients, minconf = 1)
     txid = SecureRandom.hex(64)
     recipients.each do |recipient, amount|
