@@ -10,7 +10,14 @@
     %tbody
       - @distribution.tips.each do |tip|
         %tr
-          %td.recipient= tip.user.try(:recipient_label)
+          %td.recipient
+            - if tip.user
+              - if tip.user.new_record?
+                = tip.user.recipient_label
+              - else
+                = link_to tip.user.recipient_label, tip.user
+            - else
+              Nobody
           %td.address
             - if tip.user.try(:bitcoin_address).present?
               = tip.user.bitcoin_address

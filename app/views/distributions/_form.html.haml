@@ -7,11 +7,12 @@
           %th Amount
         %tbody#recipients
           = f.fields_for :tips do |fields|
+            - user = fields.object.user
             %tr
               %td
                 = fields.hidden_field :id
                 = fields.hidden_field :user_id
-                = fields.object.user.recipient_label
+                = link_to user.recipient_label, user
               %td= fields.text_field :coin_amount, hide_label: true
       .form-group
         %label{for: "add-recipients-input"} Add recipient(s)

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_action except: [:login, :index, :send_email_address_request, :set_password_and_address] do
+  before_action except: [:show, :login, :index, :send_email_address_request, :set_password_and_address] do
     @user = User.where(id: params[:id]).first
     if current_user
       if current_user != @user
@@ -12,6 +12,7 @@ class UsersController < ApplicationController
   end
 
   def show
+    @user = User.find(params[:id])
   end
 
   def index

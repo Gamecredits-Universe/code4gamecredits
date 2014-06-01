@@ -35,7 +35,7 @@ Then(/^I should see these distribution lines:$/) do |table|
       puts "Rows: " + all("#distribution-show-page tbody tr").map(&:text).inspect
       raise
     end
-    tr.find(".recipient").should have_content(row["recipient"])
+    tr.find(".recipient").text.should eq(row["recipient"])
     tr.find(".address").text.should eq(row["address"])
     tr.find(".amount").should have_content(row["amount"])
     tr.find(".percentage").should have_content(row["percentage"])

@@ -42,10 +42,10 @@ class User < ActiveRecord::Base
 
   def recipient_label
     if nickname.present?
-      "#{nickname} (GitHub user)"
+      nickname
     elsif email.present?
       if new_record?
-        "#{email} (unknown email address)"
+        "#{email} (new user)"
       else
         email
       end

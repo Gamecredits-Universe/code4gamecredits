@@ -11,13 +11,13 @@ Feature: Fundraisers can distribute funds
     And I go to the project page
     And I click on "New distribution"
     And I type "bob" in the recipient field
-    And I select the recipient "bob (GitHub user)"
-    And I fill the amount to "bob (GitHub user)" with "10"
+    And I select the recipient "bob"
+    And I fill the amount to "bob" with "10"
     And I click on "Save"
 
     Then I should see these distribution lines:
-      | recipient         | address                            | amount | percentage |
-      | bob (GitHub user) | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 |     10 |        100 |
+      | recipient | address                            | amount | percentage |
+      | bob       | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 |     10 |        100 |
     And I should see "Total amount: 10.00 PPC"
 
     When the tipper is started
@@ -45,17 +45,17 @@ Feature: Fundraisers can distribute funds
     And I go to the project page
     And I click on "New distribution"
     And I type "bob" in the recipient field
-    And I select the recipient "bob (GitHub user)"
-    And I fill the amount to "bob (GitHub user)" with "10"
+    And I select the recipient "bob"
+    And I fill the amount to "bob" with "10"
     And I type "carol" in the recipient field
-    And I select the recipient "carol (GitHub user)"
-    And I fill the amount to "carol (GitHub user)" with "13.56"
+    And I select the recipient "carol"
+    And I fill the amount to "carol" with "13.56"
     And I click on "Save"
 
     Then I should see these distribution lines:
-      | recipient           | address                            | amount | percentage |
-      | bob (GitHub user)   | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 |     10 |       42.4 |
-      | carol (GitHub user) | mi9SLroAgc8eUNuLwnZmdyqWdShbNtvr3n |  13.56 |       57.6 |
+      | recipient | address                            | amount | percentage |
+      | bob       | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 |     10 |       42.4 |
+      | carol     | mi9SLroAgc8eUNuLwnZmdyqWdShbNtvr3n |  13.56 |       57.6 |
     And I should see "Total amount: 23.56 PPC"
 
     When the tipper is started
@@ -81,13 +81,13 @@ Feature: Fundraisers can distribute funds
     And I go to the project page
     And I click on "New distribution"
     And I type "bob" in the recipient field
-    And I select the recipient "bob (GitHub user)"
-    And I fill the amount to "bob (GitHub user)" with "10"
+    And I select the recipient "bob"
+    And I fill the amount to "bob" with "10"
     And I click on "Save"
 
     Then I should see these distribution lines:
-      | recipient           | address                            | amount | percentage |
-      | bob (GitHub user)   |                                    |     10 |      100.0 |
+      | recipient | address                            | amount | percentage |
+      | bob       |                                    |     10 |      100.0 |
     And I should see "Total amount: 10.00 PPC"
     And I should not see "Send the transaction"
     And I should see "The transaction cannot be sent because some addresses are missing"
@@ -106,8 +106,8 @@ Feature: Fundraisers can distribute funds
     And I go to the project page
     And I click on the last distribution
     Then I should see these distribution lines:
-      | recipient           | address                            | amount | percentage |
-      | bob (GitHub user)   | mnVba8qrpy5uxYD7dV4NZMQPWjgdt2QC1i |     10 |      100.0 |
+      | recipient | address                            | amount | percentage |
+      | bob       | mnVba8qrpy5uxYD7dV4NZMQPWjgdt2QC1i |     10 |      100.0 |
 
     When I click on "Send the transaction"
     Then I should see "Transaction sent"
@@ -128,13 +128,13 @@ Feature: Fundraisers can distribute funds
     And I go to the project page
     And I click on "New distribution"
     And I type "bob@example.com" in the recipient field
-    And I select the recipient "bob@example.com (unknown email address)"
-    And I fill the amount to "bob@example.com (unknown email address)" with "10"
+    And I select the recipient "bob@example.com (new user)"
+    And I fill the amount to "bob@example.com (new user)" with "10"
     And I click on "Save"
 
     Then I should see these distribution lines:
-      | recipient                               | address  | amount | percentage |
-      | bob@example.com                         |          |     10 |      100.0 |
+      | recipient       | address  | amount | percentage |
+      | bob@example.com |          |     10 |      100.0 |
     And I should see "The transaction cannot be sent because some addresses are missing"
 
     And no email should have been sent
@@ -197,28 +197,28 @@ Feature: Fundraisers can distribute funds
     And I go to the project page
     And I click on "New distribution"
     And I type "bob" in the recipient field
-    And I select the recipient "bob (GitHub user)"
-    And I fill the amount to "bob (GitHub user)" with "10"
+    And I select the recipient "bob"
+    And I fill the amount to "bob" with "10"
     And I click on "Save"
 
     Then I should see these distribution lines:
-      | recipient         | address                            | amount | percentage |
-      | bob (GitHub user) | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 |     10 |        100 |
+      | recipient | address                            | amount | percentage |
+      | bob       | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 |     10 |        100 |
     And I should see "Total amount: 10.00 PPC"
 
     Given a GitHub user "carol" who has set his address to "mi9SLroAgc8eUNuLwnZmdyqWdShbNtvr3n"
 
     And I click on "Edit"
-    And I fill the amount to "bob (GitHub user)" with "15"
+    And I fill the amount to "bob" with "15"
     And I type "carol" in the recipient field
-    And I select the recipient "carol (GitHub user)"
-    And I fill the amount to "carol (GitHub user)" with "5"
+    And I select the recipient "carol"
+    And I fill the amount to "carol" with "5"
     And I click on "Save"
 
     Then I should see these distribution lines:
-      | recipient           | address                            | amount | percentage |
-      | bob (GitHub user)   | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 |     15 |       75.0 |
-      | carol (GitHub user) | mi9SLroAgc8eUNuLwnZmdyqWdShbNtvr3n |      5 |       25.0 |
+      | recipient | address                            | amount | percentage |
+      | bob       | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 |     15 |       75.0 |
+      | carol     | mi9SLroAgc8eUNuLwnZmdyqWdShbNtvr3n |      5 |       25.0 |
 
     When I click on "Send the transaction"
     Then I should see "Transaction sent"
