@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140601072522) do
+ActiveRecord::Schema.define(version: 20140601104108) do
 
   create_table "cold_storage_transfers", force: true do |t|
     t.integer  "project_id"
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 20140601072522) do
     t.integer  "available_amount_cache",          limit: 8
     t.string   "github_id"
     t.string   "address_label"
-    t.boolean  "hold_tips",                                 default: false
+    t.boolean  "hold_tips",                                 default: true
     t.string   "cold_storage_withdrawal_address"
     t.boolean  "disabled",                                  default: false
     t.integer  "account_balance",                 limit: 8
@@ -86,7 +86,6 @@ ActiveRecord::Schema.define(version: 20140601072522) do
     t.text     "detailed_description"
   end
 
-  add_index "projects", ["full_name"], name: "index_projects_on_full_name", unique: true
   add_index "projects", ["github_id"], name: "index_projects_on_github_id", unique: true
 
   create_table "tipping_policies_texts", force: true do |t|
