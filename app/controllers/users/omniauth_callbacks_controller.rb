@@ -8,12 +8,12 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
     unless @user
       if info['primary_email']
-        generated_password = Devise.friendly_token.first(8)
-        @user = User.create!(
+        @user = User.new(
           :email => info['primary_email'],
-          :password => generated_password,
           :nickname => info['nickname']
         )
+        @user.confirm!
+        @user.save!
       else
         set_flash_message(:error, :failure, kind: 'GitHub', reason: 'your primary email address should be verified.')
         redirect_to new_user_session_path and return

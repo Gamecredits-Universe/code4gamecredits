@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
          :rememberable, :trackable, :validatable
 
   devise :omniauthable, :omniauth_providers => [:github]
+  devise :confirmable, reconfirmable: true
 
   validates :bitcoin_address, bitcoin_address: true
 

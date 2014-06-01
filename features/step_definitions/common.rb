@@ -3,7 +3,12 @@ Before do
 end
 
 Then(/^there should be (\d+) email sent$/) do |arg1|
-  ActionMailer::Base.deliveries.size.should eq(arg1.to_i)
+  begin
+    ActionMailer::Base.deliveries.size.should eq(arg1.to_i)
+  rescue
+    p ActionMailer::Base.deliveries
+    raise
+  end
 end
 
 Then(/^no email should have been sent$/) do
@@ -128,7 +133,8 @@ Given(/^the project single collaborator is "(.*?)"$/) do |arg1|
 end
 
 Given(/^a project managed by "(.*?)"$/) do |arg1|
-  create(:user, email: "#{arg1}@example.com", nickname: arg1)
+  user = create(:user, email: "#{arg1}@example.com", nickname: arg1)
+  user.confirm!
   @project = Project.create!(name: "#{arg1} project", bitcoin_address: 'mq4NtnmQoQoPfNWEPbhSvxvncgtGo6L8WY', address_label: "example_project_account")
   @project.collaborators.create!(login: arg1)
 end

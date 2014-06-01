@@ -80,17 +80,19 @@ class Project < ActiveRecord::Base
       # create user
       unless user
         generated_password = Devise.friendly_token.first(8)
-        user = User.create(
+        user = User.new(
           email: email,
           password: generated_password,
           name: commit.commit.author.name,
-          nickname: nickname,
         )
+        user.skip_confirmation_notification!
       end
 
-      if nickname
-        user.update nickname: nickname
+      if nickname.present? and user.nickname.blank?
+        user.nickname = nickname
       end
+
+      user.save!
 
       if hold_tips
         amount = nil

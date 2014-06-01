@@ -15,9 +15,7 @@ class DistributionsController < ApplicationController
 
   def create
     @distribution.project = @project
-    @distribution.tips.each do |tip|
-      tip.project = @project
-    end
+    finalize_distribution
     if @distribution.save
       redirect_to [@project, @distribution], notice: "Distribution created"
     else
@@ -30,9 +28,7 @@ class DistributionsController < ApplicationController
 
   def update
     @distribution.attributes = distribution_params
-    @distribution.tips.each do |tip|
-      tip.project = @project
-    end
+    finalize_distribution
     if @distribution.save
       redirect_to [@project, @distribution], notice: "Distribution updated"
     else
@@ -54,5 +50,14 @@ class DistributionsController < ApplicationController
 
   def distribution_params
     params.require(:distribution).permit(tips_attributes: [:id, :coin_amount, :user_id, {user_attributes: [:email]}])
+  end
+
+  def finalize_distribution
+    @distribution.tips.each do |tip|
+      tip.project = @project
+      if tip.user.new_record?
+        tip.user.skip_confirmation_notification!
+      end
+    end
   end
 end

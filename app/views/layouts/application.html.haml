@@ -38,7 +38,7 @@
               \/
               = link_to 'Sign Out', destroy_user_session_path, method: :delete
             - else
-              = link_to "Sign in", new_user_session_path
+              = link_to "Sign in", new_user_session_path(return_url: request.url)
         %h3.text-muted.code-pro Peer4Commit
         = render 'common/menu'
         = render_flash_message

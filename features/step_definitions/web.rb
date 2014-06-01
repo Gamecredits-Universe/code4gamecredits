@@ -9,6 +9,7 @@ Given(/^I'm logged in as "(.*?)"$/) do |arg1|
   }
   visit root_path
   click_on "Sign in"
+  click_on "Sign in with Github"
   page.should have_content("Successfully authenticated")
   @current_user = User.find_by(nickname: arg1)
 end
