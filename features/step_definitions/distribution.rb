@@ -48,10 +48,10 @@ Then(/^I should see these distribution lines:$/) do |table|
       raise
     end
     tr.find(".recipient").text.should eq(row["recipient"])
-    tr.find(".address").text.should eq(row["address"])
-    tr.find(".amount").should have_content(row["amount"])
-    tr.find(".percentage").should have_content(row["percentage"])
-    tr.find(".comment").should have_content(row["comment"]) if row["comment"]
+    tr.find(".address").text.should eq(row["address"]) if row["address"]
+    tr.find(".amount").text.should eq(row["amount"]) if row["amount"]
+    tr.find(".percentage").text.should eq(row["percentage"]) if row["percentage"]
+    tr.find(".comment").text.should eq(row["comment"]) if row["comment"]
   end
   table.hashes.size.should eq(all("#distribution-show-page tbody tr").size)
 end

@@ -109,7 +109,7 @@ class Tip < ActiveRecord::Base
   end
 
   def coin_amount=(coin_amount)
-    if coin_amount
+    if coin_amount.present?
       self.amount = (coin_amount.to_f * COIN).round
     else
       self.amount = nil

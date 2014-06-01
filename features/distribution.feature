@@ -341,3 +341,22 @@ Feature: Fundraisers can distribute funds
     And I click on "Save"
     Then I should see these distribution lines:
       | recipient | address                            | comment    | amount | percentage |
+
+  @javascript
+  Scenario: Create distribution line without an amount
+    Given a GitHub user "bob"
+
+    Given a project managed by "alice"
+    And our fee is "0"
+    And a deposit of "500"
+
+    When I'm logged in as "alice"
+    And I go to the project page
+    And I click on "New distribution"
+    And I type "bob" in the recipient field
+    And I select the recipient "bob"
+    And I click on "Save"
+
+    Then I should see these distribution lines:
+      | recipient | amount    | percentage |
+      | bob       | Undecided |            |
