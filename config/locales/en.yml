@@ -31,3 +31,4 @@ en:
         detailed_description: Detailed description
       tip:
         coin_amount: Amount
+        description: Comment

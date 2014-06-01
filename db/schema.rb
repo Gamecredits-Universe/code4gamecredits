@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140601104108) do
+ActiveRecord::Schema.define(version: 20140601144116) do
 
   create_table "cold_storage_transfers", force: true do |t|
     t.integer  "project_id"
@@ -109,6 +109,7 @@ ActiveRecord::Schema.define(version: 20140601104108) do
     t.integer  "project_id"
     t.datetime "refunded_at"
     t.string   "commit_message"
+    t.string   "comment"
   end
 
   add_index "tips", ["distribution_id"], name: "index_tips_on_distribution_id"

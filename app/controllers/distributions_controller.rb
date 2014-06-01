@@ -49,7 +49,7 @@ class DistributionsController < ApplicationController
   private
 
   def distribution_params
-    params.require(:distribution).permit(tips_attributes: [:id, :coin_amount, :user_id, {user_attributes: [:email]}])
+    params.require(:distribution).permit(tips_attributes: [:id, :coin_amount, :user_id, :comment, {user_attributes: [:email]}])
   end
 
   def finalize_distribution

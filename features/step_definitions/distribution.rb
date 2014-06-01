@@ -27,6 +27,12 @@ Given(/^I fill the amount to "(.*?)" with "(.*?)"$/) do |arg1, arg2|
   end
 end
 
+Given(/^I fill the comment to "(.*?)" with "(.*?)"$/) do |arg1, arg2|
+  within "#recipients tr", text: /^#{Regexp.escape arg1}/ do
+    fill_in "Comment", with: arg2
+  end
+end
+
 Then(/^I should see these distribution lines:$/) do |table|
   table.hashes.each do |row|
     begin
@@ -39,6 +45,7 @@ Then(/^I should see these distribution lines:$/) do |table|
     tr.find(".address").text.should eq(row["address"])
     tr.find(".amount").should have_content(row["amount"])
     tr.find(".percentage").should have_content(row["percentage"])
+    tr.find(".comment").should have_content(row["comment"]) if row["comment"]
   end
 end
 

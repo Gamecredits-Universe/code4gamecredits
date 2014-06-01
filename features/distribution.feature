@@ -292,3 +292,23 @@ Feature: Fundraisers can distribute funds
       | mubmzLrtTgDE2WrHkiwSFKuTh2VTSXboYK |   10.0 |
     And the project balance should be "490.00"
 
+  @javascript
+  Scenario: Send distribution with a comment
+    Given a GitHub user "bob" who has set his address to "mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1"
+
+    Given a project managed by "alice"
+    And our fee is "0"
+    And a deposit of "500"
+
+    When I'm logged in as "alice"
+    And I go to the project page
+    And I click on "New distribution"
+    And I type "bob" in the recipient field
+    And I select the recipient "bob"
+    And I fill the amount to "bob" with "10"
+    And I fill the comment to "bob" with "Great idea"
+    And I click on "Save"
+
+    Then I should see these distribution lines:
+      | recipient | address                            | comment    | amount | percentage |
+      | bob       | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 | Great idea |     10 |        100 |
