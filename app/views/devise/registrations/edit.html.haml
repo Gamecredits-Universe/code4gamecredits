@@ -1,28 +1,31 @@
-= twitter_bootstrap_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, class: 'form-devise' }) do |f|
-  %h2
-    Edit #{resource_name.to_s.humanize}
-  = devise_error_messages!
-  = f.email_field :email, :autofocus => true
-  - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+.form-devise
+  = bootstrap_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, class: 'form-devise' }) do |f|
+    %h2
+      Edit #{resource_name.to_s.humanize}
+    = devise_error_messages!
+    = f.text_field :name
+    = f.email_field :email
+    - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+      %div
+        Currently waiting confirmation for: #{resource.unconfirmed_email}
+
+    = f.text_field :bitcoin_address, placeholder: 'Your peercoin address'
     %div
-      Currently waiting confirmation for: #{resource.unconfirmed_email}
-  %div
-    = f.label :password
-    %i (leave blank if you don't want to change it)
-    %br/
-    = f.password_field :password, :autocomplete => "off"
-  %div
-    = f.label :password_confirmation
-    %br/
-    = f.password_field :password_confirmation
-  %div
-    = f.label :current_password
-    %i (we need your current password to confirm your changes)
-    %br/
-    = f.password_field :current_password
-  %div= f.submit "Update"
+      = f.password_field :password, autocomplete: 'off', help: "(leave blank if you don't want to change it)"
+    %div
+      = f.password_field :password_confirmation, autocomplete: 'off'
+    %div
+      = f.password_field :current_password, help: "(we need your current password to confirm your changes)"
+    %div= f.submit "Update", class: 'btn btn-primary btn-block'
+
+  - if @user.balance > 0
+    %h3 Send tips back
+    .send-tips-back-block
+      %p
+        If you don't want the tips, you can send the funds back to the supported projects:
+        = button_to "Send all my tips back to their project", send_tips_back_user_path(@user), class: "btn btn-danger btn-block", confirm: "All the #{to_btc @user.balance} peercoins you received will be sent back to their project. Are you sure?"
+
+  %h3 Cancel my account
   %p
-    %h3 Cancel my account
-  %p
-    Unhappy? #{button_to "Cancel my account", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete}
+    Unhappy? #{button_to "Cancel my account", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete, class: 'btn btn-danger btn-block'}
     = link_to "Back", :back

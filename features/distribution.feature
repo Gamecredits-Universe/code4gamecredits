@@ -271,8 +271,9 @@ Feature: Fundraisers can distribute funds
     And I click on "Sign in" in the sign in form
     Then I should see "Peercoin address"
     When I fill "Peercoin address" with "mubmzLrtTgDE2WrHkiwSFKuTh2VTSXboYK"
+    And I fill "Current password" with "password"
     And I click on "Update"
-    Then I should see "Your information was saved"
+    Then I should see "You updated your account successfully"
 
     And the user with email "bob@example.com" should have "mubmzLrtTgDE2WrHkiwSFKuTh2VTSXboYK" as peercoin address
 

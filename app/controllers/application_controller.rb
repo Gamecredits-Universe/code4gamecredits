@@ -11,9 +11,16 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  before_filter :configure_permitted_parameters, if: :devise_controller?
+
   protected
   def after_sign_in_path_for(user)
     params[:return_url].presence ||
+      session["user_return_to"].presence ||
       root_path
+  end
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:email, :name, :bitcoin_address, :current_password, :password, :password_confirmation) }
   end
 end

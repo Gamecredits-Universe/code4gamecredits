@@ -131,3 +131,6 @@ Then(/^the user with email "(.*?)" should have his email confirmed$/) do |arg1|
   User.find_by(email: arg1).confirmed?.should be_true
 end
 
+When(/^I go to edit my profile$/) do
+  find(".edit-profile-link").click
+end

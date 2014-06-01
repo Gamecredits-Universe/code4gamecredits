@@ -32,9 +32,9 @@
         %div.pull-right
           %small
             - if current_user
-              = current_user.full_name
+              = link_to current_user.full_name, edit_registration_path(current_user), class: "edit-profile-link"
               \/
-              = link_to btc_human(current_user.balance), current_user
+              = btc_human(current_user.balance)
               \/
               = link_to 'Sign Out', destroy_user_session_path, method: :delete
             - else

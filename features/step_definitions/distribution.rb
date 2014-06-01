@@ -51,10 +51,11 @@ Then(/^no coins should have been sent$/) do
 end
 
 When(/^I set my address to "(.*?)"$/) do |arg1|
-  visit user_path(@current_user)
+  step 'I go to edit my profile'
   fill_in "Peercoin address", with: arg1
+  fill_in "Current password", with: "password"
   click_on "Update"
-  page.should have_content "Your information was saved"
+  page.should have_content "You updated your account successfully"
 end
 
 When(/^I click on the last distribution$/) do

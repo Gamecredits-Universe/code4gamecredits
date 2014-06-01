@@ -8,7 +8,7 @@
   To get your reward you must provide a Peercoin address.
 
 - if @user.confirmed?
-  %p= link_to "Set your Peercoin address", user_url(@user)
+  %p= link_to "Set your Peercoin address", edit_registration_url(@user)
 - else
   %p= link_to 'Set your password and Peercoin address', set_password_and_address_user_url(@user, token: @user.confirmation_token)
 
