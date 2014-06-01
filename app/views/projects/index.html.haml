@@ -1,4 +1,9 @@
-%h1 Projects
+.row
+  .col-md-10
+    %h1 Projects
+  .col-md-2
+    .text-right
+      = link_to "Create project", new_project_path, class: 'btn btn-default'
 %p
   %table.table
     %thead
@@ -16,5 +21,5 @@
           %td= project.description
           %td= project.watchers_count
           %td= btc_human project.available_amount_cache
-          %td= link_to 'Details', project, class: 'btn btn-success'
+          %td= link_to 'Details', project, class: 'btn btn-default'
   = paginate @projects

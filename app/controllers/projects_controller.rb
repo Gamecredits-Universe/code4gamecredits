@@ -18,7 +18,7 @@ class ProjectsController < ApplicationController
 
   def new
     unless user_signed_in?
-      redirect_to login_path(return_url: request.original_url), flash: {info: "You must be logged in to create a new project"}
+      redirect_to new_user_session_path(return_url: request.original_url), flash: {info: "You must be logged in to create a new project"}
       return
     end
     @project = Project.new(params[:project])

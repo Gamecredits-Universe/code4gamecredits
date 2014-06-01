@@ -5,8 +5,6 @@ T4c::Application.routes.draw do
   get 'audit' => 'home#audit'
   get 'faq' => 'home#faq'
 
-  get 'login' => 'home#login'
-
   devise_for :users,
     :controllers => {
       :omniauth_callbacks => "users/omniauth_callbacks"

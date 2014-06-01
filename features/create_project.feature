@@ -4,7 +4,7 @@ Feature: An user can create a project, linked with GitHub or not.
 
     When I visit the home page
     And I click on "Create a project"
-    And I click on "Log in with GitHub"
+    And I click on "Sign in with Github"
     Then I should see "New project"
 
     When I fill "Name" with "Project Foo"
@@ -27,7 +27,7 @@ Feature: An user can create a project, linked with GitHub or not.
 
     When I visit the home page
     And I click on "Create a project"
-    And I click on "Log in with GitHub"
+    And I click on "Sign in with Github"
     Then I should see "New project"
 
     And I click on "Save"
@@ -39,7 +39,7 @@ Feature: An user can create a project, linked with GitHub or not.
 
     When I visit the home page
     And I click on "Create a project"
-    And I click on "Log in with GitHub"
+    And I click on "Sign in with Github"
     Then I should see "New project"
 
     And I click on "Save"
@@ -51,7 +51,7 @@ Feature: An user can create a project, linked with GitHub or not.
 
     When I visit the home page
     And I click on "Create a project"
-    And I click on "Log in with GitHub"
+    And I click on "Sign in with Github"
     Then I should see "New project"
 
     When I fill "Name" with "Project Foo"
