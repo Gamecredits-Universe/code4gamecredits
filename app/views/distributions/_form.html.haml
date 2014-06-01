@@ -7,15 +7,8 @@
           %th Comment
           %th Amount
         %tbody#recipients
-          = f.fields_for :tips do |fields|
-            - user = fields.object.user
-            %tr
-              %td
-                = fields.hidden_field :id
-                = fields.hidden_field :user_id
-                = link_to user.recipient_label, user
-              %td= fields.text_field :comment, hide_label: true
-              %td= fields.text_field :coin_amount, hide_label: true
+          - f.object.tips.each do |tip|
+            = render "tip_form", tip: tip, form: f
       .form-group
         %label{for: "add-recipients-input"} Add recipient(s)
         %input.form-control#add-recipients-input{type: "text", autocomplete: "off", data: {suggestion_url: recipient_suggestions_project_distributions_path(@project)}}
