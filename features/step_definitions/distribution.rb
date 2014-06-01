@@ -49,8 +49,22 @@ Then(/^I should see these distribution lines:$/) do |table|
     end
     tr.find(".recipient").text.should eq(row["recipient"])
     tr.find(".address").text.should eq(row["address"]) if row["address"]
-    tr.find(".amount").text.should eq(row["amount"]) if row["amount"]
-    tr.find(".percentage").text.should eq(row["percentage"]) if row["percentage"]
+    if row["amount"]
+      text = tr.find(".amount").text
+      if row["amount"] =~ /\A[0-9.]+\Z/
+        text.to_d.should eq(row["amount"].to_d)
+      else
+        text.should eq(row["amount"])
+      end
+    end
+    if row["percentage"]
+      text = tr.find(".percentage").text
+      if row["percentage"] =~ /\A[0-9.]+\Z/
+        text.to_d.should eq(row["percentage"].to_d)
+      else
+        text.should eq(row["percentage"])
+      end
+    end
     tr.find(".comment").text.should eq(row["comment"]) if row["comment"]
   end
   table.hashes.size.should eq(all("#distribution-show-page tbody tr").size)

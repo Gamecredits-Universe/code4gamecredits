@@ -49,6 +49,6 @@ class Distribution < ActiveRecord::Base
   end
 
   def can_be_sent?
-    !sent? and all_addresses_known?
+    !sent? and all_addresses_known? and tips.any? and tips.all?(&:decided?)
   end
 end

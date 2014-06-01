@@ -333,18 +333,18 @@ Feature: Fundraisers can distribute funds
     And I click on "Save"
 
     Then I should see these distribution lines:
-      | recipient | address                            | comment    | amount | percentage |
-      | carol     |                                    |            |        |            |
+      | recipient |
+      | carol     |
 
     When I click on "Edit the distribution"
     And I remove the recipient "carol"
     And I click on "Save"
     Then I should see these distribution lines:
-      | recipient | address                            | comment    | amount | percentage |
+      | recipient |
 
   @javascript
   Scenario: Create distribution line without an amount
-    Given a GitHub user "bob"
+    Given a GitHub user "bob" who has set his address to "mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1"
 
     Given a project managed by "alice"
     And our fee is "0"
@@ -360,3 +360,4 @@ Feature: Fundraisers can distribute funds
     Then I should see these distribution lines:
       | recipient | amount    | percentage |
       | bob       | Undecided |            |
+    And I should not see the button "Send the transaction"

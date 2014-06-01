@@ -83,6 +83,10 @@ Then(/^I should not see "(.*?)"$/) do |arg1|
   page.should have_no_content(arg1)
 end
 
+Then(/^I should not see the button "(.*?)"$/) do |arg1|
+  page.should have_no_button(arg1)
+end
+
 Given(/^I fill "(.*?)" with:$/) do |arg1, string|
   fill_in arg1, with: string
 end
