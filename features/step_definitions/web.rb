@@ -62,7 +62,7 @@ Given(/^I click on "(.*?)"$/) do |arg1|
 end
 
 Given(/^I click on "(.*?)" in the sign in form$/) do |arg1|
-  within ".form-devise" do
+  within "#sign-in-form" do
     click_on(arg1)
   end
 end
