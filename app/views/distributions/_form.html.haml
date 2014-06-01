@@ -1,5 +1,5 @@
 .row
-  .col-md-8
+  .col-md-12
     = bootstrap_form_for [@project, @distribution] do |f|
       %table.table
         %thead
@@ -13,9 +13,9 @@
                 = fields.hidden_field :user_id
                 = fields.object.user.recipient_label
               %td= fields.text_field :coin_amount, hide_label: true
-      = f.submit "Save", class: 'btn btn-primary btn-block'
-  .col-md-4
-    .form-group
-      %label{for: "add-recipients-input"} Add recipient(s)
-      %input.form-control#add-recipients-input{type: "text", autocomplete: "off", data: {suggestion_url: recipient_suggestions_project_distributions_path(@project)}}
-      #recipient-suggestions
+      .form-group
+        %label{for: "add-recipients-input"} Add recipient(s)
+        %input.form-control#add-recipients-input{type: "text", autocomplete: "off", data: {suggestion_url: recipient_suggestions_project_distributions_path(@project)}}
+        #recipient-suggestions
+      .text-center
+        = f.submit "Save the distribution", class: 'btn btn-primary'
