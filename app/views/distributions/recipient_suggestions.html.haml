@@ -1,27 +1,30 @@
 = bootstrap_form_for Distribution.new do |f|
-  %ul.list-unstyled
-    - User.where('nickname LIKE ?', "%#{params[:text]}%").each do |user|
-      %li
-        - recipients = capture_haml do
-          = f.fields_for :tips, Tip.new(user_id: user.id), child_index: rand(1<<160) do |fields|
-            %tr
-              %td
-                = fields.hidden_field :user_id
-                = "#{user.nickname} (GitHub user)"
-              %td= fields.text_field :coin_amount, hide_label: true
-        %a.btn.btn-default.add-recipient-button{href: "#", data: {recipients: recipients}}= "#{user.nickname} (GitHub user)"
-    - if params[:text] =~ Devise::email_regexp
-      - user = User.where(email: params[:text]).first_or_initialize
-      %li
-        - recipients = capture_haml do
-          = f.fields_for :tips, Tip.new(user: user), child_index: rand(1<<160) do |fields|
-            %tr
-              %td
-                - if user.new_record?
-                  = fields.fields_for :user do |user_fields|
-                    = user_fields.hidden_field :email
-                - else
-                  = fields.hidden_field :user_id
-                = user.recipient_label
-              %td= fields.text_field :coin_amount, hide_label: true
-        %a.btn.btn-default.add-recipient-button{href: "#", data: {recipients: recipients}}= user.recipient_label
+  - suggestions = []
+  - if params[:text] =~ Devise::email_regexp
+    - user = User.where(email: params[:text]).first_or_initialize
+    - recipients = capture_haml do
+      = f.fields_for :tips, Tip.new(user: user), child_index: rand(1<<160) do |fields|
+        %tr
+          %td
+            - if user.new_record?
+              = fields.fields_for :user do |user_fields|
+                = user_fields.hidden_field :email
+            - else
+              = fields.hidden_field :user_id
+            = user.recipient_label
+          %td= fields.text_field :coin_amount, hide_label: true
+    - suggestions << [user.recipient_label, recipients]
+  - User.where('nickname LIKE ?', "%#{params[:text]}%").each do |user|
+    - recipients = capture_haml do
+      = f.fields_for :tips, Tip.new(user_id: user.id), child_index: rand(1<<160) do |fields|
+        %tr
+          %td
+            = fields.hidden_field :user_id
+            = "#{user.nickname} (GitHub user)"
+          %td= fields.text_field :coin_amount, hide_label: true
+    - suggestions << [user.recipient_label, recipients]
+  - suggestions.each_slice(4) do |slice|
+    .row
+      - slice.each do |label, recipients|
+        .col-md-3
+          %a.btn.btn-block.btn-default.add-recipient-button{href: "#", data: {recipients: recipients}}= label
