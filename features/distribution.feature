@@ -312,3 +312,32 @@ Feature: Fundraisers can distribute funds
     Then I should see these distribution lines:
       | recipient | address                            | comment    | amount | percentage |
       | bob       | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 | Great idea |     10 |        100 |
+
+  @javascript
+  Scenario: Remove a distribution line
+    Given a GitHub user "bob"
+    And a GitHub user "carol"
+
+    Given a project managed by "alice"
+    And our fee is "0"
+    And a deposit of "500"
+
+    When I'm logged in as "alice"
+    And I go to the project page
+    And I click on "New distribution"
+    And I type "bob" in the recipient field
+    And I select the recipient "bob"
+    And I type "carol" in the recipient field
+    And I select the recipient "carol"
+    And I remove the recipient "bob"
+    And I click on "Save"
+
+    Then I should see these distribution lines:
+      | recipient | address                            | comment    | amount | percentage |
+      | carol     |                                    |            |        |            |
+
+    When I click on "Edit the distribution"
+    And I remove the recipient "carol"
+    And I click on "Save"
+    Then I should see these distribution lines:
+      | recipient | address                            | comment    | amount | percentage |

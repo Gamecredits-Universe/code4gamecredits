@@ -33,6 +33,12 @@ Given(/^I fill the comment to "(.*?)" with "(.*?)"$/) do |arg1, arg2|
   end
 end
 
+When(/^I remove the recipient "(.*?)"$/) do |arg1|
+  within "#recipients tr", text: /^#{Regexp.escape arg1}/ do
+    check "Remove"
+  end
+end
+
 Then(/^I should see these distribution lines:$/) do |table|
   table.hashes.each do |row|
     begin
@@ -47,6 +53,7 @@ Then(/^I should see these distribution lines:$/) do |table|
     tr.find(".percentage").should have_content(row["percentage"])
     tr.find(".comment").should have_content(row["comment"]) if row["comment"]
   end
+  table.hashes.size.should eq(all("#distribution-show-page tbody tr").size)
 end
 
 When(/^the tipper is started$/) do

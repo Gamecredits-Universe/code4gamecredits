@@ -32,3 +32,4 @@ en:
       tip:
         coin_amount: Amount
         description: Comment
+        _destroy: Remove

@@ -1,7 +1,7 @@
 class Distribution < ActiveRecord::Base
   belongs_to :project, inverse_of: :distributions
   has_many :tips
-  accepts_nested_attributes_for :tips
+  accepts_nested_attributes_for :tips, allow_destroy: true
 
   has_paper_trail
 
