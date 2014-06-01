@@ -1,19 +1,21 @@
-= bootstrap_form_for [@project, @distribution] do |f|
-  %table.table
-    %thead
-      %th Recipient
-      %th Amount
-    %tbody#recipients
-      = f.fields_for :tips do |fields|
-        %tr
-          %td
-            = fields.hidden_field :id
-            = fields.hidden_field :user_id
-            = fields.object.user.recipient_label
-          %td= fields.text_field :coin_amount, hide_label: true
-  = f.submit "Save"
-
-.form-group
-  %label{for: "add-recipients-input"} Add recipient(s)
-  %input.form-control#add-recipients-input{type: "text", autocomplete: "off", data: {suggestion_url: recipient_suggestions_project_distributions_path(@project)}}
-  #recipient-suggestions
+.row
+  .col-md-8
+    = bootstrap_form_for [@project, @distribution] do |f|
+      %table.table
+        %thead
+          %th Recipient
+          %th Amount
+        %tbody#recipients
+          = f.fields_for :tips do |fields|
+            %tr
+              %td
+                = fields.hidden_field :id
+                = fields.hidden_field :user_id
+                = fields.object.user.recipient_label
+              %td= fields.text_field :coin_amount, hide_label: true
+      = f.submit "Save", class: 'btn btn-primary btn-block'
+  .col-md-4
+    .form-group
+      %label{for: "add-recipients-input"} Add recipient(s)
+      %input.form-control#add-recipients-input{type: "text", autocomplete: "off", data: {suggestion_url: recipient_suggestions_project_distributions_path(@project)}}
+      #recipient-suggestions
