@@ -4,6 +4,7 @@
     %thead
       %tr
         %th Recipient
+        %th Origin
         %th Comment
         %th Address
         %th Amount
@@ -19,7 +20,8 @@
                 = link_to tip.user.recipient_label, tip.user
             - else
               Nobody
-          %td.comment= tip.comment
+          %td.origin= render "origin", tip: tip
+          %td.comment= render_markdown tip.comment
           %td.address
             - if tip.user.try(:bitcoin_address).present?
               = tip.user.bitcoin_address

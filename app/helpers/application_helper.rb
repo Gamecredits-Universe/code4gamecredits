@@ -42,8 +42,12 @@ module ApplicationHelper
     end
   end
 
+  def truncate_commit(sha1)
+    truncate(sha1, length: 10, omission: "")
+  end
+
   def commit_tag(sha1)
-    content_tag(:span, truncate(sha1, length: 10, omission: ""), class: "commit-sha")
+    content_tag(:span, truncate_commit(sha1), class: "commit-sha")
   end
 
   def render_flash_message
@@ -60,6 +64,8 @@ module ApplicationHelper
   end
 
   def render_markdown(source)
+    return nil unless source
+
     markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(safe_links_only: true, filter_html: true))
     html = markdown.render(source)
     clean = Sanitize.clean(html, Sanitize::Config::RELAXED)

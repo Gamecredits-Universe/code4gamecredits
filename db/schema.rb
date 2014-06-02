@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140601145338) do
+ActiveRecord::Schema.define(version: 20140607100342) do
 
   create_table "cold_storage_transfers", force: true do |t|
     t.integer  "project_id"
@@ -34,6 +34,18 @@ ActiveRecord::Schema.define(version: 20140601145338) do
   end
 
   add_index "collaborators", ["project_id"], name: "index_collaborators_on_project_id"
+
+  create_table "commits", force: true do |t|
+    t.integer  "project_id"
+    t.string   "sha"
+    t.text     "message"
+    t.string   "username"
+    t.string   "email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "commits", ["project_id"], name: "index_commits_on_project_id"
 
   create_table "deposits", force: true do |t|
     t.integer  "project_id"
@@ -110,9 +122,12 @@ ActiveRecord::Schema.define(version: 20140601145338) do
     t.datetime "refunded_at"
     t.string   "commit_message"
     t.string   "comment"
+    t.integer  "origin_id"
+    t.string   "origin_type"
   end
 
   add_index "tips", ["distribution_id"], name: "index_tips_on_distribution_id"
+  add_index "tips", ["origin_id", "origin_type"], name: "index_tips_on_origin_id_and_origin_type"
   add_index "tips", ["project_id"], name: "index_tips_on_project_id"
   add_index "tips", ["user_id"], name: "index_tips_on_user_id"
 

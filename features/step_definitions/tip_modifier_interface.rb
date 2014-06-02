@@ -87,3 +87,7 @@ end
 Then(/^the project should have (\d+) undecided tips$/) do |arg1|
   @project.tips.undecided.size.should eq(arg1.to_i)
 end
+
+Then(/^there should be (\d+) tip$/) do |arg1|
+  @project.reload.tips.size.should eq(arg1.to_i)
+end

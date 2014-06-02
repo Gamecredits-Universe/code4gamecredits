@@ -1,9 +1,10 @@
 .row
   .col-md-12
-    = bootstrap_form_for [@project, @distribution] do |f|
+    = bootstrap_form_for [@project, @distribution], html: {id: "distribution-form"} do |f|
       %table.table
         %thead
           %th Recipient
+          %th Origin
           %th Comment
           %th Amount
         %tbody#recipients

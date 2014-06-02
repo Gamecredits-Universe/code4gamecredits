@@ -49,6 +49,7 @@ Then(/^I should see these distribution lines:$/) do |table|
     end
     tr.find(".recipient").text.should eq(row["recipient"])
     tr.find(".address").text.should eq(row["address"]) if row["address"]
+    tr.find(".origin").text.should eq(row["origin"]) if row["origin"]
     if row["amount"]
       text = tr.find(".amount").text
       if row["amount"] =~ /\A[0-9.]+\Z/
@@ -68,6 +69,32 @@ Then(/^I should see these distribution lines:$/) do |table|
     tr.find(".comment").text.should eq(row["comment"]) if row["comment"]
   end
   table.hashes.size.should eq(all("#distribution-show-page tbody tr").size)
+end
+
+Then(/^the distribution form should have these recipients:$/) do |table|
+  table.hashes.each do |row|
+    begin
+      tr = find("#distribution-form #recipients tr", text: row["recipient"])
+    rescue
+      puts "Rows: " + all("#distribution-form #recipients tr").map(&:text).inspect
+      raise
+    end
+    tr.find(".recipient").text.should eq(row["recipient"])
+    tr.find(".origin").text.should eq(row["origin"]) if row["origin"]
+    if row["amount"]
+      text = tr.find_field("Amount").value
+      if row["amount"] =~ /\A[0-9.]+\Z/
+        text.to_d.should eq(row["amount"].to_d)
+      else
+        text.should eq(row["amount"])
+      end
+    end
+    if row["comment"]
+      text = tr.find_field("Comment").value
+      text.should eq(row["comment"])
+    end
+  end
+  all("#distribution-form tbody tr").size.should eq(table.hashes.size)
 end
 
 When(/^the tipper is started$/) do

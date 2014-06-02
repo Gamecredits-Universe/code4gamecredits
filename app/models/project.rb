@@ -10,6 +10,8 @@ class Project < ActiveRecord::Base
   has_one :tipping_policies_text, inverse_of: :project
   accepts_nested_attributes_for :tipping_policies_text
 
+  has_many :commits
+
   has_paper_trail
 
   validates :name, presence: true
@@ -54,7 +56,20 @@ class Project < ActiveRecord::Base
   def tip_commits
     return unless self.deposits.any?
 
-    get_commits.each do |commit|
+    commits = get_commits
+
+    commits.each do |commit|
+      Commit.where(
+        project: self,
+        sha: commit.sha,
+      ).first_or_create!(
+        message: commit.commit.message,
+        username: commit.author.try(:login),
+        email: commit.commit.author.email,
+      )
+    end
+
+    commits.each do |commit|
       # Filter merge request
       next if commit.commit.message =~ /^(Merge\s|auto\smerge)/
       # Filter fake emails
@@ -180,6 +195,10 @@ class Project < ActiveRecord::Base
     if full_name_changed? and full_name.present?
       self.full_name = full_name.gsub(/https?\:\/\/github.com\//, '')
     end
+  end
+
+  def github?
+    full_name.present?
   end
 
   def auto_tip_commits

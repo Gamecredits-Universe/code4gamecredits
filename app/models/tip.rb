@@ -3,6 +3,7 @@ class Tip < ActiveRecord::Base
   accepts_nested_attributes_for :user
   belongs_to :distribution
   belongs_to :project, inverse_of: :tips
+  belongs_to :origin, polymorphic: true
 
   has_paper_trail
 
