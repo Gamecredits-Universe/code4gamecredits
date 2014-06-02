@@ -10,8 +10,7 @@
       %tr
         %th Name
         %th Description
-        %th Watchers
-        %th Balance
+        %th Funds
         %th
     %tbody
       - @projects.each do |project|
@@ -19,7 +18,6 @@
           %td
             %strong= link_to project.name, project
           %td= project.description
-          %td= project.watchers_count
           %td= btc_human project.available_amount_cache
           %td= link_to 'Details', project, class: 'btn btn-default'
   = paginate @projects
