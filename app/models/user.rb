@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   devise :confirmable, reconfirmable: true
 
   validates :bitcoin_address, bitcoin_address: true
+  validates :password, confirmation: true
 
   has_many :tips
 
@@ -36,7 +37,15 @@ class User < ActiveRecord::Base
     end
   end
 
+  def has_password?
+    encrypted_password_was.present?
+  end
+
   def password_required?
+    false
+  end
+
+  def email_required?
     false
   end
 
@@ -51,6 +60,18 @@ class User < ActiveRecord::Base
       end
     else
       "Unknown user"
+    end
+  end
+
+  def valid_github_user?
+    return false unless nickname.present?
+
+    client = Octokit::Client.new(client_id: CONFIG['github']['key'], client_secret: CONFIG['github']['secret'])
+    begin
+      client.user(nickname)
+      true
+    rescue Octokit::NotFound
+      false
     end
   end
 

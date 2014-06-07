@@ -14,8 +14,9 @@
       = f.password_field :password, autocomplete: 'off', help: "(leave blank if you don't want to change it)"
     %div
       = f.password_field :password_confirmation, autocomplete: 'off'
-    %div
-      = f.password_field :current_password, help: "(we need your current password to confirm your changes)"
+    - if f.object.has_password?
+      %div
+        = f.password_field :current_password, help: "(we need your current password to confirm your changes)"
     %div= f.submit "Update", class: 'btn btn-primary btn-block'
 
   - if @user.balance > 0

@@ -1,39 +1,22 @@
 $(document).on "page:change", ->
-  input = $("#add-recipients-input")
-  suggestions = $("#recipient-suggestions")
-  target = $("#recipients")
+  root = $("#add-recipient-panels")
+  recipients = $("#recipients")
 
-  timer = null
-  request = null
-  updateSuggestions = (text) ->
-    if timer
-      clearTimeout(timer)
-      timer = null
-
-    if request
-      request.abort()
-      request = null
-
-    suggestions.html("<div class=\"loading\">Loading...</div>")
-
-    timer = setTimeout ->
-      request = $.ajax
-        type: 'GET'
-        url: input.data('suggestion-url')
-        data:
-          text: text
-        success: (data) ->
-          suggestions.hide().html(data).slideDown("fast")
-          suggestions.find(".add-recipient-button").click ->
-            recipients = $(this).data("recipients")
-            target.append(recipients)
-            suggestions.html("")
-            input.val("")
-            false
-        error: ->
-          suggestions.html("An error occured.")
-    , 200
-
-  input.on "input", ->
-    updateSuggestions(input.val())
-
+  root.find("form").submit ->
+    form = $(this)
+    form.find(".alert").remove()
+    panel = form.closest(".panel")
+    $.ajax
+      type: 'GET'
+      url: form.attr("action")
+      data: form.serialize()
+      success: (data) ->
+        if data.error
+          form.append($("<div>").addClass("alert alert-danger").text(data.error))
+        else
+          recipients.append(data.result)
+          form[0].reset()
+        false
+      error: ->
+        form.append($("<div>").addClass("alert alert-danger").text("An error occured."))
+    false

@@ -1,0 +1,6 @@
+- output = nil
+- bootstrap_form_for Distribution.new do |f|
+  - output = capture_haml do
+    - @tips.each do |tip|
+      = render "tip_form", form: f, tip: tip
+= output

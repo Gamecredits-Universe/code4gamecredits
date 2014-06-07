@@ -10,10 +10,9 @@ Feature: Fundraisers can distribute funds
     Given I'm logged in as "alice"
     And I go to the project page
     And I click on "New distribution"
-    And I type "bob" in the recipient field
-    And I select the recipient "bob"
+    And I add the GitHub user "bob" to the recipients
     And I fill the amount to "bob" with "10"
-    And I click on "Save"
+    And I save the distribution
 
     Then I should see these distribution lines:
       | recipient | address                            | amount | percentage |
@@ -44,13 +43,11 @@ Feature: Fundraisers can distribute funds
     Given I'm logged in as "alice"
     And I go to the project page
     And I click on "New distribution"
-    And I type "bob" in the recipient field
-    And I select the recipient "bob"
+    And I add the GitHub user "bob" to the recipients
+    And I add the GitHub user "carol" to the recipients
     And I fill the amount to "bob" with "10"
-    And I type "carol" in the recipient field
-    And I select the recipient "carol"
     And I fill the amount to "carol" with "13.56"
-    And I click on "Save"
+    And I save the distribution
 
     Then I should see these distribution lines:
       | recipient | address                            | amount | percentage |
@@ -70,6 +67,69 @@ Feature: Fundraisers can distribute funds
     And the project balance should be "476.44"
 
   @javascript
+  Scenario: Send to an unknown GitHub user
+    Given "bob" is an user registered on GitHub
+
+    Given a project managed by "alice"
+    And our fee is "0"
+    And a deposit of "500"
+
+    Given I'm logged in as "alice"
+    And I go to the project page
+    And I click on "New distribution"
+    And I add the GitHub user "bob" to the recipients
+    And I fill the amount to "bob" with "10"
+    And I save the distribution
+
+    Then I should see these distribution lines:
+      | recipient | address                            | amount | percentage |
+      | bob       |                                    |     10 |      100.0 |
+    And I should see "Total amount: 10.00 PPC"
+    And I should not see "Send the transaction"
+    And I should see "The transaction cannot be sent because some addresses are missing"
+
+    And no email should have been sent
+
+    When the tipper is started
+    Then no coins should have been sent
+
+    When I log out
+    And I log in as "bob"
+    And I set my address to "mnVba8qrpy5uxYD7dV4NZMQPWjgdt2QC1i"
+
+    When I log out
+    And I log in as "alice"
+    And I go to the project page
+    And I click on the last distribution
+    Then I should see these distribution lines:
+      | recipient | address                            | amount | percentage |
+      | bob       | mnVba8qrpy5uxYD7dV4NZMQPWjgdt2QC1i |     10 |      100.0 |
+
+    When I click on "Send the transaction"
+    Then I should see "Transaction sent"
+    And these amounts should have been sent from the account of the project:
+      | address                            | amount |
+      | mnVba8qrpy5uxYD7dV4NZMQPWjgdt2QC1i |   10.0 |
+    And the project balance should be "490.00"
+
+  @javascript
+  Scenario: Send to an invalid GitHub user
+    Given a project managed by "alice"
+    And our fee is "0"
+    And a deposit of "500"
+
+    Given I'm logged in as "alice"
+    And I go to the project page
+    And I click on "New distribution"
+    And I add the GitHub user "bob" to the recipients
+    Then I should see "Invalid GitHub user"
+
+    When I save the distribution
+    Then I should see these distribution lines:
+      | recipient | address                            | amount | percentage |
+    And I should see "Total amount: 0.00 PPC"
+
+  @javascript
   Scenario: Send to an user without an address
     Given a GitHub user "bob"
 
@@ -80,10 +140,9 @@ Feature: Fundraisers can distribute funds
     Given I'm logged in as "alice"
     And I go to the project page
     And I click on "New distribution"
-    And I type "bob" in the recipient field
-    And I select the recipient "bob"
+    And I add the GitHub user "bob" to the recipients
     And I fill the amount to "bob" with "10"
-    And I click on "Save"
+    And I save the distribution
 
     Then I should see these distribution lines:
       | recipient | address                            | amount | percentage |
@@ -127,10 +186,9 @@ Feature: Fundraisers can distribute funds
     Given I'm logged in as "alice"
     And I go to the project page
     And I click on "New distribution"
-    And I type "bob@example.com" in the recipient field
-    And I select the recipient "bob@example.com (new user)"
-    And I fill the amount to "bob@example.com (new user)" with "10"
-    And I click on "Save"
+    And I add the email address "bob@example.com" to the recipients
+    And I fill the amount to "bob@example.com" with "10"
+    And I save the distribution
 
     Then I should see these distribution lines:
       | recipient       | address  | amount | percentage |
@@ -196,10 +254,9 @@ Feature: Fundraisers can distribute funds
     Given I'm logged in as "alice"
     And I go to the project page
     And I click on "New distribution"
-    And I type "bob" in the recipient field
-    And I select the recipient "bob"
+    And I add the GitHub user "bob" to the recipients
     And I fill the amount to "bob" with "10"
-    And I click on "Save"
+    And I save the distribution
 
     Then I should see these distribution lines:
       | recipient | address                            | amount | percentage |
@@ -210,10 +267,9 @@ Feature: Fundraisers can distribute funds
 
     And I click on "Edit"
     And I fill the amount to "bob" with "15"
-    And I type "carol" in the recipient field
-    And I select the recipient "carol"
+    And I add the GitHub user "carol" to the recipients
     And I fill the amount to "carol" with "5"
-    And I click on "Save"
+    And I save the distribution
 
     Then I should see these distribution lines:
       | recipient | address                            | amount | percentage |
@@ -239,10 +295,9 @@ Feature: Fundraisers can distribute funds
     Given I'm logged in as "alice"
     And I go to the project page
     And I click on "New distribution"
-    And I type "bob@example.com" in the recipient field
-    And I select the recipient "bob@example.com"
+    And I add the email address "bob@example.com" to the recipients
     And I fill the amount to "bob@example.com" with "10"
-    And I click on "Save"
+    And I save the distribution
 
     Then I should see these distribution lines:
       | recipient                               | address  | amount | percentage |
@@ -303,15 +358,18 @@ Feature: Fundraisers can distribute funds
     When I'm logged in as "alice"
     And I go to the project page
     And I click on "New distribution"
-    And I type "bob" in the recipient field
-    And I select the recipient "bob"
+    And I add the GitHub user "bob" to the recipients
     And I fill the amount to "bob" with "10"
     And I fill the comment to "bob" with "Great idea"
-    And I click on "Save"
+    And I save the distribution
 
     Then I should see these distribution lines:
       | recipient | address                            | comment    | amount | percentage |
       | bob       | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 | Great idea |     10 |        100 |
+
+
+  Scenario: Send multiple times to the same recipient
+    Then pending
 
   @javascript
   Scenario: Remove a distribution line
@@ -325,20 +383,22 @@ Feature: Fundraisers can distribute funds
     When I'm logged in as "alice"
     And I go to the project page
     And I click on "New distribution"
-    And I type "bob" in the recipient field
-    And I select the recipient "bob"
-    And I type "carol" in the recipient field
-    And I select the recipient "carol"
+    And I add the GitHub user "bob" to the recipients
+    And I add the GitHub user "carol" to the recipients
     And I remove the recipient "bob"
-    And I click on "Save"
+    Then the distribution form should have these recipients:
+      | recipient |
+      | bob       |
+      | carol     |
 
+    When I save the distribution
     Then I should see these distribution lines:
       | recipient |
       | carol     |
 
     When I click on "Edit the distribution"
     And I remove the recipient "carol"
-    And I click on "Save"
+    And I save the distribution
     Then I should see these distribution lines:
       | recipient |
 
@@ -353,9 +413,8 @@ Feature: Fundraisers can distribute funds
     When I'm logged in as "alice"
     And I go to the project page
     And I click on "New distribution"
-    And I type "bob" in the recipient field
-    And I select the recipient "bob"
-    And I click on "Save"
+    And I add the GitHub user "bob" to the recipients
+    And I save the distribution
 
     Then I should see these distribution lines:
       | recipient | amount    | percentage |

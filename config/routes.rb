@@ -6,8 +6,9 @@ T4c::Application.routes.draw do
   get 'faq' => 'home#faq'
 
   devise_for :users,
-    :controllers => {
-      :omniauth_callbacks => "users/omniauth_callbacks"
+    controllers: {
+      omniauth_callbacks: "users/omniauth_callbacks",
+      registrations: "registrations",
     }
 
   resources :users, :only => [:show, :update, :index] do
@@ -24,7 +25,7 @@ T4c::Application.routes.draw do
   resources :projects, :only => [:new, :show, :index, :create, :edit, :update] do
     resources :tips, :only => [:index]
     resources :distributions, :only => [:new, :create, :show, :index, :edit, :update] do
-      get :recipient_suggestions, on: :collection
+      get :new_recipient_form, on: :collection
       post :send_transaction, on: :member
     end
     member do

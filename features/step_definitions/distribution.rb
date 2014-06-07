@@ -11,19 +11,42 @@ Given(/^an user with email "(.*?)"$/) do |arg1|
   create(:user, email: arg1, nickname: nil, bitcoin_address: nil)
 end
 
-Given(/^I type "(.*?)" in the recipient field$/) do |arg1|
-  fill_in "add-recipients-input", with: arg1
+Given(/^I add the GitHub user "(.*?)" to the recipients$/) do |arg1|
+  within ".panel", text: "GitHub user" do
+    find("input").set(arg1)
+    click_on "Add"
+  end
 end
 
-Given(/^I select the recipient "(.*?)"$/) do |arg1|
-  within "#recipient-suggestions" do
+Given(/^I add the email address "(.*?)" to the recipients$/) do |arg1|
+  within ".panel", text: "email address" do
+    find("input").set(arg1)
+    click_on "Add"
+  end
+end
+
+When(/^I select the commit recipients "(.*?)"$/) do |arg1|
+  within ".panel", text: "Authors of commits" do
     click_on arg1
   end
 end
 
+When(/^I add the commit "(.*?)" to the recipients$/) do |arg1|
+  within ".panel", text: "Author of a commit" do
+    find("input").set(arg1)
+    click_on "Add"
+  end
+end
+
 Given(/^I fill the amount to "(.*?)" with "(.*?)"$/) do |arg1, arg2|
-  within "#recipients tr", text: /^#{Regexp.escape arg1}/ do
-    fill_in "Amount", with: arg2
+  begin
+    within "#recipients tr", text: /^#{Regexp.escape arg1}/ do
+      fill_in "Amount", with: arg2
+    end
+  rescue
+    p all("#recipients tr").map(&:text)
+    p errors: all(".alert.alert-danger").map(&:text)
+    raise
   end
 end
 
@@ -77,6 +100,7 @@ Then(/^the distribution form should have these recipients:$/) do |table|
       tr = find("#distribution-form #recipients tr", text: row["recipient"])
     rescue
       puts "Rows: " + all("#distribution-form #recipients tr").map(&:text).inspect
+      p errors: all(".alert.alert-danger").map(&:text)
       raise
     end
     tr.find(".recipient").text.should eq(row["recipient"])
@@ -108,7 +132,9 @@ end
 When(/^I set my address to "(.*?)"$/) do |arg1|
   step 'I go to edit my profile'
   fill_in "Peercoin address", with: arg1
-  fill_in "Current password", with: "password"
+  if has_field?("Current password")
+    fill_in "Current password", with: "password"
+  end
   click_on "Update"
   page.should have_content "You updated your account successfully"
 end
@@ -143,3 +169,7 @@ Then(/^the user with email "(.*?)" should have "(.*?)" as peercoin address$/) do
   User.find_by(email: arg1).bitcoin_address.should eq(arg2)
 end
 
+Given(/^I save the distribution$/) do
+  click_on "Save"
+  page.should have_content(/Distribution (created|updated)/)
+end

@@ -1,6 +1,5 @@
 class Tip < ActiveRecord::Base
   belongs_to :user
-  accepts_nested_attributes_for :user
   belongs_to :distribution
   belongs_to :project, inverse_of: :tips
   belongs_to :origin, polymorphic: true
@@ -115,5 +114,21 @@ class Tip < ActiveRecord::Base
     else
       self.amount = nil
     end
+  end
+
+  def self.build_from_commit(commit)
+    if commit.username.present?
+      user = User.where(nickname: commit.username).first_or_initialize(email: commit.email)
+    elsif commit.email =~ Devise::email_regexp
+      user = User.where(email: commit.email).first_or_initialize
+    else
+      return nil
+    end
+    if user.new_record?
+      raise "Invalid email address" unless user.email =~ Devise::email_regexp
+      user.skip_confirmation_notification!
+      user.save!
+    end
+    new(user_id: user.id, origin: commit)
   end
 end

@@ -9,10 +9,6 @@ class DistributionsController < ApplicationController
   def new
   end
 
-  def recipient_suggestions
-    render layout: nil
-  end
-
   def create
     @distribution.project = @project
     finalize_distribution
@@ -46,10 +42,54 @@ class DistributionsController < ApplicationController
     redirect_to [@project, @distribution], flash: {error: e.message}
   end
 
+  def new_recipient_form
+    @tips = []
+    if params[:user] and params[:user][:nickname].present?
+      user = User.where(nickname: params[:user][:nickname]).first_or_initialize
+      if user.new_record?
+        raise "Invalid GitHub user" unless user.valid_github_user?
+        user.confirm!
+        user.save!
+      end
+      @tips << Tip.new(user: user)
+    elsif params[:user] and params[:user][:email].present?
+      user = User.where(email: params[:user][:email]).first_or_initialize
+      if user.new_record?
+        raise "Invalid email address" unless user.email =~ Devise::email_regexp
+        user.skip_confirmation_notification!
+        user.save!
+      end
+      @tips << Tip.new(user: user)
+    elsif params[:not_rewarded_commits]
+      @project.commits.each do |commit|
+        next if Tip.where(origin: commit).any?
+        tip = Tip.build_from_commit(commit)
+        @tips << tip if tip
+      end
+    elsif params[:commit] and sha = params[:commit][:sha]
+      commits = @project.commits.where("sha LIKE ?", "#{sha}%")
+      count = commits.count
+      raise "Commit not found" if count == 0
+      raise "Multiple commits match this prefix" if count > 1
+      commit = commits.first
+      @tips << Tip.build_from_commit(commit)
+    else
+      raise "Unrecognized recipient"
+    end
+    result = render_to_string(layout: false)
+    render json: {result: result}
+  rescue => e
+    render json: {error: e.message}
+  end
+
   private
 
   def distribution_params
-    params.require(:distribution).permit(tips_attributes: [:id, :coin_amount, :user_id, :comment, :origin_type, :origin_id, :_destroy, {user_attributes: [:email, :nickname]}])
+    if params[:distribution]
+      params.require(:distribution).permit(tips_attributes: [:id, :coin_amount, :user_id, :comment, :origin_type, :origin_id, :_destroy])
+    else
+      {}
+    end
   end
 
   def finalize_distribution

@@ -1,5 +1,5 @@
 #distribution-show-page
-  - total = @distribution.tips.map(&:amount).sum
+  - total = @distribution.tips.map(&:amount).sum if @distribution.tips.all?(&:amount)
   %table.table
     %thead
       %tr
@@ -33,11 +33,12 @@
               = btc_human tip.amount
             - else
               %em Undecided
-          %td.percentage= number_to_percentage(tip.amount.to_f * 100 / total, precision: 1) if tip.amount and total > 0
+          %td.percentage= number_to_percentage(tip.amount.to_f * 100 / total, precision: 1) if total and tip.amount and total > 0
 
-  %p
-    %strong
-      Total amount: #{btc_human total}
+  - if total
+    %p
+      %strong
+        Total amount: #{btc_human total}
 
   - if @distribution.is_error?
     %p.alert.alert-danger
@@ -51,7 +52,7 @@
     %p.alert.alert-warning
       The transaction cannot be sent because some addresses are missing. Ask the recipients to sign in and provide an address.
   .distribution-actions
-    - if can? :send_transaction, @distribution
+    - if total and can? :send_transaction, @distribution
       .distribution-action
         = button_to "Send the transaction", send_transaction_project_distribution_path(@project, @distribution), class: "btn btn-default", data: {confirm: "#{total.to_f / COIN} peercoins will be sent. Are you sure?"}
     - if can? :update, @distribution

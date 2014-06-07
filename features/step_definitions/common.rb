@@ -40,6 +40,10 @@ Given(/^a project "(.*?)"$/) do |arg1|
   @project = Project.create!(name: "test", full_name: "example/#{arg1}", github_id: Digest::SHA1.hexdigest(arg1), bitcoin_address: 'mq4NtnmQoQoPfNWEPbhSvxvncgtGo6L8WY', hold_tips: false)
 end
 
+Given(/^a project "(.*?)" holding tips$/) do |arg1|
+  @project = Project.create!(name: "test", full_name: "example/#{arg1}", github_id: Digest::SHA1.hexdigest(arg1), bitcoin_address: 'mq4NtnmQoQoPfNWEPbhSvxvncgtGo6L8WY', hold_tips: true)
+end
+
 Given(/^a deposit of "(.*?)"$/) do |arg1|
   Deposit.create!(project: @project, amount: arg1.to_d * COIN, confirmations: 1, created_at: 2.minutes.ago)
 end
@@ -146,6 +150,10 @@ end
 
 Given(/^the author of commit "(.*?)" is "(.*?)"$/) do |arg1, arg2|
   find_new_commit(arg1).deep_merge!(author: {login: arg2}, commit: {author: {email: "#{arg2}@example.com"}})
+end
+
+Given(/^the author of commit "(.*?)" is the non identified email "(.*?)"$/) do |arg1, arg2|
+  find_new_commit(arg1).deep_merge!(commit: {author: {email: arg2}})
 end
 
 Given(/^an illustration of the history is:$/) do |string|
