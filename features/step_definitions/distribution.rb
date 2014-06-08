@@ -33,7 +33,7 @@ end
 
 When(/^I add the commit "(.*?)" to the recipients$/) do |arg1|
   within ".panel", text: "Author of a commit" do
-    find("input").set(arg1)
+    find("input:enabled").set(arg1)
     click_on "Add"
   end
 end

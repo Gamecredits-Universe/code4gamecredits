@@ -32,6 +32,7 @@ T4c::Application.routes.draw do
       get :qrcode
       get :decide_tip_amounts
       patch :decide_tip_amounts
+      get :commit_suggestions
     end
   end
   resources :tips, :only => [:index]

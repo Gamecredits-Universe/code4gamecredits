@@ -38,7 +38,7 @@
           %h3.panel-title Author of a commit
         .panel-body
           = bootstrap_form_for Commit.new, url: new_recipient_form_project_distributions_path(@project) do |f|
-            = f.text_field :sha, hide_label: true, append: content_tag(:button, "Add", class: "btn btn-default add-recipient-button")
+            = f.text_field :sha, hide_label: true, append: content_tag(:button, "Add", class: "btn btn-default add-recipient-button"), class: "commit-autocomplete", data: {project_id: @project.id, submit: true}
     .col-md-3
       .panel.panel-default
         .panel-heading

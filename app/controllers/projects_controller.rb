@@ -4,6 +4,8 @@ class ProjectsController < ApplicationController
 
   before_action :load_project, only: [:qrcode, :edit, :update, :decide_tip_amounts]
 
+  load_and_authorize_resource only: [:commit_suggestions]
+
   def index
     @projects = Project.enabled.order(available_amount_cache: :desc, watchers_count: :desc, full_name: :asc).page(params[:page]).per(30)
   end
@@ -84,6 +86,26 @@ class ProjectsController < ApplicationController
       redirect_to @project, notice: "The project was created"
     else
       render "new"
+    end
+  end
+
+  def commit_suggestions
+    respond_to do |format|
+      format.json do
+        query = params[:query]
+        commits = @project.commits.where('sha LIKE ? OR username LIKE ? OR message LIKE ?', "#{query}%", "%#{query}%", "%#{query}%")
+        commits = commits.map do |commit|
+          {
+            sha: commit.sha,
+            description: [
+              commit.sha[0,10],
+              commit.username.present? ? "@#{commit.username}" : nil,
+              ERB::Util.html_escape(commit.message).truncate(30),
+            ].reject(&:blank?).join(" "),
+          }
+        end
+        render json: commits
+      end
     end
   end
 

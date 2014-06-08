@@ -77,6 +77,7 @@ gem 'rails_autolink'
 gem 'redcarpet'
 gem 'sanitize'
 gem 'paper_trail', '~> 3.0.2'
+gem 'twitter-typeahead-rails'
 
 group :test do
   gem 'cucumber-rails', :require => false

@@ -20,3 +20,27 @@ $(document).on "page:change", ->
       error: ->
         form.append($("<div>").addClass("alert alert-danger").text("An error occured."))
     false
+
+  $(".commit-autocomplete[data-project-id]").each ->
+    input = $(this)
+    projectId = input.data("project-id")
+    source = new Bloodhound
+      datumTokenizer: Bloodhound.tokenizers.obj.whitespace("sha")
+      queryTokenizer: Bloodhound.tokenizers.whitespace
+      remote: "/projects/#{projectId}/commit_suggestions.json?query=%QUERY"
+
+    source.initialize()
+
+    input.typeahead {minLength: 2, highlight: true},
+      displayKey: "sha"
+      source: source.ttAdapter()
+      templates:
+        suggestion: (object) ->
+          object.description
+
+    if input.data("submit")
+      input.bind "typeahead:selected", ->
+        setTimeout ->
+          input.closest("form").submit()
+          input.typeahead('val', '')
+        , 100
