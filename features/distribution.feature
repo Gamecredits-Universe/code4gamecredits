@@ -420,3 +420,20 @@ Feature: Fundraisers can distribute funds
       | recipient | amount    | percentage |
       | bob       | Undecided |            |
     And I should not see the button "Send the transaction"
+
+  @javascript
+  Scenario: Send too much funds
+    Given a GitHub user "bob" who has set his address to "mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1"
+
+    Given a project managed by "alice"
+    And our fee is "0"
+    And a deposit of "500"
+
+    When I'm logged in as "alice"
+    And I go to the project page
+    And I click on "New distribution"
+    And I add the GitHub user "bob" to the recipients
+    And I fill the amount to "bob" with "500.01"
+    And I click on "Save"
+    Then I should see "Not enough funds"
+

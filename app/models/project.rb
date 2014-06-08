@@ -133,9 +133,13 @@ class Project < ActiveRecord::Base
     end
 
   end
+  
+  def total_deposited
+    self.deposits.where("confirmations > 0").map(&:available_amount).sum
+  end
 
   def available_amount
-    self.deposits.where("confirmations > 0").map(&:available_amount).sum - tips_paid_amount
+    total_deposited - tips_paid_amount
   end
 
   def unconfirmed_amount

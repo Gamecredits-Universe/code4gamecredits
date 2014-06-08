@@ -66,7 +66,6 @@ class Tip < ActiveRecord::Base
   end
 
 
-  before_save :check_amount_against_project
   after_save :notify_user_if_just_decided
 
 
@@ -97,12 +96,6 @@ class Tip < ActiveRecord::Base
   def notify_user_if_just_decided
     return if distribution_id
     notify_user if amount_was.nil? and amount
-  end
-
-  def check_amount_against_project
-    if project.available_amount < 0
-      raise "Not enough funds on project to save #{inspect} (available: #{available_amount})"
-    end
   end
 
   def coin_amount

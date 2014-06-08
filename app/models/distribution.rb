@@ -7,6 +7,8 @@ class Distribution < ActiveRecord::Base
 
   acts_as_commontable
 
+  validate :validate_funds
+
   scope :to_send, -> { where(txid: nil) }
   scope :error, -> { where(is_error: true) }
 
@@ -56,5 +58,14 @@ class Distribution < ActiveRecord::Base
 
   def to_label
     "##{id} on project #{project.to_label}"
+  end
+
+  def validate_funds
+    tips = project.tips.to_a
+    tips -= self.tips
+    tips += self.tips
+    if project.total_deposited < tips.map(&:amount).compact.sum
+      errors.add(:base, "Not enough funds")
+    end
   end
 end

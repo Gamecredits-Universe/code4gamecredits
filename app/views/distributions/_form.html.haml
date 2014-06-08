@@ -1,6 +1,9 @@
 .row
   .col-md-12
     = bootstrap_form_for [@project, @distribution], html: {id: "distribution-form"} do |f|
+      - if (errors = f.object.errors[:base]).any?
+        .alert.alert-danger
+          Unable to save the distribution: #{errors.join(", ")}
       %table.table
         %thead
           %th Recipient
