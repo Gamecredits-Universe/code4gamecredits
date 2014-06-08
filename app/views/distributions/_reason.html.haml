@@ -4,4 +4,11 @@
   Commit #{link_to truncate_commit(commit.sha), "https://github.com/#{commit.project.full_name}/commit/#{commit.sha}"}:
   %pre= commit.message
 - when nil
-  = render_markdown tip.comment
+  - if tip.commit.present?
+    - if tip.project
+      Commit #{link_to truncate_commit(tip.commit), "https://github.com/#{tip.project.full_name}/commit/#{tip.commit}"}:
+    - else
+      Commit #{tip.commit}
+    %pre= tip.commit_message
+  - else
+    = render_markdown tip.comment

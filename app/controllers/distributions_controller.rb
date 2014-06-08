@@ -79,7 +79,7 @@ class DistributionsController < ApplicationController
     end
     result = render_to_string(layout: false)
     render json: {result: result}
-  rescue => e
+  rescue RuntimeError => e
     render json: {error: e.message}
   end
 
