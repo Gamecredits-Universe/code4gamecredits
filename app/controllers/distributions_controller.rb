@@ -64,7 +64,7 @@ class DistributionsController < ApplicationController
     elsif params[:not_rewarded_commits]
       @project.commits.each do |commit|
         next if Tip.where(reason: commit).any?
-        next if Tip.where(commit: commit.sha).any?
+        next if Tip.where(commit: commit.sha).where.not(amount: nil).any?
         tip = Tip.build_from_commit(commit)
         @tips << tip if tip
       end
