@@ -1,10 +1,8 @@
 class Tip < ActiveRecord::Base
   belongs_to :user
-  belongs_to :distribution
+  belongs_to :distribution, touch: true
   belongs_to :project, inverse_of: :tips
   belongs_to :reason, polymorphic: true
-
-  has_paper_trail
 
   validates :amount, numericality: {greater_or_equal_than: 0, allow_nil: true}
   validate :validate_reason

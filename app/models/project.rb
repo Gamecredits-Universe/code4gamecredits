@@ -12,7 +12,7 @@ class Project < ActiveRecord::Base
 
   has_many :commits
 
-  has_paper_trail
+  record_changes(except: [:available_amount_cache, :last_commit])
 
   acts_as_commontable
 

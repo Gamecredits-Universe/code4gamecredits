@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140608131519) do
+ActiveRecord::Schema.define(version: 20140609122440) do
 
   create_table "cold_storage_transfers", force: true do |t|
     t.integer  "project_id"
@@ -142,6 +142,17 @@ ActiveRecord::Schema.define(version: 20140608131519) do
 
   add_index "projects", ["github_id"], name: "index_projects_on_github_id", unique: true
 
+  create_table "record_changes", force: true do |t|
+    t.integer  "record_id"
+    t.string   "record_type"
+    t.integer  "user_id"
+    t.text     "raw_state",   limit: 1048576
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "record_changes", ["record_id", "record_type"], name: "index_record_changes_on_record_id_and_record_type"
+
   create_table "tipping_policies_texts", force: true do |t|
     t.integer  "project_id"
     t.integer  "user_id"
@@ -202,17 +213,5 @@ ActiveRecord::Schema.define(version: 20140608131519) do
   end
 
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-
-  create_table "versions", force: true do |t|
-    t.string   "item_type",      null: false
-    t.integer  "item_id",        null: false
-    t.string   "event",          null: false
-    t.string   "whodunnit"
-    t.text     "object"
-    t.datetime "created_at"
-    t.text     "object_changes"
-  end
-
-  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
 
 end

@@ -3,7 +3,7 @@ class Distribution < ActiveRecord::Base
   has_many :tips
   accepts_nested_attributes_for :tips, allow_destroy: true
 
-  has_paper_trail
+  record_changes(include: :tips)
 
   acts_as_commontable
 
