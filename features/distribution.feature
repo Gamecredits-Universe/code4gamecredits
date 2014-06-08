@@ -364,7 +364,7 @@ Feature: Fundraisers can distribute funds
     And I save the distribution
 
     Then I should see these distribution lines:
-      | recipient | address                            | comment    | amount | percentage |
+      | recipient | address                            | reason     | amount | percentage |
       | bob       | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 | Great idea |     10 |        100 |
 
 

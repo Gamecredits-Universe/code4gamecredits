@@ -5,7 +5,6 @@
       %tr
         %th Recipient
         %th Reason
-        %th Comment
         %th Address
         %th Amount
         %th Percentage
@@ -21,7 +20,6 @@
             - else
               Nobody
           %td.reason= render "reason", tip: tip
-          %td.tip-comment= render_markdown tip.comment
           %td.address
             - if tip.user.try(:bitcoin_address).present?
               = tip.user.bitcoin_address

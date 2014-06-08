@@ -13,9 +13,11 @@
         = fields.hidden_field :user_id
         = link_to user.recipient_label, user
     %td.reason
-      = fields.hidden_field :reason_type
-      = fields.hidden_field :reason_id
-      = render "reason", tip: fields.object
-    %td.tip-comment= fields.text_field :comment, hide_label: true
+      - if tip.reason
+        = fields.hidden_field :reason_type
+        = fields.hidden_field :reason_id
+        = render "reason", tip: tip
+      - else
+        = fields.text_area :comment, hide_label: true, rows: 2
     %td.amount= fields.text_field :coin_amount, hide_label: true, append: "PPC"
     %td.remove= fields.check_box :_destroy

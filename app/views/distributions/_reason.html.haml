@@ -3,3 +3,5 @@
   - commit = tip.reason
   Commit #{link_to truncate_commit(commit.sha), "https://github.com/#{commit.project.full_name}/commit/#{commit.sha}"}:
   %pre= commit.message
+- when nil
+  = render_markdown tip.comment
