@@ -109,6 +109,25 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def github_user_suggestions
+    respond_to do |format|
+      format.json do
+        query = params[:query]
+        users = User.where.not(nickname: nil).where.not(nickname: '').where('nickname LIKE ? OR name LIKE ?', "%#{query}%", "%#{query}%")
+        users = users.map do |user|
+          {
+            login: user.nickname,
+            description: [
+              user.nickname,
+              user.name.present? ? "(#{user.name})" : nil,
+            ].reject(&:blank?).join(" "),
+          }
+        end
+        render json: users
+      end
+    end
+  end
+
   private
   def project_params
     params.require(:project).permit(:name, :description, :detailed_description, :full_name, :auto_tip_commits, :hold_tips, tipping_policies_text_attributes: [:text])

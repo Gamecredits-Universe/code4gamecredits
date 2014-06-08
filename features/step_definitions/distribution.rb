@@ -13,7 +13,7 @@ end
 
 Given(/^I add the GitHub user "(.*?)" to the recipients$/) do |arg1|
   within ".panel", text: "GitHub user" do
-    find("input").set(arg1)
+    find("input:enabled").set(arg1)
     click_on "Add"
   end
 end

@@ -44,3 +44,27 @@ $(document).on "page:change", ->
           input.closest("form").submit()
           input.typeahead('val', '')
         , 100
+
+  $(".github-user-autocomplete[data-project-id]").each ->
+    input = $(this)
+    projectId = input.data("project-id")
+    source = new Bloodhound
+      datumTokenizer: Bloodhound.tokenizers.obj.whitespace("login")
+      queryTokenizer: Bloodhound.tokenizers.whitespace
+      remote: "/projects/#{projectId}/github_user_suggestions.json?query=%QUERY"
+
+    source.initialize()
+
+    input.typeahead {minLength: 1, highlight: true},
+      displayKey: "login"
+      source: source.ttAdapter()
+      templates:
+        suggestion: (object) ->
+          object.description
+
+    if input.data("submit")
+      input.bind "typeahead:selected", ->
+        setTimeout ->
+          input.closest("form").submit()
+          input.typeahead('val', '')
+        , 100
