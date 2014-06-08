@@ -7,6 +7,7 @@ class Tip < ActiveRecord::Base
   has_paper_trail
 
   validates :amount, numericality: {greater_or_equal_than: 0, allow_nil: true}
+  validate :validate_reason
 
   scope :not_sent,      -> { where(distribution_id: nil) }
   def not_sent?
@@ -130,5 +131,16 @@ class Tip < ActiveRecord::Base
       user.save!
     end
     new(user_id: user.id, reason: commit)
+  end
+
+  def validate_reason
+    case reason_type
+    when nil, ""
+      errors.add(:reason_id, :present) unless reason_id.blank?
+    when "Commit"
+      errors.add(:reason_id, :invalid) unless project.commits.include?(reason)
+    else
+      errors.add(:reason_type, :invalid)
+    end
   end
 end
