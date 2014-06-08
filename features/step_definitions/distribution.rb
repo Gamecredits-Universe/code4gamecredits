@@ -72,7 +72,7 @@ Then(/^I should see these distribution lines:$/) do |table|
     end
     tr.find(".recipient").text.should eq(row["recipient"])
     tr.find(".address").text.should eq(row["address"]) if row["address"]
-    tr.find(".origin").text.should eq(row["origin"]) if row["origin"]
+    tr.find(".reason").text.should eq(row["reason"]) if row["reason"]
     if row["amount"]
       text = tr.find(".amount").text
       if row["amount"] =~ /\A[0-9.]+\Z/
@@ -104,7 +104,7 @@ Then(/^the distribution form should have these recipients:$/) do |table|
       raise
     end
     tr.find(".recipient").text.should eq(row["recipient"])
-    tr.find(".origin").text.should eq(row["origin"]) if row["origin"]
+    tr.find(".reason").text.should eq(row["reason"]) if row["reason"]
     if row["amount"]
       text = tr.find_field("Amount").value
       if row["amount"] =~ /\A[0-9.]+\Z/

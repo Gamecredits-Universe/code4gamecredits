@@ -2,7 +2,7 @@ class Tip < ActiveRecord::Base
   belongs_to :user
   belongs_to :distribution
   belongs_to :project, inverse_of: :tips
-  belongs_to :origin, polymorphic: true
+  belongs_to :reason, polymorphic: true
 
   has_paper_trail
 
@@ -129,6 +129,6 @@ class Tip < ActiveRecord::Base
       user.skip_confirmation_notification!
       user.save!
     end
-    new(user_id: user.id, origin: commit)
+    new(user_id: user.id, reason: commit)
   end
 end

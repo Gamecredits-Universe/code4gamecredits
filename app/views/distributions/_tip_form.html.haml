@@ -12,10 +12,10 @@
       - else
         = fields.hidden_field :user_id
         = link_to user.recipient_label, user
-    %td.origin
-      = fields.hidden_field :origin_type
-      = fields.hidden_field :origin_id
-      = render "origin", tip: fields.object
+    %td.reason
+      = fields.hidden_field :reason_type
+      = fields.hidden_field :reason_id
+      = render "reason", tip: fields.object
     %td.tip-comment= fields.text_field :comment, hide_label: true
     %td.amount= fields.text_field :coin_amount, hide_label: true, append: "PPC"
     %td.remove= fields.check_box :_destroy

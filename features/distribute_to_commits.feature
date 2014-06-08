@@ -27,7 +27,7 @@ Feature: A project collaborator distribute to commit authors
     And I click on "New distribution"
     And I select the commit recipients "Commits not rewarded"
     Then the distribution form should have these recipients:
-      | recipient | origin                    | comment | amount |
+      | recipient | reason                    | comment | amount |
       | yugo      | Commit BBB: Tiny change   |         |        |
       | gaal      | Commit CCC: Some changes  |         |        |
 
@@ -36,7 +36,7 @@ Feature: A project collaborator distribute to commit authors
     And I click on "Save"
 
     Then I should see these distribution lines:
-      | recipient | origin                    | address                   | amount | percentage |
+      | recipient | reason                    | address                   | amount | percentage |
       | yugo      | Commit BBB: Tiny change   |                           |    0.5 |        100 |
     And I should see "Total amount: 0.50 PPC"
     When I click on "Send email request to provide an address"
@@ -50,7 +50,7 @@ Feature: A project collaborator distribute to commit authors
     And I click on "New distribution"
     And I select the commit recipients "Commits not rewarded"
     Then the distribution form should have these recipients:
-      | recipient | origin                    | comment | amount |
+      | recipient | reason                    | comment | amount |
       | gaal      | Commit CCC: Some changes  |         |        |
 
   @javascript
@@ -70,14 +70,14 @@ Feature: A project collaborator distribute to commit authors
     And I click on "New distribution"
     And I select the commit recipients "Commits not rewarded"
     Then the distribution form should have these recipients:
-      | recipient        | origin                    | comment | amount |
+      | recipient        | reason                    | comment | amount |
       | yugo@example.com | Commit BBB: Tiny change   |         |        |
 
     And I fill the amount to "yugo@example.com" with "0.5"
     And I save the distribution
 
     Then I should see these distribution lines:
-      | recipient        | origin                    | address                   | amount | percentage |
+      | recipient        | reason                    | address                   | amount | percentage |
       | yugo@example.com | Commit BBB: Tiny change   |                           |    0.5 |        100 |
     And I should see "Total amount: 0.50 PPC"
     And there should be 0 email sent
@@ -105,11 +105,11 @@ Feature: A project collaborator distribute to commit authors
     And I click on "New distribution"
     And I add the commit "170ed604f287b9fec397389d0b1b3f7d15b82276" to the recipients
     Then the distribution form should have these recipients:
-      | recipient | origin                    | comment | amount |
+      | recipient | reason                           | comment | amount |
       | yugo      | Commit 170ed604f2: Tiny change   |         |        |
     When I add the commit "1329394df" to the recipients
     Then the distribution form should have these recipients:
-      | recipient | origin                    | comment | amount |
+      | recipient | reason                           | comment | amount |
       | yugo      | Commit 170ed604f2: Tiny change   |         |        |
       | gaal      | Commit 1329394df2: Some changes  |         |        |
 
@@ -117,6 +117,6 @@ Feature: A project collaborator distribute to commit authors
     And I click on "Save"
 
     Then I should see these distribution lines:
-      | recipient | origin                           | address                   | amount    | percentage |
+      | recipient | reason                           | address                   | amount    | percentage |
       | yugo      | Commit 170ed604f2: Tiny change   |                           |       0.5 |            |
       | gaal      | Commit 1329394df2: Some changes  |                           | Undecided |            |

@@ -63,7 +63,7 @@ class DistributionsController < ApplicationController
       @tips << Tip.new(user: user)
     elsif params[:not_rewarded_commits]
       @project.commits.each do |commit|
-        next if Tip.where(origin: commit).any?
+        next if Tip.where(reason: commit).any?
         tip = Tip.build_from_commit(commit)
         @tips << tip if tip
       end
@@ -87,7 +87,7 @@ class DistributionsController < ApplicationController
 
   def distribution_params
     if params[:distribution]
-      params.require(:distribution).permit(tips_attributes: [:id, :coin_amount, :user_id, :comment, :origin_type, :origin_id, :_destroy])
+      params.require(:distribution).permit(tips_attributes: [:id, :coin_amount, :user_id, :comment, :reason_type, :reason_id, :_destroy])
     else
       {}
     end
