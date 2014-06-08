@@ -16,6 +16,7 @@ class ProjectsController < ApplicationController
       redirect_to root_path, alert: "Project not found"
       return
     end
+    commontator_thread_show(@project)
   end
 
   def new

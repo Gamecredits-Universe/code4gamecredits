@@ -14,6 +14,8 @@ class Project < ActiveRecord::Base
 
   has_paper_trail
 
+  acts_as_commontable
+
   validates :name, presence: true
 
   before_validation :strip_full_name
@@ -218,5 +220,9 @@ class Project < ActiveRecord::Base
     self.address_label = "peer4commit-#{id}"
     self.bitcoin_address = BitcoinDaemon.instance.get_new_address(address_label)
     save(validate: false)
+  end
+
+  def to_label
+    name.presence || id.to_s
   end
 end

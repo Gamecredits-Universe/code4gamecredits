@@ -1,4 +1,5 @@
 T4c::Application.routes.draw do
+  mount Commontator::Engine => '/commontator'
 
   root 'home#index'
 

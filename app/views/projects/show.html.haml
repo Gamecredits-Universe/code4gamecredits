@@ -45,6 +45,9 @@
     %p
       %input.form-control{type: 'text', value: "[![tip for next commit](#{project_url(@project, format: :svg)})](#{project_url(@project)})"}
 
+    %hr
+    = commontator_thread(@project)
+
   .col-md-4
     - if @project.disabled?
       .panel.panel-danger

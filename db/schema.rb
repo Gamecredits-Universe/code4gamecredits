@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140607100342) do
+ActiveRecord::Schema.define(version: 20140608120038) do
 
   create_table "cold_storage_transfers", force: true do |t|
     t.integer  "project_id"
@@ -46,6 +46,48 @@ ActiveRecord::Schema.define(version: 20140607100342) do
   end
 
   add_index "commits", ["project_id"], name: "index_commits_on_project_id"
+
+  create_table "commontator_comments", force: true do |t|
+    t.string   "creator_type"
+    t.integer  "creator_id"
+    t.string   "editor_type"
+    t.integer  "editor_id"
+    t.integer  "thread_id",                     null: false
+    t.text     "body",                          null: false
+    t.datetime "deleted_at"
+    t.integer  "cached_votes_up",   default: 0
+    t.integer  "cached_votes_down", default: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "commontator_comments", ["cached_votes_down"], name: "index_commontator_comments_on_cached_votes_down"
+  add_index "commontator_comments", ["cached_votes_up"], name: "index_commontator_comments_on_cached_votes_up"
+  add_index "commontator_comments", ["creator_id", "creator_type", "thread_id"], name: "index_commontator_comments_on_c_id_and_c_type_and_t_id"
+  add_index "commontator_comments", ["thread_id"], name: "index_commontator_comments_on_thread_id"
+
+  create_table "commontator_subscriptions", force: true do |t|
+    t.string   "subscriber_type", null: false
+    t.integer  "subscriber_id",   null: false
+    t.integer  "thread_id",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "commontator_subscriptions", ["subscriber_id", "subscriber_type", "thread_id"], name: "index_commontator_subscriptions_on_s_id_and_s_type_and_t_id", unique: true
+  add_index "commontator_subscriptions", ["thread_id"], name: "index_commontator_subscriptions_on_thread_id"
+
+  create_table "commontator_threads", force: true do |t|
+    t.string   "commontable_type"
+    t.integer  "commontable_id"
+    t.datetime "closed_at"
+    t.string   "closer_type"
+    t.integer  "closer_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "commontator_threads", ["commontable_id", "commontable_type"], name: "index_commontator_threads_on_c_id_and_c_type", unique: true
 
   create_table "deposits", force: true do |t|
     t.integer  "project_id"
@@ -112,7 +154,6 @@ ActiveRecord::Schema.define(version: 20140607100342) do
   add_index "tipping_policies_texts", ["user_id"], name: "index_tipping_policies_texts_on_user_id"
 
   create_table "tips", force: true do |t|
-    t.integer  "user_id"
     t.integer  "amount",          limit: 8
     t.integer  "distribution_id"
     t.datetime "created_at"
@@ -124,6 +165,7 @@ ActiveRecord::Schema.define(version: 20140607100342) do
     t.string   "comment"
     t.integer  "origin_id"
     t.string   "origin_type"
+    t.integer  "user_id"
   end
 
   add_index "tips", ["distribution_id"], name: "index_tips_on_distribution_id"
@@ -132,7 +174,6 @@ ActiveRecord::Schema.define(version: 20140607100342) do
   add_index "tips", ["user_id"], name: "index_tips_on_user_id"
 
   create_table "users", force: true do |t|
-    t.string   "email",                            default: "", null: false
     t.string   "encrypted_password",               default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -144,7 +185,6 @@ ActiveRecord::Schema.define(version: 20140607100342) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "nickname"
     t.string   "name"
     t.string   "image"
     t.string   "bitcoin_address"
@@ -157,9 +197,10 @@ ActiveRecord::Schema.define(version: 20140607100342) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
+    t.string   "email"
+    t.string   "nickname"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
   create_table "versions", force: true do |t|
