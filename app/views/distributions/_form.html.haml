@@ -7,6 +7,7 @@
           %th Origin
           %th Comment
           %th Amount
+          %th
         %tbody#recipients
           - f.object.tips.each do |tip|
             = render "tip_form", tip: tip, form: f
