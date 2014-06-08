@@ -33,6 +33,7 @@ class DistributionsController < ApplicationController
   end
 
   def show
+    commontator_thread_show(@distribution)
   end
 
   def send_transaction

@@ -89,7 +89,7 @@ Then(/^I should see these distribution lines:$/) do |table|
         text.should eq(row["percentage"])
       end
     end
-    tr.find(".comment").text.should eq(row["comment"]) if row["comment"]
+    tr.find(".tip-comment").text.should eq(row["comment"]) if row["comment"]
   end
   table.hashes.size.should eq(all("#distribution-show-page tbody tr").size)
 end

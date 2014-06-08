@@ -21,7 +21,7 @@
             - else
               Nobody
           %td.origin= render "origin", tip: tip
-          %td.comment= render_markdown tip.comment
+          %td.tip-comment= render_markdown tip.comment
           %td.address
             - if tip.user.try(:bitcoin_address).present?
               = tip.user.bitcoin_address
@@ -58,3 +58,6 @@
     - if can? :update, @distribution
       .distribution-action
         = link_to "Edit the distribution", edit_project_distribution_path(@project, @distribution), class: "btn btn-default"
+
+%hr
+= commontator_thread(@distribution)

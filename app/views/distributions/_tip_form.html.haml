@@ -16,6 +16,6 @@
       = fields.hidden_field :origin_type
       = fields.hidden_field :origin_id
       = render "origin", tip: fields.object
-    %td.comment= fields.text_field :comment, hide_label: true
+    %td.tip-comment= fields.text_field :comment, hide_label: true
     %td.amount= fields.text_field :coin_amount, hide_label: true, append: "PPC"
     %td.remove= fields.check_box :_destroy

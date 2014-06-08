@@ -5,6 +5,8 @@ class Distribution < ActiveRecord::Base
 
   has_paper_trail
 
+  acts_as_commontable
+
   scope :to_send, -> { where(txid: nil) }
   scope :error, -> { where(is_error: true) }
 
@@ -50,5 +52,9 @@ class Distribution < ActiveRecord::Base
 
   def can_be_sent?
     !sent? and all_addresses_known? and tips.any? and tips.all?(&:decided?)
+  end
+
+  def to_label
+    "##{id} on project #{project.to_label}"
   end
 end
