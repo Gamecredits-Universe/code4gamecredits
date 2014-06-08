@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   before_create :generate_login_token!, unless: :login_token?
 
   acts_as_commontator
+  acts_as_commontable
 
   def github_url
     "https://github.com/#{nickname}"
