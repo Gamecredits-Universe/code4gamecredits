@@ -4,6 +4,7 @@ class Project < ActiveRecord::Base
   accepts_nested_attributes_for :tips
   has_many :collaborators
   has_many :distributions, inverse_of: :project
+  has_many :donation_addresses, inverse_of: :project
 
   has_many :cold_storage_transfers
 

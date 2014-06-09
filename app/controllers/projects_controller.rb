@@ -4,7 +4,7 @@ class ProjectsController < ApplicationController
 
   before_action :load_project, only: [:qrcode, :edit, :update, :decide_tip_amounts]
 
-  load_and_authorize_resource only: [:commit_suggestions]
+  load_and_authorize_resource only: [:commit_suggestions, :donate, :donors]
 
   def index
     @projects = Project.enabled.order(available_amount_cache: :desc, watchers_count: :desc, full_name: :asc).page(params[:page]).per(30)
@@ -126,6 +126,15 @@ class ProjectsController < ApplicationController
         end
         render json: users
       end
+    end
+  end
+
+  def donate
+    if params[:donation_address]
+      sender_address = params[:donation_address][:sender_address].strip
+      @donation_address = @project.donation_addresses.where(sender_address: sender_address).first_or_create
+    else
+      @donation_address = @project.donation_addresses.build
     end
   end
 

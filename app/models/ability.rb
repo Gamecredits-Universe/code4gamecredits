@@ -2,7 +2,7 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    can :read, Project
+    can [:read, :donate, :donors], Project
     can :read, Distribution
 
     if user and user.nickname.present?

@@ -1,0 +1,25 @@
+.row
+  .col-md-12
+    %h1 Donate to #{@project.name}
+    - fundraisers = User.where(nickname: @project.collaborators.map(&:login))
+    - if fundraisers.any?
+      %p
+        - if fundraisers.size > 1
+          Before you donate make sure the project collaborators #{fundraisers.map { |user| link_to user.full_name, user }.join(", ").html_safe} are trustworthy and able to achieve what they promised.
+        - else
+          - user = fundraisers.first
+          Before you donate make sure the fundraiser #{link_to user.full_name, user} is trustworthy and able to achieve what he promised.
+
+    - if @donation_address.persisted? and @donation_address.donation_address.present?
+      %p
+        To donate to #{link_to @project.name, @project} send Peercoins to this address: #{@donation_address.donation_address}
+    - else
+      To donate to this project you can provide a return address. This address will be used if Peer4Commit or the fundraiser ever need to send funds back to you. In the future, this address may also be used to cast a vote. For a vote to be valid, it will need to be signed by the address that the donation was sent from.
+
+      = bootstrap_form_for @donation_address, url: donate_project_path(@project) do |f|
+        = f.text_field :sender_address, label: 'Return address'
+        = f.submit "Generate my donation address"
+
+
+      %hr
+      %p If you want to donate without providing a return address, you can just send Peercoins to this address: #{@project.bitcoin_address}

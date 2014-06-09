@@ -83,7 +83,10 @@ module BalanceUpdater
           end
 
           if category == "receive"
-            if address != project.bitcoin_address
+            if address == project.bitcoin_address
+              donation_address = nil
+            elsif donation_address = project.donation_addresses.detect { |da| da.donation_address == address}
+            else
               raise "Funds received to unexpected address: #{transaction.inspect}"
             end
 
@@ -95,6 +98,7 @@ module BalanceUpdater
               duration: 30.days.to_i,
               paid_out: 0,
               paid_out_at: Time.now,
+              donation_address: donation_address,
             )
             next
           end

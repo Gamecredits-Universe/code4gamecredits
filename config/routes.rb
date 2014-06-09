@@ -35,6 +35,9 @@ T4c::Application.routes.draw do
       patch :decide_tip_amounts
       get :commit_suggestions
       get :github_user_suggestions
+      get :donate
+      post :donate
+      get :donors
     end
   end
   resources :tips, :only => [:index]

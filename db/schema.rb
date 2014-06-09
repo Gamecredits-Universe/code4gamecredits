@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140609122440) do
+ActiveRecord::Schema.define(version: 20140615124857) do
 
   create_table "cold_storage_transfers", force: true do |t|
     t.integer  "project_id"
@@ -93,14 +93,16 @@ ActiveRecord::Schema.define(version: 20140609122440) do
     t.integer  "project_id"
     t.string   "txid"
     t.integer  "confirmations"
-    t.integer  "duration",                default: 2592000
-    t.integer  "paid_out",      limit: 8
+    t.integer  "duration",                      default: 2592000
+    t.integer  "paid_out",            limit: 8
     t.datetime "paid_out_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "amount",        limit: 8
+    t.integer  "amount",              limit: 8
+    t.integer  "donation_address_id"
   end
 
+  add_index "deposits", ["donation_address_id"], name: "index_deposits_on_donation_address_id"
   add_index "deposits", ["project_id"], name: "index_deposits_on_project_id"
 
   create_table "distributions", force: true do |t|
@@ -116,6 +118,16 @@ ActiveRecord::Schema.define(version: 20140609122440) do
   end
 
   add_index "distributions", ["project_id"], name: "index_distributions_on_project_id"
+
+  create_table "donation_addresses", force: true do |t|
+    t.integer  "project_id"
+    t.string   "sender_address"
+    t.string   "donation_address"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "donation_addresses", ["project_id"], name: "index_donation_addresses_on_project_id"
 
   create_table "projects", force: true do |t|
     t.string   "url"
