@@ -78,6 +78,7 @@ gem 'redcarpet'
 gem 'sanitize'
 gem 'twitter-typeahead-rails'
 gem 'commontator', '~> 4.6.0'
+gem 'compass-rails'
 
 group :test do
   gem 'cucumber-rails', :require => false

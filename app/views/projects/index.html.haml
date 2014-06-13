@@ -1,23 +1,24 @@
-.row
-  .col-md-10
-    %h1 Projects
-  .col-md-2
-    .text-right
-      = link_to "Create project", new_project_path, class: 'btn btn-default btn-block'
-%p
-  %table.table.table-hover
-    %thead
-      %tr
-        %th Name
-        %th Description
-        %th Funds
-        %th
-    %tbody
-      - @projects.each do |project|
+#project-index
+  .row
+    .col-md-10
+      %h1 Projects
+    .col-md-2
+      .text-right
+        = link_to "Create a project", new_project_path, class: 'btn btn-default btn-block'
+  %p
+    %table.table.table-hover
+      %thead
         %tr
-          %td
-            %strong= link_to project.name, project
-          %td= project.description
-          %td= btc_human project.available_amount_cache
-          %td= link_to 'Details', project, class: 'btn btn-default'
-  = paginate @projects
+          %th.name Name
+          %th.description Description
+          %th.amount Funds
+          %th.actions
+      %tbody
+        - @projects.each do |project|
+          %tr
+            %td.name
+              %strong= link_to project.name, project
+            %td.description= project.description
+            %td.amount= btc_human project.available_amount_cache
+            %td.actions= link_to 'Details', project, class: 'btn btn-default btn-sm'
+    = paginate @projects

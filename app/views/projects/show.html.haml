@@ -28,30 +28,9 @@
           - else
             = "(Last updated on #{date})"
 
-    %hr
-    %h4 Promote #{@project.name}
-    %p
-      / AddThis Button BEGIN
-      .addthis_toolbox.addthis_default_style.addthis_32x32_style(addthis:data_track_clickback="false" addthis:data_track_addressbar="false")
-        %a.addthis_button_preferred_1
-        %a.addthis_button_preferred_2
-        %a.addthis_button_preferred_3
-        %a.addthis_button_preferred_4
-        %a.addthis_button_compact
-        %a.addthis_counter.addthis_bubble_style
-      / AddThis Button END
-
-    %h4 Embed in README.md
-    %p= link_to image_tag(project_url(@project, format: :svg), alt: 'Peer4Commit'), project_url(@project)
-    %p
-      %input.form-control{type: 'text', value: "[![tip for next commit](#{project_url(@project, format: :svg)})](#{project_url(@project)})"}
-
-    %hr
-    = commontator_thread(@project)
-
   .col-md-4
     - if @project.disabled?
-      .panel.panel-danger
+      .panel.panel-danger.note-panel
         .panel-heading
           %h4.panel-title
             Project Disabled
@@ -63,7 +42,7 @@
             %p Reason: #{reason}
 
     - else
-      .panel.panel-default.project-panel
+      .panel.panel-default.project-panel.note-panel
         .panel-heading
           %h4.panel-title
             Project informations
@@ -96,7 +75,7 @@
           - if can? :create, @project.distributions.build
             = link_to "New distribution", new_project_distribution_path(@project), class: "btn btn-default btn-sm btn-block"
 
-      .panel.panel-default.project-panel
+      .panel.panel-default.project-panel.note-panel
         .panel-heading
           %h4.panel-title
             Donate
@@ -107,3 +86,26 @@
           %p
             = image_tag qrcode_project_path(@project, format: :svg), alt: @project.bitcoin_address, class: 'project qrcode'
           %p #{100-(CONFIG["our_fee"]*100).round}% of deposited funds will be used to tip for new commits. 
+.row
+  .col-md-8
+    %hr
+    %h4 Promote #{@project.name}
+    %p
+      / AddThis Button BEGIN
+      .addthis_toolbox.addthis_default_style.addthis_32x32_style(addthis:data_track_clickback="false" addthis:data_track_addressbar="false")
+        %a.addthis_button_preferred_1
+        %a.addthis_button_preferred_2
+        %a.addthis_button_preferred_3
+        %a.addthis_button_preferred_4
+        %a.addthis_button_compact
+        %a.addthis_counter.addthis_bubble_style
+      / AddThis Button END
+
+    %h4 Embed in README.md
+    %p= link_to image_tag(project_url(@project, format: :svg), alt: 'Peer4Commit'), project_url(@project)
+    %p
+      %input.form-control{type: 'text', value: "[![tip for next commit](#{project_url(@project, format: :svg)})](#{project_url(@project)})"}
+
+    %hr
+    = commontator_thread(@project)
+

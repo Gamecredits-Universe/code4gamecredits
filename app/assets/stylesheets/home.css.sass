@@ -2,11 +2,182 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+@import "compass/css3"
+@import "compass/utilities/text/replacement"
+@import "oldsansblack"
+@import "same-height-columns"
+
+=verdana
+  font-family: Verdana, Geneva, sans-serif
+
 td.money, th.money
   text-align: right
 
-.masthead
-  margin-bottom: 12px
-
 h1:first-child
   margin-top: 0
+
+
+=button($top-color, $bottom-color, $border, $text, $text-hover, $hover)
+  +background(linear-gradient(top, $top-color, $bottom-color))
+  border-color: $border
+  color: $text
+
+  &:hover, &:active
+    +background($hover)
+    border-color: $hover
+    color: $text-hover
+
+.btn-default, .btn-primary, .btn-success
+  +button(#aadb44, #609c2a, #86ab46, white, #406f0e, #98cc3d)
+
+#main-logo
+  +replace-text-with-dimensions("logo.png")
+  +inline-block(middle)
+  margin: 10px 0
+  text-decoration: none
+
+#top-bar
+  +background(linear-gradient(top, #2c2c2c, #0a0a0a))
+  $link-color: white
+  $link-color-active: #94d317
+
+  a:not(.btn):not(#main-logo)
+    color: $link-color
+    &:hover, &:active
+      color: $link-color-active
+      background: transparent
+
+  #main-menu
+    text-align: right
+    padding-left: 210px
+    li
+      +inline-block(middle)
+      padding: 0 30px
+      &.active a
+        color: $link-color-active
+
+  #session-menu
+    float: right
+    padding-top: 16px
+    a
+      +inline-block(middle)
+      margin-left: 6px
+  
+#main-menu
+  +inline-block(middle)
+
+body
+  +verdana
+  background: #f9f9f9
+  a
+    $base: #457f05
+    color: $base
+    &:hover, &:active
+      color: $base
+
+.jumbotron
+  background: #1c191f
+  background: #1c191f image-url("blackboard.jpg") center top repeat-y
+  text-align: center
+  color: white
+  padding: 50px 0
+  h1
+    text-transform: uppercase
+    font-size: 48px
+    font-weight: bold
+    font-family: oldsansblack
+    margin: 50px 0
+
+#main-container
+  padding-top: 30px
+
+h1
+  font-family: oldsansblack
+  font-size: 36px
+  color: #8bc139
+
+h2
+  +verdana
+  color: #111d04
+  font-size: 30px
+
+h3
+  +verdana
+  color: #599400
+  font-size: 18px
+  
+h4
+  +verdana
+  color: #363636
+  font-size: 14px
+
+#home-page
+  .main-panel
+    .btn-primary
+      height: 60px
+      font-size: 18px
+      padding-top: 15px
+      +verdana
+
+    &:before
+      content: ""
+      display: block
+      width: 100px
+      height: 100px
+      +border-radius(100px)
+      margin: auto
+
+    &.how-it-works:before
+      background: #98cc3d image-url("picto-books.png") center center no-repeat
+
+    &.raise:before
+      background: #98cc3d image-url("picto-plane.png") 44% 52% no-repeat
+
+    &.donate:before
+      background: #ffc000 image-url("picto-peerheart.png") 50% 54% no-repeat
+
+    &.contribute:before
+      background: #98cc3d image-url("picto-tasks.png") 50% 48% no-repeat
+
+    h2
+      text-align: center
+      font-size: 24px
+      +verdana
+      margin-top: 10px
+    p
+      font-size: 14px
+
+.panel.note-panel
+  background: image-url("panel-top.png") left top no-repeat
+  padding: 35px 14px 0px 3px
+  width: 334px
+  margin: 0px
+  border: none
+  margin-bottom: 10px
+  float: right
+  margin-right: -14px
+  +box-shadow(none)
+  .panel-heading
+    background: white
+    border: none
+    .panel-title
+      +verdana
+      font-size: 18px
+  .panel-body
+    background: white
+
+@media(min-width:992px)
+  #home-page
+    .main-panel
+      position: relative
+      padding-bottom: 70px
+      .button-container
+        position: absolute
+        bottom: 0
+        left: 15px
+        right: 15px
+
+#project-index
+  td, th
+    &.actions, &.amount
+      text-align: right

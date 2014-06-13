@@ -27,33 +27,37 @@
 
       ga('create', 'UA-11108334-6', 'peer4commit.com');
       ga('send', 'pageview');
-    .container
-      .masthead
-        %div.pull-right
-          %small
-            - if current_user
-              = link_to current_user.full_name, edit_registration_path(current_user), class: "edit-profile-link"
-              \/
-              = btc_human(current_user.balance)
-              \/
-              = link_to 'Sign Out', destroy_user_session_path, method: :delete
-            - else
-              = link_to "Sign in", new_user_session_path(return_url: request.url)
-        %h3.text-muted.code-pro Peer4Commit
+    #top-bar
+      .container
+        #session-menu
+          - if current_user
+            = link_to current_user.full_name, edit_registration_path(current_user), class: "edit-profile-link"
+            = link_to 'Sign Out', destroy_user_session_path, method: :delete, class: "btn btn-default"
+          - else
+            = link_to "Sign in", new_user_session_path(return_url: request.url), class: "btn btn-default"
+        %a#main-logo{href: root_path}
+          %h3 Peer4commit
         = render 'common/menu'
         = render_flash_message
-      = yield
-      / Site footer
-      .footer
-        %p
-          ©
-          = link_to 'Peer4commit', 'http://peer4commit.com/', target: '_blank'
-          2014. Source code is available at #{link_to('github', 'https://github.com/sigmike/peer4commit', target: '_blank')},
-          based on #{link_to "Tip4commit", "http://tip4commit.com/"}.
-          You can support its development with
-          = link_to('peercoins', 'http://peer4commit.com/projects/1')
-          or
-          = link_to('bitcoins', 'http://tip4commit.com/projects/560')
+    #main-content
+      - if content_for?(:main_content)
+        = yield :main_content
+      - else
+        .container#main-container
+          = yield
+    #footer
+      .container
+        / Site footer
+        .footer
+          %p
+            ©
+            = link_to 'Peer4commit', 'http://peer4commit.com/', target: '_blank'
+            2014. Source code is available at #{link_to('github', 'https://github.com/sigmike/peer4commit', target: '_blank')},
+            based on #{link_to "Tip4commit", "http://tip4commit.com/"}.
+            You can support its development with
+            = link_to('peercoins', 'http://peer4commit.com/projects/1')
+            or
+            = link_to('bitcoins', 'http://tip4commit.com/projects/560')
     / /container
     /
       Bootstrap core JavaScript
