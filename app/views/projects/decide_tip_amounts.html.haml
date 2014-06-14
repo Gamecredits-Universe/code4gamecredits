@@ -14,6 +14,7 @@
       = f.fields_for(:tips, @project.tips.select(&:was_undecided?)) do |tip_fields|
         = tip_fields.hidden_field :id
         - tip = tip_fields.object
+        - next unless tip.user
         %tr
           %td= link_to commit_tag(tip.commit), tip.commit_url
           %td= tip.user.nickname
