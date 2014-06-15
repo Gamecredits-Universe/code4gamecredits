@@ -26,17 +26,17 @@ And there is a big risk. For example if all decisions are made proportional to t
 
 So we decided all these choices will be made by the fundraiser. He can start a project where he decides everything as a benevolent dictator, but he can also create more democratic projects where important decisions will be taken at the majority among choices he selects.
 
-The fundraiser will also have the responsibility of deciding what can be changed and what can not. For example the main goal of the project is not likely to change. Even if you give a small amount and have a small weight in the decisions you can be assured that your funds will still be used for the same goal. Someone who gave 90% of the funds won't be able to change that.
+The fundraiser will also have the responsibility of deciding what can and cannot be changed. For example the main goal of the project is not likely to change. Even if you give a small amount and have an insignificant weight in the decisions you can rest assured that your money will still be used for the same goal. Someone who gave 90% of the funds won't be able to change that.
 
 
-Why use Peer4commit then and not send funds directly to the fundraiser?
------------------------------------------------------------------------
+Why use Peer4commit and not send funds directly to the fundraiser?
+------------------------------------------------------------------
 
 Peer4commit provides tools to the donors and the fundraisers.
 
 The donors can browse the fundraiser history: what projects he managed, how he distributed funds, what comments he received, etc. The fundraisers are forced to distribute the funds through Peer4commit so that anyone can see the details. For example if the fundraiser decided to send money to a GitHub account, then the GitHub account name will be displayed, not only the payment address.
 
-The fundraisers have tools to easily distribute money. They can for example send funds to an email address. Peer4commit will take charge of getting payment information from the owner of this email address. They can also send funds to a GitHub users or to the author of a particular commit. More options will be added later (send to a Reddit user, to a forum member, etc.).
+The fundraisers have tools to easily distribute money. They can for example send funds to an email address. Peer4commit will take charge of getting payment information from the owner of this email address. They can also send funds to a GitHub users or to the author of a particular commit. More options will be added later (sending to a Reddit user, to a forum member, etc.).
 
 We also provide tools to identify donors. When they donate they can provide a address. This address will be used whenever Peer4commit, the fundraiser or anyone wants to identify a donor. Anyone able to sign with this address will be considered the sender of the associated money. This can be used to return the funds, to organize votes, to send rewards, etc.
 
@@ -50,14 +50,16 @@ For example the fact a project has a lot of donations is not an indication that 
 
 Peer4commit provides some tools to help you check the fundraiser. We keep track of all the projects he managed and all the funds he distributed. You can browse that and see how he managed previous projects. Anyone can comment the projects, distributions and users so if he did something wrong then there are good chances he received bad comments.
 
-The fundraiser should also explain in the project description why you can trust him. If he doesn't do that you should be suspicious. Then you'll have to evaluate what he says. It's particularly important to check the identity of the fundraiser. He should provide proofs he is not impersonating the person he claims to be.
+The fundraiser should also explain in the project description why you can trust him. If he doesn't do that you should be suspicious. Then you'll have to evaluate what he says. It's particularly important to check the identity of the fundraiser. He should provide proofs he really is who he claims to be.
 
-But an important point is that the fundraisers will actually compete on trust. Since anyone can raise funds a big part of the difference will be made on trustworthiness. Of course other skills are important too. For example the project may require some technical skills to evaluate the work made by others. You should ensure the fundraiser has these skills.
+But an important point is that the fundraisers will actually compete on trust. Since anyone can raise funds a big part of the difference will be made on trustworthiness.
+
+Some other skills may be important too. For example the project may require some technical skills to evaluate the work made by others. You should ensure the fundraiser has these abilities.
 
 
 Does it work?
 -------------
-The project is still young but yes. Some projects were successfully managed.
+Peer4commit is still young but yes. Some projects were successfully managed.
 
 We initially started as a [tip4commit](http://tip4commit.com/) clone where GitHub commits were automatically rewarded 1% of the balance. We moved recently to the more generic system described here.
 
