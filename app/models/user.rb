@@ -82,6 +82,10 @@ class User < ActiveRecord::Base
     generate_confirmation_token!
   end
 
+  def projects
+    Project.joins(:collaborators).where(collaborators: {login: nickname})
+  end
+
   private
 
   def generate_login_token!

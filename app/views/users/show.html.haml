@@ -4,5 +4,11 @@
     %strong GitHub account:
     = link_to @user.nickname, "https://github.com/#{@user.nickname}"
 
+- if (projects = @user.projects).any?
+  %h2 Projects
+  %ul
+    - projects.each do |project|
+      %li= link_to project.to_label, project
+
 %hr
 = commontator_thread(@user)
