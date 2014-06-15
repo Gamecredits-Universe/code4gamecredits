@@ -77,17 +77,6 @@
           - if can? :create, @project.distributions.build
             = link_to "New distribution", new_project_distribution_path(@project), class: "btn btn-default btn-sm btn-block"
 
-      .panel.panel-default.project-panel.note-panel
-        .panel-heading
-          %h4.panel-title
-            Donate
-        .panel-body.text-center
-          %p To give to this project, send peercoins to this address:
-          %p.bitcoin-address
-            = @project.bitcoin_address
-          %p
-            = image_tag qrcode_project_path(@project, format: :svg), alt: @project.bitcoin_address, class: 'project qrcode'
-          %p #{100-(CONFIG["our_fee"]*100).round}% of deposited funds will be used to tip for new commits. 
 .row
   .col-md-8
     %hr
