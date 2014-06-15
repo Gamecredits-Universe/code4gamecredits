@@ -33,7 +33,7 @@ class Distribution < ActiveRecord::Base
     data = generate_data
     update_attribute(:data, data)
 
-    raise "Not enough funds on Distribution##{id}" if total_amount > project.available_amount
+    raise "Not enough funds on Distribution##{id}" if project.available_amount < 0
 
     txid = BitcoinDaemon.instance.send_many(project.address_label, JSON.parse(data))
 
