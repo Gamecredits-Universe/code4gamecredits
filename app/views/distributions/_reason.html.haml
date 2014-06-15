@@ -9,6 +9,7 @@
       Commit #{link_to truncate_commit(tip.commit), "https://github.com/#{tip.project.full_name}/commit/#{tip.commit}"}:
     - else
       Commit #{tip.commit}
-    %pre= tip.commit_message
+    - if tip.commit_message.present?
+      %pre= tip.commit_message
   - else
     = render_markdown tip.comment
