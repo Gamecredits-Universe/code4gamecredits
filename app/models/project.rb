@@ -230,4 +230,8 @@ class Project < ActiveRecord::Base
   def to_label
     name.presence || id.to_s
   end
+
+  def fundraisers
+    User.where(nickname: collaborators.map(&:login))
+  end
 end

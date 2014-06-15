@@ -48,10 +48,14 @@
         .panel-body.text-center
           %table.table.text-left
             %tr
+              %td Fundraiser
+              %td
+                - @project.fundraisers.each do |user|
+                  .fundraiser= link_to user.full_name, user
+            %tr
               %td Funds
               %td
                 = btc_human @project.available_amount
-                = link_to "Donate", donate_project_path(@project), class: "btn btn-primary"
                 = link_to "List of donors", donors_project_path(@project)
             %tr
               %td Distributions
@@ -70,6 +74,7 @@
                       = link_to label, [@project, distribution]
                 = link_to "All distributions", project_distributions_path(@project)
 
+          = link_to "Donate", donate_project_path(@project), class: "btn btn-primary btn-block"
           - if can? :update, @project
             = link_to "Edit project", edit_project_path(@project), class: "btn btn-default btn-sm btn-block"
           - if can? :decide_tip_amounts, @project and @project.has_undecided_tips?
