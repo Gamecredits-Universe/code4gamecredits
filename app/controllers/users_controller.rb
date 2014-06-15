@@ -51,6 +51,7 @@ class UsersController < ApplicationController
   def send_email_address_request
     tip = Tip.find(params[:tip_id])
     authorize! :update, tip.distribution
+    tip.user.reset_confirmation_token!
     UserMailer.address_request(tip, current_user).deliver
     redirect_to params[:return_url], notice: "Request sent"
   end

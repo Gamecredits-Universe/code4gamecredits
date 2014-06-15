@@ -234,6 +234,35 @@ Feature: Fundraisers can distribute funds
       | mubmzLrtTgDE2WrHkiwSFKuTh2VTSXboYK |   10.0 |
     And the project balance should be "490.00"
 
+  @javascript
+  Scenario: Send to an known email address who has no confirmation token
+    Given an user with email "bob@example.com" and without password nor confirmation token
+    And a project managed by "alice"
+    And our fee is "0"
+    And a deposit of "500"
+
+    Given I'm logged in as "alice"
+    And I go to the project page
+    And I click on "New distribution"
+    And I add the email address "bob@example.com" to the recipients
+    And I fill the amount to "bob@example.com" with "10"
+    And I save the distribution
+    Then I should see these distribution lines:
+      | recipient       | address  | amount | percentage |
+      | bob@example.com |          |     10 |      100.0 |
+    When I click on "Send email request to provide an address"
+    Then I should see "Request sent"
+    And an email should have been sent to "bob@example.com"
+    When I visit the link to set my password and address from the email
+    And I fill "Password" with "password"
+    And I fill "Password confirmation" with "password"
+    And I fill "Peercoin address" with "mubmzLrtTgDE2WrHkiwSFKuTh2VTSXboYK"
+    And I click on "Save"
+
+    Then I should see "Information saved"
+    And the user with email "bob@example.com" should have "password" as password
+    And the user with email "bob@example.com" should have "mubmzLrtTgDE2WrHkiwSFKuTh2VTSXboYK" as peercoin address
+
   Scenario: Send to someone who doesn't want to be notified
     Then pending
 

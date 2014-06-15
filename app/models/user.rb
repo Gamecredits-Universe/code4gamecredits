@@ -78,6 +78,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def reset_confirmation_token!
+    generate_confirmation_token!
+  end
+
   private
 
   def generate_login_token!

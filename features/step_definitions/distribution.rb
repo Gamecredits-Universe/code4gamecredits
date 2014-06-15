@@ -11,6 +11,11 @@ Given(/^an user with email "(.*?)"$/) do |arg1|
   create(:user, email: arg1, nickname: nil, bitcoin_address: nil)
 end
 
+Given(/^an user with email "(.*?)" and without password nor confirmation token$/) do |arg1|
+  user = create(:user, email: arg1, nickname: nil, bitcoin_address: nil, password: nil, confirmation_token: nil)
+  user.update(confirmed_at: nil)
+end
+
 Given(/^I add the GitHub user "(.*?)" to the recipients$/) do |arg1|
   within ".panel", text: "GitHub user" do
     find("input:enabled").set(arg1)
