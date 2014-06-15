@@ -7,7 +7,7 @@
     %meta{content: "", name: "author"}/
     %link{href: image_path("ppcoin.png"), rel: "shortcut icon"}/
     
-    %title= "Peer4Commit — " + (content_for?(:title) ? yield(:title) : "Contribute to Open Source")
+    %title= content_for?(:title) ? yield(:title) : "Peer4commit"
 
     %meta{name: 'description', content: (content_for?(:title) ? yield(:title) : "Donate peercoins to open source projects or make commits and get tips for it.")}
     %meta{name: 'keywords', content: 'open source,contribute,github,community,git,bitcoin,peercoin,ppc,tips,perks'}
