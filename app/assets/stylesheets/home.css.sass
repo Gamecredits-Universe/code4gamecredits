@@ -21,6 +21,7 @@ h1:first-child
 
 
 =button($top-color, $bottom-color, $border, $text, $text-hover, $hover)
+  background: $bottom-color
   +background(linear-gradient(180deg, $top-color, $bottom-color))
   border-color: $border
   color: $text
@@ -40,6 +41,7 @@ h1:first-child
   text-decoration: none
 
 #top-bar
+  background: #0a0a0a
   +background(linear-gradient(180deg, #2c2c2c, #0a0a0a))
   $link-color: white
   $link-color-active: #94d317
