@@ -12,6 +12,9 @@ class User < ActiveRecord::Base
 
   has_many :tips
 
+  has_many :collaborators
+  has_many :projects, through: :collaborators
+
   before_create :generate_login_token!, unless: :login_token?
 
   acts_as_commontator
@@ -80,10 +83,6 @@ class User < ActiveRecord::Base
 
   def reset_confirmation_token!
     generate_confirmation_token!
-  end
-
-  def projects
-    Project.joins(:collaborators).where(collaborators: {login: nickname})
   end
 
   private

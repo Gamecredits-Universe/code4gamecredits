@@ -25,7 +25,11 @@ Then(/^the project GitHub ID should be "(.*?)"$/) do |arg1|
 end
 
 Then(/^the project single collaborators should be "(.*?)"$/) do |arg1|
-  @project.collaborators.map(&:login).should eq([arg1])
+  if arg1 =~ /@/
+    @project.collaborators.map(&:user).map(&:email).should eq([arg1])
+  else
+    @project.collaborators.map(&:user).map(&:nickname).should eq([arg1])
+  end
 end
 
 Then(/^the project address label should be "(.*?)"$/) do |arg1|

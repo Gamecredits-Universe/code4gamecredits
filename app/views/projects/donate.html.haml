@@ -1,7 +1,7 @@
 .row
   .col-md-12
     %h1 Donate to #{@project.name}
-    - fundraisers = User.where(nickname: @project.collaborators.map(&:login))
+    - fundraisers = @project.users
     - if fundraisers.any?
       %p
         - if fundraisers.size > 1

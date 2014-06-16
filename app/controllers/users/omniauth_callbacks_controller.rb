@@ -23,6 +23,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     @user.name = info['name']
     @user.image = info['image']
     @user.save
+
+    Collaborator.where(login: @user.nickname, user_id: nil).each do |collaborator|
+      collaborator.update(user: @user)
+    end
     
     sign_in(@user)
     redirect_to request.env["omniauth.origin"].presence || after_sign_in_path_for(@user)

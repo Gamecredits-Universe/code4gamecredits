@@ -80,7 +80,7 @@ class ProjectsController < ApplicationController
   def create
     @project = Project.new(project_params)
     @project.hold_tips = true
-    @project.collaborators.build(login: current_user.nickname)
+    @project.collaborators.build(user: current_user)
     authorize! :create, @project
 
     if @project.save

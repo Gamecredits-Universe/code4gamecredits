@@ -5,6 +5,7 @@ class Project < ActiveRecord::Base
   has_many :collaborators
   has_many :distributions, inverse_of: :project
   has_many :donation_addresses, inverse_of: :project
+  has_many :users, through: :collaborators
 
   has_many :cold_storage_transfers
 
@@ -229,9 +230,5 @@ class Project < ActiveRecord::Base
 
   def to_label
     name.presence || id.to_s
-  end
-
-  def fundraisers
-    User.where(nickname: collaborators.map(&:login))
   end
 end

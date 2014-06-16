@@ -50,7 +50,7 @@
             %tr
               %td Fundraiser
               %td
-                - @project.fundraisers.each do |user|
+                - @project.users.each do |user|
                   .fundraiser= link_to user.full_name, user
             %tr
               %td Funds
