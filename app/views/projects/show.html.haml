@@ -56,23 +56,28 @@
               %td Funds
               %td
                 = btc_human @project.available_amount
-                = link_to "List of donors", donors_project_path(@project)
+                - if @project.deposits.any?
+                  .list-of-donors
+                    = link_to "List of donors", donors_project_path(@project)
             %tr
               %td Distributions
               %td
-                %ul.list-unstyled#distribution-list
-                  - @project.distributions.order(created_at: :desc).limit(5).each do |distribution|
-                    %li.distribution-link
-                      - label = btc_human(distribution.total_amount)
-                      - if distribution.sent?
-                        - if distribution.sent_at
-                          - label << " sent #{time_ago_in_words(distribution.sent_at)} ago"
+                - if @project.distributions.empty?
+                  None
+                - else
+                  %ul.list-unstyled#distribution-list
+                    - @project.distributions.order(created_at: :desc).limit(5).each do |distribution|
+                      %li.distribution-link
+                        - label = btc_human(distribution.total_amount)
+                        - if distribution.sent?
+                          - if distribution.sent_at
+                            - label << " sent #{time_ago_in_words(distribution.sent_at)} ago"
+                          - else
+                            - label << " sent"
                         - else
-                          - label << " sent"
-                      - else
-                        - label << " not sent"
-                      = link_to label, [@project, distribution]
-                = link_to "All distributions", project_distributions_path(@project)
+                          - label << " not sent"
+                        = link_to label, [@project, distribution]
+                  = link_to "All distributions", project_distributions_path(@project)
 
           = link_to "Donate", donate_project_path(@project), class: "btn btn-primary btn-block"
           - if can? :update, @project
