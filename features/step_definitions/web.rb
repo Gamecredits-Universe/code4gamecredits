@@ -128,7 +128,6 @@ When(/^I click on the "(.*?)" link in the email$/) do |arg1|
     raise
   end
   url = URI.parse(link["href"]).request_uri
-  puts url
   visit url
 end
 
