@@ -20,8 +20,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       end
     end
 
-    @user.name = info['name']
-    @user.image = info['image']
+    @user.name ||= info['name']
+    @user.image ||= info['image']
     @user.save
 
     Collaborator.where(login: @user.nickname, user_id: nil).each do |collaborator|
