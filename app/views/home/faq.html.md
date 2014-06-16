@@ -3,7 +3,11 @@ Peer4commit FAQ
 
 What is Peer4commit?
 --------------------
-Peer4commit is a website where anyone can raise funds for any kind of project.
+Peer4commit is a website where people raise funds for any kind of project.
+
+Anyone can start collecting funds in a few clicks. You just have to explain what you're going to do with the funds and why people can trust you.
+
+People can easily donate to the projects they want to support by sending cryptocurrencies. The fundraiser can then distribute the funds to the people who make the project happen.
 
 How is it different than other crowdfunding sites?
 --------------------------------------------------
@@ -13,7 +17,7 @@ Why?
 ----
 The goal is give the initiative to the people, and not only to those who are able to achieve projects.
 
-For example imagine you want a feature in an open source software but the developers don't care about it and you can't implement it yourself. You can start a project on Peer4commit to make this happen. If you get enough funds you can pay someone to implement the feature. There are many freelance developers and companies who will be happy to do that for you.
+For example imagine you want a feature in an open source software but the developers don't care about it and you can't implement it yourself. You can start a project on Peer4commit to make it happen. If you get enough funds you can pay someone to implement the feature. There are many freelance developers and companies who will be happy to do that for you.
 
 Or imagine you favorite band has given up. You can raise funds to pay them to work on a new album.
 
@@ -38,7 +42,7 @@ The donors can browse the fundraiser history: what projects he managed, how he d
 
 The fundraisers have tools to easily distribute money. They can for example send funds to an email address. Peer4commit will take charge of getting payment information from the owner of this email address. They can also send funds to a GitHub users or to the author of a particular commit. More options will be added later (sending to a Reddit user, to a forum member, etc.).
 
-We also provide tools to identify donors. When they donate they can provide a address. This address will be used whenever Peer4commit, the fundraiser or anyone wants to identify a donor. Anyone able to sign with this address will be considered the sender of the associated money. This can be used to return the funds, to organize votes, to send rewards, etc.
+We also provide tools to identify donors. When they donate they can provide a address. This address can be used whenever Peer4commit, the fundraiser or anyone wants to identify a donor. Anyone able to sign with this address will be considered the sender of the associated money. This can be used to return the funds, to organize votes, to send rewards, etc.
 
 
 Can I trust the fundraisers?
@@ -50,12 +54,17 @@ For example the fact a project has a lot of donations is not an indication that 
 
 Peer4commit provides some tools to help you check the fundraiser. We keep track of all the projects he managed and all the funds he distributed. You can browse that and see how he managed previous projects. Anyone can comment the projects, distributions and users so if he did something wrong then there are good chances he received bad comments.
 
-The fundraiser should also explain in the project description why you can trust him. If he doesn't do that you should be suspicious. Then you'll have to evaluate what he says. It's particularly important to check the identity of the fundraiser. He should provide proofs he really is who he claims to be.
+The fundraiser should also explain in the project description why you can trust him. If he doesn't do that you should be skeptical. Then you'll have to evaluate what he says. It's particularly important to check the identity of the fundraiser. He should provide proofs he really is who he claims to be.
 
 But an important point is that the fundraisers will actually compete on trust. Since anyone can raise funds a big part of the difference will be made on trustworthiness.
 
 Some other skills may be important too. For example the project may require some technical skills to evaluate the work made by others. You should ensure the fundraiser has these abilities.
 
+Refund
+------
+When you make a donation you explicitly give to the fundraiser the full control of the money you send. He may have committed himself to refund the donations under certain circumstances but you still need to evaluate whether you can trust him on that.
+
+When you donate Peer4commit asks you for a return address. This address will be used if the fundraiser wants to send funds back to you. It may also be used for other things where you need to prove you are the sender (a vote, a reward, etc.). All the donation addresses will be displayed publicly so you should use a newly generated address without history. And you must keep the associated private key in a safe place.
 
 Does it work?
 -------------
@@ -70,7 +79,7 @@ Examples of successful projects:
 
 Currency
 --------
-For now the only supported currency is <%= link_to "Peercoin", "http://peercoin.net/" %>. Support for other currencies will be added later.
+For now the only supported currency is <%= link_to "Peercoin", "http://peercoin.net/" %>. Other currencies will be added later.
 
 
 How can I raise funds?
@@ -101,15 +110,11 @@ Browse the project list and click on the "Donate" button. You will be asked for 
 You can also donate without providing an address. But the fundraiser won't be able to return you the funds if he ever wants to. And if the fundraiser organizes a vote or send rewards, you won't be able to participate.
 
 
-Do you have an audit page?
---------------------------
-Yes, it shows different information, such as amount donated, available balance, transaction fees, amount in cold storage and includes addresses for each project. You can view the page <%= link_to "here", audit_path %>.
-
 What measures have been taken to secure the funds on Peer4commit?
 -----------------------------------------------------------------
-The project funds are isolated in different accounts in the wallet, so if someone ever finds a way to distribute more funds than the project balance, Peercoin will not take the funds from another project and will refuse the transaction. Projects with a high balance have a part of its funds moved to cold storage. The website runs in an isolated virtual server running only this service.
+The project funds are isolated in different accounts in the wallet, so if someone ever finds a way to distribute more funds than the project balance, Peercoin will not take the funds from another project and will refuse the transaction. Projects with a high balance have a part of its funds moved to cold storage. The website runs in an isolated virtual server running only this service. There's an <%= link_to "audit page", audit_path %> that shows the status of all project accounts.
 
-In the future the funds will be sent to a multisignature address so that the fundraiser and Peer4commit must agree to send the funds.
+In the future the donations will be sent to a multisignature address so that the fundraiser and Peer4commit must agree to send the funds. The donors will also have key.
 
 Contact
 -------
