@@ -178,13 +178,16 @@ h4
 @media(min-width:992px)
   #home-page
     .main-panel
-      position: relative
-      padding-bottom: 70px
-      .button-container
-        position: absolute
-        bottom: 0
-        left: 15px
-        right: 15px
+      .panel-content
+        +box-sizing(border-box)
+        height: 160px
+        position: relative
+        padding-bottom: 70px
+        .button-container
+          position: absolute
+          bottom: 0
+          left: 15px
+          right: 15px
 
 #project-index
   td, th
