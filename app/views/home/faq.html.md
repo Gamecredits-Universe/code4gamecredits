@@ -139,6 +139,8 @@ Also if a fundraiser is clearly misbehaving the website and the supporter can de
 ### Decentralization
 Peer4commit can probably run completely decentralized, maybe on its own blockchain, maybe as a [Peershares](http://peershares.net/) implementation. But this will require a lot of thoughts. For now we focus on more practical things, but decentralization is certainly an ultimate goal.
 
+Multi-signature will already be a big step toward decentralization.
+
 ### Other
 We will also improve the various tools provided by the website:
 * add new recipients the fundraisers can distribute funds to: all the people involved in a GitHub issue, another Peer4commit project, a Reddit user, etc.
