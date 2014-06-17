@@ -84,7 +84,13 @@ For now the only supported currency is <%= link_to "Peercoin", "http://peercoin.
 
 How can I raise funds?
 ----------------------
-Click on the <%= link_to '"Create a project"', new_project_path %> button. You'll have to fill a description. Make it the most complete possible and provide proofs of your trustworthiness and abilities.
+Click on the <%= link_to '"Create a project"', new_project_path %> button. You'll have to fill a detailed description. Here are some recommendations:
+
+* State the main goal of your peer4commit project, and decide what can and cannot be changed for the project. The main goal cannot be changed.
+* Provide your identity and convince donators why they should trust you.
+* Decide and state if you will be a benevolent dictator (more efficient), or create a more democratic project (finer control for stakeholders).
+* Describe your techical skills and other relevant qualifications if they are needed to evaluate the work made by others.
+* State policy of tipping for potential developers. Use other projects as templates or references.
 
 The project will be visible on Peer4commit but it will not be particularly highlighted. You will have to communicate about it, that's part of your job.
 
@@ -98,9 +104,7 @@ Fundraisers should explain in the project description whether they intend to pay
 
 How can I get paid to do the actual work?
 -----------------------------------------
-Browse the projects and read descriptions to see if there's something you can do and contact the fundraiser. There are so many possibilities it's hard to give a guideline.
-
-We hope projects will appear to make things easier for potential contributors to find something to do.
+Check the policies of the projects. Fundraiser can chose to raise bounty or a specific percentage of the donated funds for specific tasks or assign a percentage of the fund for commits in case of a development. If unclear ask the fundraiser. Disputes should be resolved between the developer and the fundraiser.
 
 
 How do I donate to a project I like?
