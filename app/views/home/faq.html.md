@@ -79,7 +79,7 @@ Examples of successful projects:
 
 Currency
 --------
-For now the only supported currency is <%= link_to "Peercoin", "http://peercoin.net/" %>. Other currencies will be added later.
+For now the only supported currency is [Peercoin](http://peercoin.net/). Other currencies will be added later.
 
 
 How can I raise funds?
@@ -159,5 +159,5 @@ When multisignatures are implemented Peer4commit will not have direct the contro
 
 Contact
 -------
-If you have any question send a message to <%= mail_to "contact@peer4commit.com" %> or <%= link_to "open an issue on GitHub", "https://github.com/sigmike/peer4commit/issues/new" %>.
+If you have any question send a message to <%= mail_to "contact@peer4commit.com" %> or [open an issue on GitHub](https://github.com/sigmike/peer4commit/issues/new).
 
