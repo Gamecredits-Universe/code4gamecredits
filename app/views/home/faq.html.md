@@ -109,12 +109,47 @@ Browse the project list and click on the "Donate" button. You will be asked for 
 
 You can also donate without providing an address. But the fundraiser won't be able to return you the funds if he ever wants to. And if the fundraiser organizes a vote or send rewards, you won't be able to participate.
 
+What's going to happen next?
+----------------------------
+There are many features planed. Their achievement depends on the willingness of donors, fundraisers and developers.
+
+### Bitcoin support
+Adding support for Bitcoin is an important step. We can easily change Peer4commit to support projects either in Bitcoin or in Peercoin. But supporting multiple currecies in the same project will require more work and an external service to automatically convert currencies.
+
+### Multi-signature
+The most important imminent change is the introduction of multi-signature donation addresses:
+
+When you donate, your money will be sent to a multi-signature address:
+* 1 key will be owned by Peer4commit,
+* 1 key will be owned by the fundraiser and
+* 1 key will be owned by yourself (if you want to).
+
+And 2 keys will be required to use the funds.
+
+To distribute coins the fundraiser will use the website and fill some forms. The website will generate a transaction and ask the fundraiser to provide a signature for it. Then the website will sign the transaction too and propagate it.
+
+So if the website is hacked the funds can't be stolen. And the fundraiser cannot spend the funds outside the website. 
+
+Also if a fundraiser is clearly misbehaving the website and the supporter can decide to return the funds. If the website itself is misbehaving (a very bad policy change, abandoned, hacked...) the fundraiser and the supporter can decide to move the funds elsewhere.
+
+### Decentralization
+Peer4commit can probably run completely decentralized, maybe on its own blockchain, maybe as a [Peershares](http://peershares.net/) implementation. But this will require a lot of thoughts. For now we focus on more practical things, but decentralization is certainly an ultimate goal.
+
+### Other
+We will also improve the various tools provided by the website:
+* add new recipients the fundraisers can distribute funds to: all the people involved in a GitHub issue, another Peer4commit project, a Reddit user, etc.
+* project categorization, tags, sorting, filtering, etc.
+* browsing the history of projects (description changes, distribution changes, etc). The data are already there but just not displayed.
+* etc.
+
+We may also add some kind of discussion boards, unless the community thinks this is better kept externalized.
+
 
 What measures have been taken to secure the funds on Peer4commit?
 -----------------------------------------------------------------
 The project funds are isolated in different accounts in the wallet, so if someone ever finds a way to distribute more funds than the project balance, Peercoin will not take the funds from another project and will refuse the transaction. Projects with a high balance have a part of its funds moved to cold storage. The website runs in an isolated virtual server running only this service. There's an <%= link_to "audit page", audit_path %> that shows the status of all project accounts.
 
-In the future the donations will be sent to a multisignature address so that the fundraiser and Peer4commit must agree to send the funds. The donors will also have key.
+When multisignatures are implemented Peer4commit will not have direct the control over the funds (see above).
 
 Contact
 -------
