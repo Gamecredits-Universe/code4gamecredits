@@ -4,7 +4,10 @@ class ActiveRecord::Base
 
     after_save do
       state = to_json(options)
-      RecordChange.create!(record: self, raw_state: state)
+      last_state = RecordChange.where(record: self).order(created_at: :desc).first.try(:raw_state)
+      if state != last_state
+        RecordChange.create!(record: self, raw_state: state)
+      end
     end
   end
 end
