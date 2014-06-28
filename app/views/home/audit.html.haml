@@ -35,7 +35,7 @@
             - project_slice.each do |project|
               %tr{class: project.disabled ? "text-muted" : nil}
                 %td
-                  %strong= link_to project.full_name, project
+                  %strong= link_to project.name, project
                 %td
                   - address_explorers.each_with_index do |explorer, i|
                     = link_to "[#{i + 1}]", address_url(project.bitcoin_address, explorer)
