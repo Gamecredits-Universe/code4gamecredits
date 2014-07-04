@@ -46,7 +46,7 @@ class DistributionsController < ApplicationController
   def new_recipient_form
     @tips = []
     if params[:user] and params[:user][:nickname].present?
-      user = User.where(nickname: params[:user][:nickname]).first_or_initialize
+      user = User.enabled.where(nickname: params[:user][:nickname]).first_or_initialize
       if user.new_record?
         raise "Invalid GitHub user" unless user.valid_github_user?
         user.confirm!
@@ -54,7 +54,7 @@ class DistributionsController < ApplicationController
       end
       @tips << Tip.new(user: user)
     elsif params[:user] and params[:user][:email].present?
-      user = User.where(email: params[:user][:email]).first_or_initialize
+      user = User.enabled.where(email: params[:user][:email]).first_or_initialize
       if user.new_record?
         raise "Invalid email address" unless user.email =~ Devise::email_regexp
         user.skip_confirmation_notification!

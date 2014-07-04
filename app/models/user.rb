@@ -15,10 +15,16 @@ class User < ActiveRecord::Base
   has_many :collaborators
   has_many :projects, through: :collaborators
 
+  has_many :tipping_policies_texts
+  has_many :record_changes
+
   before_create :generate_login_token!, unless: :login_token?
 
   acts_as_commontator
   acts_as_commontable
+
+  scope :enabled,  -> { where(disabled: false) }
+  scope :disabled, -> { where(disabled: true) }
 
   def github_url
     "https://github.com/#{nickname}"
@@ -83,6 +89,31 @@ class User < ActiveRecord::Base
 
   def reset_confirmation_token!
     generate_confirmation_token!
+  end
+
+  def merge_into!(other)
+    raise unless id
+    raise unless other.id
+
+    self.class.transaction do
+      logger.info "Merging #{inspect} into user #{other.inspect}"
+      [
+        :collaborators,
+        :tipping_policies_texts,
+        :record_changes,
+        :tips,
+      ].each do |association|
+        send(association).each do |record|
+          logger.info "Updating user id from #{record.user_id} to #{other.id} on #{record.inspect}"
+          record.update_columns(user_id: other.id)
+        end
+      end
+      update_attribute(:disabled, true)
+    end
+  end
+
+  def active_for_authentication?
+    super and !disabled?
   end
 
   private

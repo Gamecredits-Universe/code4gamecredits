@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
   before_action except: [:show, :login, :index, :send_email_address_request, :set_password_and_address] do
-    @user = User.where(id: params[:id]).first
+    @user = User.enabled.where(id: params[:id]).first
     if current_user
       if current_user != @user
         redirect_to root_path, alert: "Access denied"
@@ -57,7 +57,7 @@ class UsersController < ApplicationController
   end
 
   def set_password_and_address
-    @user = User.find(params[:id])
+    @user = User.enabled.find(params[:id])
     raise "Blank token" if params[:token].blank?
     raise "Invalid token" unless Devise.secure_compare(params[:token], @user.confirmation_token)
     if params[:user]

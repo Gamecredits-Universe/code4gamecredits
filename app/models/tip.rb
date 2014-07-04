@@ -110,9 +110,9 @@ class Tip < ActiveRecord::Base
 
   def self.build_from_commit(commit)
     if commit.username.present?
-      user = User.where(nickname: commit.username).first_or_initialize(email: commit.email)
+      user = User.enabled.where(nickname: commit.username).first_or_initialize(email: commit.email)
     elsif commit.email =~ Devise::email_regexp
-      user = User.where(email: commit.email).first_or_initialize
+      user = User.enabled.where(email: commit.email).first_or_initialize
     else
       return nil
     end

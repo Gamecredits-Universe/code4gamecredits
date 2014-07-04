@@ -91,9 +91,9 @@ class Project < ActiveRecord::Base
   def tip_for commit
     email = commit.commit.author.email
     if nickname = commit.author.try(:login)
-      user = User.find_by(nickname: nickname)
+      user = User.enabled.find_by(nickname: nickname)
     end
-    user ||= User.find_by(email: email)
+    user ||= User.enabled.find_by(email: email)
 
     if (next_tip_amount > 0) &&
         Tip.find_by(commit: commit.sha).nil?

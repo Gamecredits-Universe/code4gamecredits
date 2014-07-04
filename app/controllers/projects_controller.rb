@@ -114,7 +114,7 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.json do
         query = params[:query]
-        users = User.where.not(nickname: nil).where.not(nickname: '').where('nickname LIKE ? OR name LIKE ?', "%#{query}%", "%#{query}%")
+        users = User.enabled.where.not(nickname: nil).where.not(nickname: '').where('nickname LIKE ? OR name LIKE ?', "%#{query}%", "%#{query}%")
         users = users.map do |user|
           {
             login: user.nickname,

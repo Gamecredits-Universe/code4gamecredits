@@ -2,9 +2,9 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def github
     # render text: "#{request.env["omniauth.auth"].to_json}"
     info = request.env["omniauth.auth"]["info"]
-    @user = User.find_by :nickname => info["nickname"]
+    @user = User.enabled.find_by :nickname => info["nickname"]
     if @user.nil? and info["verified_emails"].any?
-      @user = User.find_by :email => info["verified_emails"]
+      @user = User.enabled.find_by :email => info["verified_emails"]
     end
     unless @user
       if info['primary_email']

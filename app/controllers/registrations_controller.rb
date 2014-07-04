@@ -1,6 +1,6 @@
 class RegistrationsController < Devise::RegistrationsController
   def update
-    @user = User.find(current_user.id)
+    @user = User.enabled.find(current_user.id)
 
     user_params = devise_parameter_sanitizer.sanitize(:account_update)
 
