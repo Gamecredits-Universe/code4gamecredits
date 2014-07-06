@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140704060602) do
+ActiveRecord::Schema.define(version: 20140706075813) do
 
   create_table "cold_storage_transfers", force: true do |t|
     t.integer  "project_id"
@@ -144,7 +144,6 @@ ActiveRecord::Schema.define(version: 20140704060602) do
     t.string   "language"
     t.string   "last_commit"
     t.integer  "available_amount_cache",          limit: 8
-    t.string   "github_id"
     t.string   "address_label"
     t.boolean  "hold_tips",                                 default: true
     t.string   "cold_storage_withdrawal_address"
@@ -153,8 +152,6 @@ ActiveRecord::Schema.define(version: 20140704060602) do
     t.string   "disabled_reason"
     t.text     "detailed_description"
   end
-
-  add_index "projects", ["github_id"], name: "index_projects_on_github_id", unique: true
 
   create_table "record_changes", force: true do |t|
     t.integer  "record_id"

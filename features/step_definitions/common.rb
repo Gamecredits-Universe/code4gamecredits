@@ -33,15 +33,15 @@ Given(/^our fee is "(.*?)"$/) do |arg1|
 end
 
 Given(/^a project$/) do
-  @project = Project.create!(name: "test", full_name: "example/test", github_id: 123, bitcoin_address: 'mq4NtnmQoQoPfNWEPbhSvxvncgtGo6L8WY', address_label: "example_project_account", hold_tips: false)
+  @project = Project.create!(name: "test", full_name: "example/test", bitcoin_address: 'mq4NtnmQoQoPfNWEPbhSvxvncgtGo6L8WY', address_label: "example_project_account", hold_tips: false)
 end
 
 Given(/^a project "(.*?)"$/) do |arg1|
-  @project = Project.create!(name: "test", full_name: "example/#{arg1}", github_id: Digest::SHA1.hexdigest(arg1), bitcoin_address: 'mq4NtnmQoQoPfNWEPbhSvxvncgtGo6L8WY', hold_tips: false)
+  @project = Project.create!(name: "test", full_name: "example/#{arg1}", bitcoin_address: 'mq4NtnmQoQoPfNWEPbhSvxvncgtGo6L8WY', hold_tips: false)
 end
 
 Given(/^a project "(.*?)" holding tips$/) do |arg1|
-  @project = Project.create!(name: "test", full_name: "example/#{arg1}", github_id: Digest::SHA1.hexdigest(arg1), bitcoin_address: 'mq4NtnmQoQoPfNWEPbhSvxvncgtGo6L8WY', hold_tips: true)
+  @project = Project.create!(name: "test", full_name: "example/#{arg1}", bitcoin_address: 'mq4NtnmQoQoPfNWEPbhSvxvncgtGo6L8WY', hold_tips: true)
 end
 
 Given(/^a deposit of "(.*?)"$/) do |arg1|

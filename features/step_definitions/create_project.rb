@@ -20,10 +20,6 @@ Then(/^the GitHub name of the project should be "(.*?)"$/) do |arg1|
   @project.full_name.should eq(arg1)
 end
 
-Then(/^the project GitHub ID should be "(.*?)"$/) do |arg1|
-  @project.github_id.should eq(arg1)
-end
-
 Then(/^the project single collaborators should be "(.*?)"$/) do |arg1|
   if arg1 =~ /@/
     @project.collaborators.map(&:user).map(&:email).should eq([arg1])
