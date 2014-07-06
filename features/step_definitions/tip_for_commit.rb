@@ -8,6 +8,8 @@ Given(/^the project GitHub name is "(.*?)"$/) do |arg1|
 end
 
 Given(/^the commits on GitHub for project "(.*?)" are$/) do |arg1, table|
+  @project.reload
+  @project.full_name.should eq(arg1)
   commits = []
   table.hashes.each do |row|
     commit = OpenStruct.new(

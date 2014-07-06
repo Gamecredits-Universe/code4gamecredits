@@ -106,6 +106,8 @@ end
 When(/^the new commits are read$/) do
   @project.reload
   @project.should_receive(:get_commits).and_return(@commits.values.map(&:to_ostruct))
+  @project.update_commits
+  @project.should_receive(:get_commits).and_return(@commits.values.map(&:to_ostruct))
   @project.tip_commits
 end
 

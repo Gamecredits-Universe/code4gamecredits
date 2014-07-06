@@ -8,10 +8,9 @@ class BitcoinTipper
   def self.work
     Rails.logger.info "Traversing projects..."
     Project.enabled.find_each do |project|
-      if project.available_amount > 0
-        Rails.logger.info " Project #{project.id} #{project.full_name}"
-        project.tip_commits
-      end
+      Rails.logger.info " Project #{project.id} #{project.full_name}"
+      project.update_commits
+      project.tip_commits
     end
 
     Rails.logger.info "Sending tips to commits..."

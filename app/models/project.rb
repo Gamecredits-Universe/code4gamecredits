@@ -57,9 +57,7 @@ class Project < ActiveRecord::Base
     commits || []
   end
 
-  def tip_commits
-    return unless self.deposits.any?
-
+  def update_commits
     commits = get_commits
 
     commits.each do |commit|
@@ -72,8 +70,17 @@ class Project < ActiveRecord::Base
         email: commit.commit.author.email,
       )
     end
+  end
+
+  def tip_commits
+    return unless self.deposits.any?
+    return if available_amount == 0
+
+    commits = get_commits
 
     commits.each do |commit|
+      next if Tip.where(project_id: id, commit: commit.sha).any?
+
       # Filter merge request
       next if commit.commit.message =~ /^(Merge\s|auto\smerge)/
       # Filter fake emails
