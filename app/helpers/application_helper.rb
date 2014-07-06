@@ -66,7 +66,7 @@ module ApplicationHelper
   def render_markdown(source)
     return nil unless source
 
-    markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(safe_links_only: true, filter_html: true))
+    markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(safe_links_only: true, filter_html: true), autolink: true)
     html = markdown.render(source)
     clean = Sanitize.clean(html, Sanitize::Config::RELAXED)
     clean.html_safe
