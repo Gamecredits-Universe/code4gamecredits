@@ -14,7 +14,7 @@ class Project < ActiveRecord::Base
 
   has_many :commits
 
-  record_changes(except: [:available_amount_cache, :last_commit])
+  record_changes(except: [:available_amount_cache, :last_commit, :updated_at])
 
   acts_as_commontable
 
