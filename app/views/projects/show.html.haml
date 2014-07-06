@@ -16,7 +16,7 @@
 
     - if @project.tipping_policies_text.try(:text).present?
       %h4 Tipping policies
-      = auto_link simple_format @project.tipping_policies_text.text
+      = render_markdown @project.tipping_policies_text.text
       %small
         %em
           - user = @project.tipping_policies_text.user
