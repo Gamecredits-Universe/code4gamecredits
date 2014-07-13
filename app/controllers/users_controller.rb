@@ -59,6 +59,12 @@ class UsersController < ApplicationController
   def set_password_and_address
     @user = User.enabled.find(params[:id])
     raise "Blank token" if params[:token].blank?
+    
+    if @user.confirmed?
+      redirect_to new_session_path(User), notice: "Your account is already confirmed. Please sign in to set your Peercoin address."
+      return
+    end
+
     raise "Invalid token" unless Devise.secure_compare(params[:token], @user.confirmation_token)
     if params[:user]
       @user.attributes = params.require(:user).permit(:password, :password_confirmation, :bitcoin_address)
