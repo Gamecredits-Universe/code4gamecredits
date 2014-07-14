@@ -15,6 +15,7 @@ T4c::Application.routes.draw do
   resources :users, :only => [:show, :update, :index] do
     collection do
       get :login
+      get :suggestions
     end
     member do
       post :send_tips_back

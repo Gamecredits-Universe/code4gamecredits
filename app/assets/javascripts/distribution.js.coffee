@@ -68,3 +68,26 @@ $(document).on "page:change", ->
           input.closest("form").submit()
           input.typeahead('val', '')
         , 100
+
+  $(".user-autocomplete").each ->
+    input = $(this)
+    source = new Bloodhound
+      datumTokenizer: Bloodhound.tokenizers.obj.whitespace("identifier")
+      queryTokenizer: Bloodhound.tokenizers.whitespace
+      remote: "/users/suggestions.json?query=%QUERY"
+
+    source.initialize()
+
+    input.typeahead {minLength: 1, highlight: true},
+      displayKey: "identifier"
+      source: source.ttAdapter()
+      templates:
+        suggestion: (object) ->
+          object.description
+
+    if input.data("submit")
+      input.bind "typeahead:selected", ->
+        setTimeout ->
+          input.closest("form").submit()
+          input.typeahead('val', '')
+        , 100

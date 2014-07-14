@@ -3,6 +3,10 @@ Given(/^a GitHub user "(.*?)" who has set his address to "(.*?)"$/) do |arg1, ar
   create(:user, email: "#{arg1}@example.com", nickname: arg1, bitcoin_address: arg2)
 end
 
+Given(/^the user with email "(.*?)" has set his address to "(.*?)"$/) do |arg1, arg2|
+  User.find_by(email: arg1).update(bitcoin_address: arg2)
+end
+
 Given(/^a GitHub user "([^"]*?)"$/) do |arg1|
   create(:user, email: "#{arg1}@example.com", nickname: arg1, bitcoin_address: nil)
 end
@@ -26,6 +30,15 @@ end
 Given(/^I add the email address "(.*?)" to the recipients$/) do |arg1|
   within ".panel", text: "email address" do
     find("input").set(arg1)
+    click_on "Add"
+  end
+end
+
+
+Given(/^I add the user with email "(.*?)" through his identifier to the recipients$/) do |arg1|
+  user = User.find_by(email: arg1)
+  within ".panel", text: "Peer4commit user" do
+    find("input:enabled").set(user.identifier)
     click_on "Add"
   end
 end

@@ -61,6 +61,9 @@ class DistributionsController < ApplicationController
         user.save!
       end
       @tips << Tip.new(user: user)
+    elsif params[:user] and params[:user][:identifier].present?
+      user = User.enabled.find_by(identifier: params[:user][:identifier])
+      @tips << Tip.new(user: user)
     elsif params[:not_rewarded_commits]
       @project.commits.each do |commit|
         next if Tip.where(reason: commit).any?

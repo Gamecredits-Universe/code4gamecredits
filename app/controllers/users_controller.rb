@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_action except: [:show, :login, :index, :send_email_address_request, :set_password_and_address] do
+  before_action except: [:show, :login, :index, :send_email_address_request, :set_password_and_address, :suggestions] do
     @user = User.enabled.where(id: params[:id]).first
     if current_user
       if current_user != @user
@@ -73,6 +73,25 @@ class UsersController < ApplicationController
         redirect_to root_path, notice: "Information saved"
       else
         flash.now[:alert] = "Please fill all the information"
+      end
+    end
+  end
+
+  def suggestions
+    respond_to do |format|
+      format.json do
+        query = params[:query]
+        users = User.enabled.where('identifier LIKE ? OR name LIKE ?', "%#{query}%", "%#{query}%")
+        users = users.map do |user|
+          {
+            identifier: user.identifier,
+            description: [
+              user.name,
+              "(#{user.identifier})",
+            ].reject(&:blank?).join(" "),
+          }
+        end
+        render json: users
       end
     end
   end

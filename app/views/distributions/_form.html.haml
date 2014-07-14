@@ -23,6 +23,14 @@
     .col-md-3
       .panel.panel-default
         .panel-heading
+          %h3.panel-title Peer4commit user
+        .panel-body
+          .input-group
+          = bootstrap_form_for User.new, url: new_recipient_form_project_distributions_path(@project) do |f|
+            = f.text_field :identifier, hide_label: true, append: content_tag(:button, "Add", class: "btn btn-default add-recipient-button"), class: "user-autocomplete", data: {submit: true}
+    .col-md-3
+      .panel.panel-default
+        .panel-heading
           %h3.panel-title email address
         .panel-body
           .input-group
