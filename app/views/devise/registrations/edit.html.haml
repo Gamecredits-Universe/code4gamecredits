@@ -3,6 +3,7 @@
     %h2
       Edit #{resource_name.to_s.humanize}
     = devise_error_messages!
+    = f.static_control :identifier
     = f.text_field :name
     = f.email_field :email
     - if devise_mapping.confirmable? && resource.pending_reconfirmation?

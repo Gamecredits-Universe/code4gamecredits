@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140706075813) do
+ActiveRecord::Schema.define(version: 20140714074128) do
 
   create_table "cold_storage_transfers", force: true do |t|
     t.integer  "project_id"
@@ -222,9 +222,11 @@ ActiveRecord::Schema.define(version: 20140706075813) do
     t.string   "email"
     t.string   "nickname"
     t.boolean  "disabled",                         default: false
+    t.string   "identifier",                                       null: false
   end
 
   add_index "users", ["disabled"], name: "index_users_on_disabled"
+  add_index "users", ["identifier"], name: "index_users_on_identifier", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
 end

@@ -131,6 +131,10 @@ When(/^I click on the "(.*?)" link in the email$/) do |arg1|
   visit url
 end
 
+When(/^I click on "(.*?)" in the email$/) do |arg1|
+  step "I click on the \"#{arg1}\" link in the email"
+end
+
 Then(/^the user with email "(.*?)" should have his email confirmed$/) do |arg1|
   User.find_by(email: arg1).confirmed?.should be_true
 end

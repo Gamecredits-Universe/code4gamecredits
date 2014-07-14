@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   has_many :record_changes
 
   before_create :generate_login_token!, unless: :login_token?
+  before_create :assign_random_identifier, unless: :identifier?
 
   acts_as_commontator
   acts_as_commontable
@@ -122,6 +123,14 @@ class User < ActiveRecord::Base
     loop do
       self.login_token = SecureRandom.urlsafe_base64
       break unless User.exists?(login_token: login_token)
+    end
+  end
+
+  def assign_random_identifier
+    charset = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'.split(//)
+    loop do
+      self.identifier = (0...12).map { charset.sample }.join
+      break unless User.exists?(identifier: identifier)
     end
   end
 
