@@ -88,4 +88,5 @@ group :test do
   gem 'factory_girl_rails'
   gem 'poltergeist'
   gem 'timecop'
+  gem 'capybara-screenshot'
 end

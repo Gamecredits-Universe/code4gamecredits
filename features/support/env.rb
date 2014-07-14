@@ -65,3 +65,5 @@ else
   end
   Capybara.javascript_driver = :poltergeist
 end
+
+require 'capybara-screenshot/cucumber'
