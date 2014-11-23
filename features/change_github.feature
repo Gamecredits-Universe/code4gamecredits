@@ -16,8 +16,8 @@ Feature: Fundraiser can change the GitHub repository linked to a project
     Then the project should have these tips:
       | commit | amount |
       | 123    | 5.0    |
-      | abc    | 4.95   |
-      | 333    | 4.9005 |
+      | abc    | 0.0    |
+      | 333    | 4.95   |
 
     When the project GitHub name is "baz/foo"
     And the commits on GitHub for project "baz/foo" are
@@ -29,9 +29,9 @@ Feature: Fundraiser can change the GitHub repository linked to a project
     Then the project should have these tips:
       | commit | amount   |
       | 123    | 5.0      |
-      | abc    | 4.95     |
-      | 333    | 4.9005   |
-      | aaa    | 4.851495 |
-      | bbb    | 4.802981 |
-      | ccc    | 4.754951 |
+      | abc    | 0.0      |
+      | 333    | 4.95     |
+      | aaa    | 4.9005   |
+      | bbb    | 0.0      |
+      | ccc    | 4.851495 |
 

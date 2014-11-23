@@ -16,30 +16,20 @@ Feature: On projects not holding tips, a tip is created for each new commit
     Then the project should have these tips:
       | commit | amount |
       | 123    | 5.0    |
-      | abc    | 4.95   |
-      | 333    | 4.9005 |
+      | abc    | 0.0    |
+      | 333    | 4.95   |
 
     When the tipper is started
     Then these amounts should have been sent from the account of the project:
       | address                            | amount |
-      | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 | 9.9005 |
+      | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 | 9.95   |
 
-    And an email should have been sent to "alicia@example.com"
-    When I click on the "Set your password and Peercoin address" link in the email
-    And I fill "Password" with "password"
-    And I fill "Password confirmation" with "password"
-    And I fill "Peercoin address" with "mubmzLrtTgDE2WrHkiwSFKuTh2VTSXboYK"
-    And I click on "Save"
-    Then I should see "Information saved"
-    And the user with email "alicia@example.com" should have "password" as password
-    And the user with email "alicia@example.com" should have "mubmzLrtTgDE2WrHkiwSFKuTh2VTSXboYK" as peercoin address
-    And the user with email "alicia@example.com" should have his email confirmed
+    And no email should have been sent
 
+    Given a GitHub user "alice" who has set his address to "mubmzLrtTgDE2WrHkiwSFKuTh2VTSXboYK"
     When the transaction history is cleared
     And the tipper is started
-    Then these amounts should have been sent from the account of the project:
-      | address                            | amount |
-      | mubmzLrtTgDE2WrHkiwSFKuTh2VTSXboYK |   4.95 |
+    Then nothing should have been sent from the account of the project
 
   Scenario: A project holding tips
     Given a project
