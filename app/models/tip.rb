@@ -118,10 +118,8 @@ class Tip < ActiveRecord::Base
     end
     if user.new_record?
       raise "Invalid email address" unless user.email =~ Devise::email_regexp
-      user.skip_confirmation_notification!
-      user.save!
     end
-    new(user_id: user.id, reason: commit)
+    new(user: user, reason: commit)
   end
 
   def validate_reason

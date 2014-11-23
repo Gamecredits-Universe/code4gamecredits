@@ -193,3 +193,7 @@ Then(/^nothing should have been sent from the account of the project$/) do
   BitcoinDaemon.instance.list_transactions(@project.address_label).should eq([])
 end
 
+When(/^user "(.*?)" registers$/) do |arg1|
+  create(:user, email: "#{arg1}@example.com", nickname: arg1)
+end
+

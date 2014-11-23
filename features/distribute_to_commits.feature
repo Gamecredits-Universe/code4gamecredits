@@ -1,6 +1,6 @@
 Feature: A project collaborator distribute to commit authors
   @javascript
-  Scenario:
+  Scenario: Commits not rewarded by unknown users
     Given a project "a"
     And the project collaborators are:
       | seldon  |
@@ -22,6 +22,39 @@ Feature: A project collaborator distribute to commit authors
     Then I should see "The project has been updated"
 
     When the new commits are read
+
+    When I go to the project page
+    And I click on "New distribution"
+    And I select the commit recipients "Commits not rewarded"
+    Then the distribution form should have these recipients:
+      | recipient | reason                    | amount |
+
+  @javascript
+  Scenario: Commits not rewarded by known users
+    Given a project "a"
+    And the project collaborators are:
+      | seldon  |
+      | daneel  |
+    And our fee is "0"
+    And a deposit of "500"
+    And the last known commit is "AAA"
+    And a new commit "BBB" with parent "AAA"
+    And a new commit "CCC" with parent "BBB"
+    And the author of commit "BBB" is "yugo"
+    And the message of commit "BBB" is "Tiny change"
+    And the author of commit "CCC" is "gaal"
+
+    Given I'm logged in as "seldon"
+    And I go to the project page
+    And I click on "Edit project"
+    And I uncheck "Automatically send 1% of the balance to each commit added to the default branch of the GitHub project"
+    And I click on "Save"
+    Then I should see "The project has been updated"
+
+    When the new commits are read
+
+    And user "yugo" registers
+    And user "gaal" registers
 
     When I go to the project page
     And I click on "New distribution"
@@ -52,39 +85,6 @@ Feature: A project collaborator distribute to commit authors
     Then the distribution form should have these recipients:
       | recipient | reason                    | amount |
       | gaal      | Commit CCC: Some changes  |        |
-
-  @javascript
-  Scenario: Distribute to commits not linked to a GitHub account
-    Given a project "a" holding tips
-    And the project single collaborator is "seldon"
-    And our fee is "0"
-    And a deposit of "500"
-    And the last known commit is "AAA"
-    And a new commit "BBB" with parent "AAA"
-    And the author of commit "BBB" is the non identified email "yugo@example.com"
-    And the message of commit "BBB" is "Tiny change"
-
-    Given I'm logged in as "seldon"
-    When the new commits are read
-    And I go to the project page
-    And I click on "New distribution"
-    And I select the commit recipients "Commits not rewarded"
-    Then the distribution form should have these recipients:
-      | recipient        | reason                    | amount |
-      | yugo@example.com | Commit BBB: Tiny change   |        |
-
-    And I fill the amount to "yugo@example.com" with "0.5"
-    And I save the distribution
-
-    Then I should see these distribution lines:
-      | recipient        | reason                    | address                   | amount | percentage |
-      | yugo@example.com | Commit BBB: Tiny change   |                           |    0.5 |        100 |
-    And I should see "Total amount: 0.50 PPC"
-    And there should be 0 email sent
-    When I click on "Send email request to provide an address"
-    Then I should see "Request sent"
-    And there should be 1 email sent
-    And an email should have been sent to "yugo@example.com"
 
   @javascript
   Scenario: Distribute to a single commit
