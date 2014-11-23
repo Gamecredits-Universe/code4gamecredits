@@ -98,6 +98,8 @@ Feature: A project collaborator distribute to commit authors
     And the author of commit "170ed604f287b9fec397389d0b1b3f7d15b82276" is "yugo"
     And the message of commit "170ed604f287b9fec397389d0b1b3f7d15b82276" is "Tiny change"
     And the author of commit "1329394df2595739d652528d48fe6db66c67e1e8" is "gaal"
+    And user "yugo" registers
+    And user "gaal" registers
 
     Given I'm logged in as "seldon"
     When the new commits are read
