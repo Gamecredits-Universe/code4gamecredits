@@ -38,7 +38,7 @@ Feature: A project collaborator distribute to commit authors
     Then I should see these distribution lines:
       | recipient | reason                    | address                   | amount | percentage |
       | yugo      | Commit BBB: Tiny change   |                           |    0.5 |        100 |
-    And I should see "Total amount: 0.50 PPC"
+    And I should see "Total amount: 0.50 XPM"
     When I click on "Send email request to provide an address"
     Then I should see "Request sent"
     And there should be 1 email sent
@@ -79,7 +79,7 @@ Feature: A project collaborator distribute to commit authors
     Then I should see these distribution lines:
       | recipient        | reason                    | address                   | amount | percentage |
       | yugo@example.com | Commit BBB: Tiny change   |                           |    0.5 |        100 |
-    And I should see "Total amount: 0.50 PPC"
+    And I should see "Total amount: 0.50 XPM"
     And there should be 0 email sent
     When I click on "Send email request to provide an address"
     Then I should see "Request sent"
