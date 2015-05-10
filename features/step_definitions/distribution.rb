@@ -117,7 +117,7 @@ Then(/^the distribution form should have these recipients:$/) do |table|
     begin
       tr = find("#distribution-form #recipients tr", text: row["recipient"])
     rescue
-      puts "Rows: " + all("#distribution-form #recipients tr").map(&:text).inspect
+      p rows: all("#distribution-form #recipients tr").map(&:text)
       p errors: all(".alert.alert-danger").map(&:text)
       raise
     end
