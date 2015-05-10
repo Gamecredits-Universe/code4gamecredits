@@ -43,7 +43,7 @@ class Distribution < ActiveRecord::Base
   def generate_data
     outs = Hash.new { 0.to_d }
     tips.each do |tip|
-      outs[tip.user.bitcoin_address] += tip.amount.to_d / COIN
+      outs[tip.user.bitcoin_address] += tip.amount.to_d / COIN if tip.amount > 0
     end
     outs.to_json
   end
