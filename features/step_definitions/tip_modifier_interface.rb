@@ -1,13 +1,19 @@
 When(/^I choose the amount "(.*?)" on commit "(.*?)"$/) do |arg1, arg2|
   within find(".decide-tip-amounts-table tbody tr", text: arg2) do
-    choose arg1
+    select arg1
+  end
+end
+
+When(/^I fill the free amount with "(.*?)" on commit "(.*?)"$/) do |arg1, arg2|
+  within find(".decide-tip-amounts-table tbody tr", text: arg2) do
+    fill_in "Decided free amount", with: arg1
   end
 end
 
 When(/^I choose the amount "(.*?)" on all commits$/) do |arg1|
   all(".decide-tip-amounts-table tbody tr").each do |tr|
     within tr do
-      choose arg1
+      select arg1
     end
   end
 end
@@ -51,7 +57,7 @@ Given(/^I send a forged request to set the amount of the first undecided tip of 
       tips_attributes: {
         "0" => {
           id: tip.id,
-          amount_percentage: "5",
+          decided_amount_percentage: "5",
         },
       },
     },
@@ -69,7 +75,7 @@ When(/^I send a forged request to change the percentage of commit "(.*?)" on pro
       tips_attributes: {
         "0" => {
           id: tip.id,
-          amount_percentage: arg3,
+          decided_amount_percentage: arg3,
         },
       },
     },
@@ -82,3 +88,6 @@ Then(/^the project should have (\d+) undecided tips$/) do |arg1|
   @project.tips.undecided.size.should eq(arg1.to_i)
 end
 
+Then(/^there should be (\d+) tip$/) do |arg1|
+  @project.reload.tips.size.should eq(arg1.to_i)
+end

@@ -1,0 +1,22 @@
+%h4 Hello,
+
+%p
+  #{@collaborator.nickname} wants to reward you #{@tip.amount ? btc_human(@tip.amount) : ""} on his project #{@tip.project.name}.
+  = link_to "More details on the distribution", project_distribution_url(@tip.project, @tip.distribution)
+
+%p
+  To get your reward you must provide a Peercoin address.
+
+- if @user.confirmed?
+  %p= link_to "Set your Peercoin address", edit_registration_url(@user)
+- else
+  %p= link_to 'Set your password and Peercoin address', set_password_and_address_user_url(@user, token: @user.confirmation_token)
+
+%p Thank you.
+
+%p= link_to "peer4commit.com", "http://peer4commit.com/"
+
+%p
+  %small
+    = link_to "Don't notify me anymore.", login_users_url(token: @user.login_token, unsubscribe: true)
+

@@ -3,7 +3,21 @@ Before do
 end
 
 Then(/^there should be (\d+) email sent$/) do |arg1|
-  ActionMailer::Base.deliveries.size.should eq(arg1.to_i)
+  begin
+    ActionMailer::Base.deliveries.size.should eq(arg1.to_i)
+  rescue
+    p ActionMailer::Base.deliveries
+    raise
+  end
+  @email = ActionMailer::Base.deliveries.first
+end
+
+Then(/^(\d+) email should have been sent$/) do |arg1|
+  step "there should be #{arg1} email sent"
+end
+
+Then(/^no email should have been sent$/) do
+  ActionMailer::Base.deliveries.should eq([])
 end
 
 When(/^the email counters are reset$/) do
@@ -19,15 +33,19 @@ Given(/^our fee is "(.*?)"$/) do |arg1|
 end
 
 Given(/^a project$/) do
-  @project = Project.create!(full_name: "example/test", github_id: 123, bitcoin_address: 'mq4NtnmQoQoPfNWEPbhSvxvncgtGo6L8WY', address_label: "example_project_account")
+  @project = Project.create!(name: "test", full_name: "example/test", bitcoin_address: 'mq4NtnmQoQoPfNWEPbhSvxvncgtGo6L8WY', address_label: "example_project_account", hold_tips: false)
 end
 
 Given(/^a project "(.*?)"$/) do |arg1|
-  @project = Project.create!(full_name: "example/#{arg1}", github_id: Digest::SHA1.hexdigest(arg1), bitcoin_address: 'mq4NtnmQoQoPfNWEPbhSvxvncgtGo6L8WY')
+  @project = Project.create!(name: "test", full_name: "example/#{arg1}", bitcoin_address: 'mq4NtnmQoQoPfNWEPbhSvxvncgtGo6L8WY', hold_tips: false)
+end
+
+Given(/^a project "(.*?)" holding tips$/) do |arg1|
+  @project = Project.create!(name: "test", full_name: "example/#{arg1}", bitcoin_address: 'mq4NtnmQoQoPfNWEPbhSvxvncgtGo6L8WY', hold_tips: true)
 end
 
 Given(/^a deposit of "(.*?)"$/) do |arg1|
-  Deposit.create!(project: @project, amount: arg1.to_d * COIN, confirmations: 1)
+  Deposit.create!(project: @project, amount: arg1.to_d * COIN, confirmations: 1, created_at: 2.minutes.ago)
 end
 
 Given(/^the last known commit is "(.*?)"$/) do |arg1|
@@ -35,7 +53,7 @@ Given(/^the last known commit is "(.*?)"$/) do |arg1|
 end
 
 def add_new_commit(id, params = {})
-  @new_commits ||= {}
+  @commits ||= {}
   defaults = {
     sha: id,
     commit: {
@@ -43,13 +61,16 @@ def add_new_commit(id, params = {})
       author: {
         email: "anonymous@example.com",
       },
+      committer: {
+        date: Time.now,
+      }
     },
   }
-  @new_commits[id] = defaults.deep_merge(params)
+  @commits[id] = defaults.deep_merge(params)
 end
 
 def find_new_commit(id)
-  @new_commits[id]
+  @commits[id]
 end
 
 Given(/^a new commit "(.*?)" with parent "([^"]*?)"$/) do |arg1, arg2|
@@ -84,7 +105,9 @@ end
 
 When(/^the new commits are read$/) do
   @project.reload
-  @project.should_receive(:new_commits).and_return(@new_commits.values.map(&:to_ostruct))
+  @project.should_receive(:get_commits).and_return(@commits.values.map(&:to_ostruct))
+  @project.update_commits
+  @project.should_receive(:get_commits).and_return(@commits.values.map(&:to_ostruct))
   @project.tip_commits
 end
 
@@ -114,10 +137,54 @@ Given(/^the project collaborators are:$/) do |table|
   end
 end
 
+Given(/^the project single collaborator is "(.*?)"$/) do |arg1|
+  @project.reload
+  @project.collaborators.each(&:destroy)
+  @project.collaborators.create!(login: arg1)
+end
+
+Given(/^a project managed by "(.*?)"$/) do |arg1|
+  user = create(:user, email: "#{arg1}@example.com", nickname: arg1)
+  user.confirm!
+  @project = Project.create!(name: "#{arg1} project", bitcoin_address: 'mq4NtnmQoQoPfNWEPbhSvxvncgtGo6L8WY', address_label: "example_project_account")
+  @project.collaborators.create!(login: arg1)
+end
+
 Given(/^the author of commit "(.*?)" is "(.*?)"$/) do |arg1, arg2|
   find_new_commit(arg1).deep_merge!(author: {login: arg2}, commit: {author: {email: "#{arg2}@example.com"}})
 end
 
+Given(/^the author of commit "(.*?)" is the non identified email "(.*?)"$/) do |arg1, arg2|
+  find_new_commit(arg1).deep_merge!(commit: {author: {email: arg2}})
+end
+
 Given(/^an illustration of the history is:$/) do |string|
   # not checked
+end
+
+Given(/^the current time is "(.*?)"$/) do |arg1|
+  Timecop.travel(Time.parse(arg1))
+end
+
+After do
+  Timecop.return
+end
+
+Then(/^pending$/) do
+  pending
+end
+
+Then(/^these amounts should have been sent from the account of the project:$/) do |table|
+  BitcoinDaemon.instance.list_transactions(@project.address_label).map do |tx|
+    if tx["category"] == "send"
+      {
+        "address" => tx["address"],
+        "amount" => (-tx["amount"]).to_s,
+      }
+    end
+  end.compact.should eq(table.hashes)
+end
+
+When(/^the transaction history is cleared$/) do
+  BitcoinDaemon.instance.clear_transaction_history
 end

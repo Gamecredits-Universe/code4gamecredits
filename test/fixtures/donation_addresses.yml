@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  project_id: 
+  sender_address: MyString
+  donation_address: MyString
+
+two:
+  project_id: 
+  sender_address: MyString
+  donation_address: MyString

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SendmanyTest < ActiveSupport::TestCase
+class CommitTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

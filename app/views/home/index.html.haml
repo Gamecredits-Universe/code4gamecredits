@@ -1,49 +1,45 @@
-/ Jumbotron
-.jumbotron
-  %h1 Contribute to Open Source
-  %p.lead Donate primecoins to open source projects or make commits and get tips for it.
-  / - if current_user
-  /   You are logged in as
-  /   - unless current_user.image.blank?
-  /     = image_tag(current_user.image, width: 26)
-  /   = link_to current_user.name, current_user.github_url
-  /   %p
-  /     \/
-  /     Your balance
-  /     = btc_human current_user.balance
-  /     \/
-  /     = link_to current_user.bitcoin_address.blank? ? 'Please set your Primecoin address to receive tips!' : 'Change primecoin address', current_user
-  /     \/
-  /     = link_to 'Sign Out', destroy_user_session_path, method: :delete
-  /     \/
-  / - else
-  /   / %a.btn.btn-lg.btn-success{href: user_omniauth_authorize_path(:github)} See projects
+- content_for :main_content do
+  #home-page
+    / Jumbotron
+    .jumbotron
+      .container
+        %h1 Make anything happen
+        %p.lead 
 
-  %a.btn.btn-lg.btn-success{href: projects_path} See projects
+        %a.btn.btn-lg.btn-success{href: projects_path} See projects
 
-/ Example row of columns
-.row
-  .col-lg-4
-    %h2 How it works?
-    %p People donate primecoins to projects. When someone's commit is accepted to the project repository, we automatically tip the author.
-    %p
-      %a.btn.btn-primary{href: faq_path} Frequently Asked Questions »
-  .col-lg-4
-    %h2 Donate
-    %p
-      Find a project you like and deposit primecoins to it. Your money will be accumulated with money of other donators to tip for new commits.
-    %p
-      %a.btn.btn-primary{href: projects_path} Find or add a project »
-  .col-lg-4
-    %h2 Contribute
-    %p
-      Go and fix something! If your commit is accepted by project maintainer, you will get a tip!
-      - if !current_user
-        Just check your email or 
-        %a{href: user_omniauth_authorize_path(:github)} Sign In.
-    %p
-      %a.btn.btn-primary{href: projects_path} Supported projects »
-/ - if current_user
-/         %a.btn.btn-primary{href: user_path(current_user)} Change your primecoin address »
-/       - else
-/         %a.btn.btn-primary{href: user_omniauth_authorize_path(:github)} Sign In »      
+    .container.container-md-height
+      / Example row of columns
+      .row.row-md-height
+        .col-lg-3.col-md-height.col-top.main-panel.donate
+          .panel-content
+            %h2 Donate
+            %p
+              Donate to projects to make them happen.
+            .button-container
+              %a.btn.btn-primary.btn-block{href: projects_path} See projects
+        .col-lg-3.col-md-height.col-top.main-panel.contribute
+          .panel-content
+            %h2 Contribute
+            %p
+              Get paid to contribute to a project.
+            .button-container
+              %a.btn.btn-primary.btn-block{href: projects_path} See projects
+        .col-lg-3.col-md-height.col-top.main-panel.raise
+          .panel-content
+            %h2 Raise funds
+            %p
+              Make something happen by raising funds and distributing them.
+            .button-container
+              %a.btn.btn-primary.btn-block{href: new_project_path} Create a project
+        .col-lg-3.col-md-height.col-top.main-panel.how-it-works
+          .panel-content
+            %h2 How it works?
+            %p
+              Fundraisers collect funds and distribute them to contributors.
+            .button-container
+              %a.btn.btn-primary.btn-block{href: faq_path} FAQ
+      / - if current_user
+      /         %a.btn.btn-primary{href: user_path(current_user)} Change your peercoin address »
+      /       - else
+      /         %a.btn.btn-primary{href: user_omniauth_authorize_path(:github)} Sign In »      

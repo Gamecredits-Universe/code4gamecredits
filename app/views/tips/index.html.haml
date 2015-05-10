@@ -20,16 +20,19 @@
         %tr
           %td= l tip.created_at, format: :short
           %td
-            - if tip.user.nickname.blank?
-              = tip.user.full_name
-            - else
-              = link_to tip.user.full_name, "https://github.com/#{tip.user.nickname}", target: '_blank'
+            - if tip.user
+              - if tip.user.nickname.blank?
+                = tip.user.full_name
+              - else
+                = link_to tip.user.full_name, "https://github.com/#{tip.user.nickname}", target: '_blank'
           - unless @project
             %td= link_to tip.project.full_name, tip.project
-          %td= link_to tip.commit[0..6], "https://github.com/#{tip.project.full_name}/commit/#{tip.commit}", target: :blank
+          %td
+            - if tip.commit.present?
+              = link_to tip.commit[0..6], "https://github.com/#{tip.project.full_name}/commit/#{tip.commit}", target: :blank
           %td= btc_human tip.amount
-          %td{class: tip.sendmany.try(:is_error?) ? "danger" : nil}
-            - if tip.sendmany.nil?
+          %td{class: tip.distribution.try(:is_error?) ? "danger" : nil}
+            - if tip.distribution.nil?
               - if tip.refunded_at
                 Refunded to project's deposit
               - elsif tip.undecided?
@@ -42,8 +45,8 @@
               - else
                 Waiting for withdrawal
             - else
-              - if tip.sendmany.is_error?
+              - if tip.distribution.is_error?
                 Transaction failed
-              - if tip.sendmany.txid.present?
-                = link_to tip.sendmany.txid, transaction_url(tip.sendmany.txid), target: :blank
+              - if tip.distribution.txid.present?
+                = link_to tip.distribution.txid, transaction_url(tip.distribution.txid), target: :blank
   = paginate @tips

@@ -1,0 +1,23 @@
+= form.fields_for :tips, tip, child_index: rand(1<<160) do |fields|
+  - user = tip.user
+  - raise "An user is required" unless user
+  %tr
+    %td.recipient
+      = fields.hidden_field :id unless tip.new_record?
+      - if user.new_record?
+        = fields.fields_for :user do |user_fields|
+          = user_fields.hidden_field :email
+          = user_fields.hidden_field :nickname
+        = user.recipient_label
+      - else
+        = fields.hidden_field :user_id
+        = link_to user.recipient_label, user
+    %td.reason
+      - if tip.reason
+        = fields.hidden_field :reason_type
+        = fields.hidden_field :reason_id
+        = render "reason", tip: tip
+      - else
+        = fields.text_area :comment, hide_label: true, rows: 2
+    %td.amount= fields.text_field :coin_amount, hide_label: true, append: "PPC"
+    %td.remove= fields.check_box :_destroy

@@ -1,0 +1,60 @@
+.row
+  .col-md-12
+    = bootstrap_form_for [@project, @distribution], html: {id: "distribution-form"} do |f|
+      - if (errors = f.object.errors[:base]).any?
+        .alert.alert-danger
+          Unable to save the distribution: #{errors.join(", ")}
+      %table.table
+        %thead
+          %th Recipient
+          %th Reason
+          %th Amount
+          %th
+        %tbody#recipients
+          - f.object.tips.each do |tip|
+            = render "tip_form", tip: tip, form: f
+      .text-center
+        = f.submit "Save the distribution", class: 'btn btn-primary'
+#add-recipient-panels
+  .row
+    .col-md-12
+      %label{for: "add-recipients-input"} Add recipient(s)
+  .row
+    .col-md-3
+      .panel.panel-default
+        .panel-heading
+          %h3.panel-title Peer4commit user
+        .panel-body
+          .input-group
+          = bootstrap_form_for User.new, url: new_recipient_form_project_distributions_path(@project) do |f|
+            = f.text_field :identifier, hide_label: true, append: content_tag(:button, "Add", class: "btn btn-default add-recipient-button"), class: "user-autocomplete", data: {submit: true}
+    .col-md-3
+      .panel.panel-default
+        .panel-heading
+          %h3.panel-title email address
+        .panel-body
+          .input-group
+          = bootstrap_form_for User.new, url: new_recipient_form_project_distributions_path(@project) do |f|
+            = f.email_field :email, hide_label: true, append: content_tag(:button, "Add", class: "btn btn-default add-recipient-button")
+    .col-md-3
+      .panel.panel-default
+        .panel-heading
+          %h3.panel-title GitHub user
+        .panel-body
+          = bootstrap_form_for User.new, url: new_recipient_form_project_distributions_path(@project) do |f|
+            = f.text_field :nickname, hide_label: true, append: content_tag(:button, "Add", class: "btn btn-default add-recipient-button"), class: "github-user-autocomplete", data: {project_id: @project.id, submit: true}
+    .col-md-3
+      .panel.panel-default
+        .panel-heading
+          %h3.panel-title Author of a commit
+        .panel-body
+          = bootstrap_form_for Commit.new, url: new_recipient_form_project_distributions_path(@project) do |f|
+            = f.text_field :sha, hide_label: true, append: content_tag(:button, "Add", class: "btn btn-default add-recipient-button"), class: "commit-autocomplete", data: {project_id: @project.id, submit: true}
+    .col-md-3
+      .panel.panel-default
+        .panel-heading
+          %h3.panel-title Authors of commits
+        .panel-body
+          = bootstrap_form_for User.new, url: new_recipient_form_project_distributions_path(@project) do |f|
+            = hidden_field_tag :not_rewarded_commits, "1"
+            %button.btn-block.btn.btn-default Commits not rewarded

@@ -3,85 +3,91 @@ class Project < ActiveRecord::Base
   has_many :tips, inverse_of: :project
   accepts_nested_attributes_for :tips
   has_many :collaborators
-  has_many :sendmanies, inverse_of: :project
+  has_many :distributions, inverse_of: :project
+  has_many :donation_addresses, inverse_of: :project
+  has_many :users, through: :collaborators
 
   has_many :cold_storage_transfers
 
   has_one :tipping_policies_text, inverse_of: :project
   accepts_nested_attributes_for :tipping_policies_text
 
-  validates :full_name, uniqueness: true, presence: true
-  validates :github_id, uniqueness: true, presence: true
+  has_many :commits
+
+  record_changes(except: [:available_amount_cache, :last_commit, :updated_at])
+
+  acts_as_commontable
+
+  validates :name, presence: true
+
+  before_validation :strip_full_name
+  after_create :generate_address!
 
   scope :enabled,  -> { where(disabled: false) }
   scope :disabled, -> { where(disabled: true) }
 
-  def update_github_info repo
-    self.github_id = repo.id
-    self.name = repo.name
-    self.full_name = repo.full_name
-    self.source_full_name = repo.source.full_name rescue ''
-    self.description = repo.description
-    self.watchers_count = repo.watchers_count
-    self.language = repo.language
-    self.save!
-  end
-
-  def update_github_collaborators(github_collaborators)
-    github_logins = github_collaborators.map(&:login)
-    existing_logins = collaborators.map(&:login)
-
-    collaborators.each do |collaborator|
-      unless github_logins.include?(collaborator.login)
-        collaborator.mark_for_destruction
-      end
-    end
-
-    github_collaborators.each do |github_collaborator|
-      unless existing_logins.include?(github_collaborator.login)
-        collaborators.build(login: github_collaborator.login)
-      end
-    end
-
-    save!
-  end
-
   def github_url
-    "https://github.com/#{full_name}"
+    "https://github.com/#{full_name}" if full_name.present?
   end
 
   def source_github_url
     "https://github.com/#{source_full_name}"
   end
 
-  def new_commits
+  def get_commits
     begin
       commits = Timeout::timeout(90) do
         client = Octokit::Client.new \
           :client_id     => CONFIG['github']['key'],
           :client_secret => CONFIG['github']['secret'],
           :per_page      => 100
-        client.commits(full_name).
-          # Filter merge request
-          select{|c| !(c.commit.message =~ /^(Merge\s|auto\smerge)/)}.
-          # Filter fake emails
-          select{|c| c.commit.author.email =~ Devise::email_regexp }.
-          # Filter commited after t4c project creation
-          select{|c| c.commit.committer.date > self.deposits.first.created_at }.
-          to_a
+        client.commits(full_name)
       end
     rescue Octokit::BadGateway, Octokit::NotFound, Octokit::InternalServerError,
-           Errno::ETIMEDOUT, Faraday::Error::ConnectionFailed => e
+           Errno::ETIMEDOUT, Faraday::Error::ConnectionFailed, Octokit::Forbidden => e
       Rails.logger.info "Project ##{id}: #{e.class} happened"
     rescue StandardError => e
-      Airbrake.notify(e)
+      if CONFIG["airbrake"]
+        Airbrake.notify(e)
+      else
+        raise
+      end
     end
     sleep(1)
     commits || []
   end
 
+  def update_commits
+    commits = get_commits
+
+    commits.each do |commit|
+      Commit.where(
+        project: self,
+        sha: commit.sha,
+      ).first_or_create!(
+        message: commit.commit.message,
+        username: commit.author.try(:login),
+        email: commit.commit.author.email,
+      )
+    end
+  end
+
   def tip_commits
-    new_commits.each do |commit|
+    return unless self.deposits.any?
+    return if available_amount == 0
+
+    commits = get_commits
+
+    commits.each do |commit|
+      next if Tip.where(project_id: id, commit: commit.sha).any?
+
+      # Filter merge request
+      next if commit.commit.message =~ /^(Merge\s|auto\smerge)/
+      # Filter fake emails
+      next unless commit.commit.author.email =~ Devise::email_regexp
+      # Filter commited after t4c project creation
+      next unless commit.commit.committer.date > self.deposits.first.created_at
+
       Project.transaction do
         tip_for commit
         update_attribute :last_commit, commit.sha
@@ -92,9 +98,9 @@ class Project < ActiveRecord::Base
   def tip_for commit
     email = commit.commit.author.email
     if nickname = commit.author.try(:login)
-      user = User.find_by(nickname: nickname)
+      user = User.enabled.find_by(nickname: nickname)
     end
-    user ||= User.find_by(email: email)
+    user ||= User.enabled.find_by(email: email)
 
     if (next_tip_amount > 0) &&
         Tip.find_by(commit: commit.sha).nil?
@@ -102,17 +108,19 @@ class Project < ActiveRecord::Base
       # create user
       unless user
         generated_password = Devise.friendly_token.first(8)
-        user = User.create(
+        user = User.new(
           email: email,
           password: generated_password,
           name: commit.commit.author.name,
-          nickname: nickname,
         )
+        user.skip_confirmation_notification!
       end
 
-      if nickname
-        user.update nickname: nickname
+      if nickname.present? and user.nickname.blank?
+        user.nickname = nickname
       end
+
+      user.save!
 
       if hold_tips
         amount = nil
@@ -134,9 +142,13 @@ class Project < ActiveRecord::Base
     end
 
   end
+  
+  def total_deposited
+    self.deposits.where("confirmations > 0").map(&:available_amount).sum
+  end
 
   def available_amount
-    self.deposits.where("confirmations > 0").map(&:available_amount).sum - tips_paid_amount
+    total_deposited - tips_paid_amount
   end
 
   def unconfirmed_amount
@@ -158,37 +170,6 @@ class Project < ActiveRecord::Base
   def self.update_cache
     find_each do |project|
       project.update available_amount_cache: project.available_amount
-    end
-  end
-
-  def github_info
-    client = Octokit::Client.new \
-      :client_id     => CONFIG['github']['key'],
-      :client_secret => CONFIG['github']['secret']
-    if github_id.present?
-      client.get("/repositories/#{github_id}")
-    else
-      client.repo(full_name)
-    end
-  end
-
-  def github_collaborators
-    client = Octokit::Client.new \
-      :client_id     => CONFIG['github']['key'],
-      :client_secret => CONFIG['github']['secret']
-    client.get("/repos/#{full_name}/collaborators") +
-    (client.get("/orgs/#{full_name.split('/').first}/members") rescue [])
-  end
-
-  def update_info
-    begin
-      update_github_info(github_info)
-      update_github_collaborators(github_collaborators)
-    rescue Octokit::BadGateway, Octokit::NotFound, Octokit::InternalServerError,
-           Errno::ETIMEDOUT, Faraday::Error::ConnectionFailed => e
-      Rails.logger.info "Project ##{id}: #{e.class} happened"
-    rescue StandardError => e
-      Airbrake.notify(e)
     end
   end
 
@@ -220,8 +201,41 @@ class Project < ActiveRecord::Base
 
   def paid_fee
     [
-      sendmanies.map(&:fee),
+      distributions.map(&:fee),
       cold_storage_transfers.map(&:fee),
     ].flatten.compact.sum
+  end
+
+  def strip_full_name
+    if full_name_changed? and full_name.present?
+      self.full_name = full_name.gsub(/https?\:\/\/github.com\//, '')
+    end
+  end
+
+  def github?
+    full_name.present?
+  end
+
+  def auto_tip_commits
+    !hold_tips
+  end
+  alias_method :auto_tip_commits?, :auto_tip_commits
+
+  def auto_tip_commits=(value)
+    self.hold_tips = case value
+                     when false, nil, "0" then true
+                     else false
+                     end
+  end
+
+  def generate_address!
+    return if bitcoin_address.present? or address_label.present?
+    self.address_label = "peer4commit-#{id}"
+    self.bitcoin_address = BitcoinDaemon.instance.get_new_address(address_label)
+    save(validate: false)
+  end
+
+  def to_label
+    name.presence || id.to_s
   end
 end

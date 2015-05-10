@@ -2,6 +2,7 @@
 #= require jquery_ujs
 #= require twitter/bootstrap
 #= require turbolinks
+#= require twitter/typeahead
 #= require_tree .
 
 $(document).on "ready page:change", ->

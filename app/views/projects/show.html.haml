@@ -1,24 +1,35 @@
 - content_for :title do
-  Contribute to
   = @project.name
 - content_for :description do
   = @project.description
   
 .row
-  .col-md-12
+  .col-md-8
     %h1
-      = @project.full_name
-      %small= link_to glyph(:github), @project.github_url, target: '_blank'
-      .pull-right
-        - if can? :update, @project
-          = link_to "Change project settings", edit_project_path(@project), class: "btn btn-primary"
-        - if can? :decide_tip_amounts, @project and @project.has_undecided_tips?
-          = link_to "Decide tip amounts", decide_tip_amounts_project_path(@project), class: "btn btn-warning"
+      = @project.name
+      - if (url = @project.github_url).present?
+        %small= link_to glyph(:github), url, target: '_blank'
+    - unless @project.description.blank?
+      %h3= @project.description
+    - unless @project.detailed_description.blank?
+      = render_markdown @project.detailed_description
 
-.row
+    - if @project.tipping_policies_text.try(:text).present?
+      %h4 Tipping policies
+      = render_markdown @project.tipping_policies_text.text
+      %small
+        %em
+          - user = @project.tipping_policies_text.user
+          - name = user.nickname.presence || user.name if user
+          - date = l(@project.tipping_policies_text.updated_at)
+          - if name.present?
+            = "(Last updated by #{name} on #{date})"
+          - else
+            = "(Last updated on #{date})"
+
   .col-md-4
     - if @project.disabled?
-      .panel.panel-danger
+      .panel.panel-danger.note-panel
         .panel-heading
           %h4.panel-title
             Project Disabled
@@ -30,95 +41,56 @@
             %p Reason: #{reason}
 
     - else
-      .panel.panel-default.project-panel
+      .panel.panel-default.project-panel.note-panel
         .panel-heading
           %h4.panel-title
-            Project Sponsors
+            Project informations
         .panel-body.text-center
-          %p To give to this project, send primecoins to this address:
-          %p.bitcoin-address
-            = @project.bitcoin_address
-          %p
-            = image_tag qrcode_project_path(@project, format: :svg), alt: @project.bitcoin_address, class: 'project qrcode'
-          %p #{100-(CONFIG["our_fee"]*100).round}% of deposited funds will be used to tip for new commits. 
+          %table.table.text-left
+            %tr
+              %td Fundraiser
+              %td
+                - @project.users.each do |user|
+                  .fundraiser= link_to user.full_name, user
+            %tr
+              %td Funds
+              %td
+                = btc_human @project.available_amount
+                - if @project.deposits.any?
+                  .list-of-donors
+                    = link_to "List of donors", donors_project_path(@project)
+            %tr
+              %td Distributions
+              %td
+                - if @project.distributions.empty?
+                  None
+                - else
+                  %ul.list-unstyled#distribution-list
+                    - @project.distributions.order(created_at: :desc).limit(5).each do |distribution|
+                      %li.distribution-link
+                        - label = btc_human(distribution.total_amount)
+                        - if distribution.sent?
+                          - if distribution.sent_at
+                            - label << " sent #{time_ago_in_words(distribution.sent_at)} ago"
+                          - else
+                            - label << " sent"
+                        - else
+                          - label << " not sent"
+                        = link_to label, [@project, distribution]
+                  = link_to "All distributions", project_distributions_path(@project)
+
+          = link_to "Donate", donate_project_path(@project), class: "btn btn-primary btn-block"
+          - if can? :update, @project
+            = link_to "Edit project", edit_project_path(@project), class: "btn btn-default btn-sm btn-block"
+          - if can? :decide_tip_amounts, @project and @project.has_undecided_tips?
+            = link_to "Decide tip amounts", decide_tip_amounts_project_path(@project), class: "btn btn-default btn-sm btn-block"
+          - if can? :create, @project.distributions.build
+            = link_to "New distribution", new_project_distribution_path(@project), class: "btn btn-default btn-sm btn-block"
+
+.row
   .col-md-8
-    - unless @project.description.blank?
-      .well.well-sm= @project.description
-    %h4 Balance
-    = btc_human @project.available_amount
-    - if @project.hold_tips?
-      (each new commit receives a percentage of available balance)
-    - else
-      (each new commit receives #{(CONFIG["tip"]*100).round}% of available balance)
-    - if (unconfirmed_amount = @project.unconfirmed_amount) > 0
-      (#{btc_human unconfirmed_amount} unconfirmed)
-
-    - if @project.tipping_policies_text.try(:text).present?
-      %h4 Tipping policies
-      = auto_link simple_format @project.tipping_policies_text.text
-      %small
-        %em
-          - user = @project.tipping_policies_text.user
-          - name = user.nickname.presence || user.name if user
-          - date = l(@project.tipping_policies_text.updated_at)
-          - if name.present?
-            = "(Last updated by #{name} on #{date})"
-          - else
-            = "(Last updated on #{date})"
-
-    %h4 Tips Paid
-    = btc_human @project.tips_paid_amount
-
-    - if (failed_sendmanies = @project.sendmanies.error).any? and (amount = failed_sendmanies.map(&:tips).flatten.sum(&:amount)) > 0
-      .alert.alert-danger
-        %strong Some tip transactions failed.
-        A total of #{btc_human amount} may not have been sent.
-
-    - if (tips_paid_unclaimed_amount = @project.tips_paid_unclaimed_amount) > 0
-      (#{btc_human tips_paid_unclaimed_amount} of this is unclaimed, and will be refunded to the project after being unclaimed for 1 month.)
-
-    - if @project.tips.count > 0
-      %h4
-        Last Tips
-        - if @project.tips.count > 5
-          = link_to 'see all', project_tips_path(@project)
-      %ul
-        - @project.tips.includes(:user).order(created_at: :desc).first(5).each do |tip|
-          %li
-            = l tip.created_at, format: :short
-            - if tip.user.nickname.blank?
-              = tip.user.full_name
-            - else
-              = link_to tip.user.full_name, "https://github.com/#{tip.user.nickname}", target: '_blank'
-            - if tip.decided?
-              received
-              = btc_human tip.amount
-            - else
-              will receive a tip
-            for commit
-            = link_to tip.commit[0..6], "https://github.com/#{@project.full_name}/commit/#{tip.commit}", target: :blank
-            - if tip.undecided?
-              when its amount is decided
-
-    - if @project.next_tip_amount > 0
-      %h4 Next Tip
-      = btc_human @project.next_tip_amount
-
-    %h4 Contribute and Earn
-    Donate primecoins to this project or
-    = link_to 'make commits', @project.github_url, target: '_blank'
-    and get tips for it. If your commit is accepted by project maintainer and there are primecoins on its balance, you will get a tip!
-
-    - if current_user
-      - if current_user.bitcoin_address.blank?
-        Just 
-        = link_to 'tell us', current_user
-        your primecoin address.      
-    - else
-      Just check your email or 
-      %a{href: user_omniauth_authorize_path(:github)} Sign In.
-
-    %h4 Promote #{@project.full_name}
+    %hr
+    %h4 Promote #{@project.name}
     %p
       / AddThis Button BEGIN
       .addthis_toolbox.addthis_default_style.addthis_32x32_style(addthis:data_track_clickback="false" addthis:data_track_addressbar="false")
@@ -134,3 +106,7 @@
     %p= link_to image_tag(project_url(@project, format: :svg), alt: 'Prime4commit'), project_url(@project)
     %p
       %input.form-control{type: 'text', value: "[![tip for next commit](#{project_url(@project, format: :svg)})](#{project_url(@project)})"}
+
+    %hr
+    = commontator_thread(@project)
+

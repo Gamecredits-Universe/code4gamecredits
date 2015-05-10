@@ -1,0 +1,61 @@
+#distribution-show-page
+  - total = @distribution.tips.map(&:amount).sum if @distribution.tips.all?(&:amount)
+  %table.table
+    %thead
+      %tr
+        %th Recipient
+        %th Reason
+        %th Address
+        %th Amount
+        %th Percentage
+    %tbody
+      - @distribution.tips.each do |tip|
+        %tr
+          %td.recipient
+            - if tip.user
+              - if tip.user.new_record?
+                = tip.user.recipient_label
+              - else
+                = link_to tip.user.recipient_label, tip.user
+            - else
+              Nobody
+          %td.reason= render "reason", tip: tip
+          %td.address
+            - if tip.user.try(:bitcoin_address).present?
+              = tip.user.bitcoin_address
+            - else
+              - if tip.user.try(:email).present? and can? :update, @distribution
+                = button_to "Send email request to provide an address", send_email_address_request_user_path(tip_id: tip.id, return_url: request.url), class: "btn btn-default"
+          %td.amount
+            - if tip.amount
+              = btc_human tip.amount
+            - else
+              %em Undecided
+          %td.percentage= number_to_percentage(tip.amount.to_f * 100 / total, precision: 1) if total and tip.amount and total > 0
+
+  - if total
+    %p
+      %strong
+        Total amount: #{btc_human total}
+
+  - if @distribution.is_error?
+    %p.alert.alert-danger
+      The transaction failed.
+  - elsif @distribution.sent?
+    %p.alert.alert-success
+      Transaction sent
+      - if @distribution.sent_at
+        on #{l(@distribution.sent_at)}
+  - elsif !@distribution.all_addresses_known?
+    %p.alert.alert-warning
+      The transaction cannot be sent because some addresses are missing. Ask the recipients to sign in and provide an address.
+  .distribution-actions
+    - if can? :update, @distribution
+      .distribution-action
+        = link_to "Edit the distribution", edit_project_distribution_path(@project, @distribution), class: "btn btn-default"
+    - if total and can? :send_transaction, @distribution
+      .distribution-action
+        = button_to "Send the transaction", send_transaction_project_distribution_path(@project, @distribution), class: "btn btn-danger", data: {confirm: "#{total.to_f / COIN} peercoins will be sent. Are you sure?"}
+
+%hr
+= commontator_thread(@distribution)

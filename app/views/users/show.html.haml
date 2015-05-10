@@ -1,25 +1,18 @@
 %h1= @user.name
 %p
-  %strong Balance
-%p
-  = btc_human @user.balance
-%p
-  %small
-    You will get the money of your tips when the project they belong hits the threshold of
-    = btc_human CONFIG["min_payout"].to_d * COIN
-%p
-  %strong E-mail
-%p= @user.email
-= form_for @user, html: {role: 'form'} do |f|
-  - if @user.errors.size > 0
-    .alert.alert-danger Primecoin address is invalid.
-  .form-group
-    = f.label :bitcoin_address
-    = f.text_field :bitcoin_address, class: 'form-control', placeholder: 'Your primecoin address'
-  = f.button "Update", class: 'btn btn-default'
+  %strong Identifier:
+  = @user.identifier
 
-- if @user.balance > 0
-  .send-tips-back-block
-    %p
-      If you don't want the tips, you can send the funds back to the supported projects:
-      = button_to "Send all my tips back to their project", send_tips_back_user_path(@user), class: "btn", confirm: "All the #{to_btc @user.balance} primecoins you received will be sent back to their project. Are you sure?"
+- if @user.nickname.present?
+  %p
+    %strong GitHub account:
+    = link_to @user.nickname, "https://github.com/#{@user.nickname}"
+
+- if (projects = @user.projects).any?
+  %h2 Projects
+  %ul
+    - projects.each do |project|
+      %li= link_to project.to_label, project
+
+%hr
+= commontator_thread(@user)

@@ -81,7 +81,7 @@
     <rect x="<%= width1 + 3 %>" y="0" width="<%= width - width1 - 6 %>" height="22" fill="url(#<%= shield_color @project %>)" />
     <path fill="url(#<%= shield_color @project %>)" d="M<%= width %>,9 v-6 q0,-3,-3,-3 v18 q3,0,3,-3 Z" />
     <text x="<%= width1 + 7 %>" y="14" font-family="Open Sans" font-size="12" fill="#FFFFFF" style="filter:url(#dropshadow)">
-          <%= shield_btc_amount @project.next_tip_amount %>
+          <%= shield_btc_amount @project.available_amount %>
     </text>
   </g>
 </svg>

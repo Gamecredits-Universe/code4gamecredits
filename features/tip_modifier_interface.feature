@@ -22,10 +22,10 @@ Feature: A project collaborator can change the tips of commits
   Scenario: A collaborator wants to alter the tips
     Given I'm logged in as "seldon"
     And I go to the project page
-    And I click on "Change project settings"
-    And I check "Do not send the tips immediatly. Give collaborators the ability to modify the tips before they're sent"
-    And I click on "Save the project settings"
-    Then I should see "The project settings have been updated"
+    And I click on "Edit project"
+    And I uncheck "Automatically send 1% of the balance to each commit added to the default branch of the GitHub project"
+    And I click on "Save"
+    Then I should see "The project has been updated"
 
     When the new commits are read
     Then the tip amount for commit "BBB" should be undecided
@@ -55,7 +55,7 @@ Feature: A project collaborator can change the tips of commits
   Scenario: A non collaborator does not see the settings button
     Given I'm logged in as "yugo"
     And I go to the project page
-    Then I should not see "Change project settings"
+    Then I should not see "Edit project"
 
   Scenario: A non collaborator does not see the decide tip amounts button
     Given the project has undedided tips
@@ -108,6 +108,7 @@ Feature: A project collaborator can change the tips of commits
     Given the project holds tips
     And the new commits are read
     And a project "fake"
+    And a deposit of "500"
     And the project collaborators are:
       | bad guy |
     And a new commit "fake commit"
@@ -122,3 +123,45 @@ Feature: A project collaborator can change the tips of commits
       | seldon  | there should be a tip of "25" for commit "BBB"      |
       | bad guy | the tip amount for commit "BBB" should be undecided |
 
+  Scenario: A collaborator sends a free amount as tip
+    Given the project holds tips
+    And the new commits are read
+    And I'm logged in as "seldon"
+    And I go to the project page
+    And I click on "Decide tip amounts"
+    When I fill the free amount with "10" on commit "BBB"
+    And I click on "Send the selected tip amounts"
+    Then there should be a tip of "10" for commit "BBB"
+    And the tip amount for commit "CCC" should be undecided
+
+  Scenario: A collaborator sends too big free amounts
+    Given the project holds tips
+    And the new commits are read
+    And I'm logged in as "seldon"
+    And I go to the project page
+    And I click on "Decide tip amounts"
+    When I choose the amount "Tiny: 0.1%" on commit "BBB"
+    And I fill the free amount with "499.500001" on commit "CCC"
+    And I click on "Send the selected tip amounts"
+    Then I should see "The project has insufficient funds"
+    And the tip amount for commit "BBB" should be undecided
+    And the tip amount for commit "CCC" should be undecided
+
+    When I fill the free amount with "499.5" on commit "CCC"
+    And I click on "Send the selected tip amounts"
+    Then there should be a tip of "0.5" for commit "BBB"
+    And there should be a tip of "499.5" for commit "CCC"
+    And the project balance should be "0"
+
+  Scenario: A collaborator changes the amount of an already decided tip
+    Given the project holds tips
+    And the new commits are read
+    And I'm logged in as "seldon"
+    And I go to the project page
+    And I click on "Decide tip amounts"
+    When I fill the free amount with "10" on commit "BBB"
+    And I click on "Send the selected tip amounts"
+    Then there should be a tip of "10" for commit "BBB"
+    And the tip amount for commit "CCC" should be undecided
+    And I send a forged request to change the percentage of commit "BBB" on project "a" to "5"
+    Then there should be a tip of "10" for commit "BBB"

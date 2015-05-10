@@ -1,68 +1,163 @@
 Peer4commit FAQ
 ===============
 
-What is Peer4Commit?
+What is Peer4commit?
 --------------------
-With Peer4Commit you can add projects from GitHub and donate Peercoins to the ones that interest you the most. Anyone that submits code changes and has them accepted will receive Peercoin tips. This helps in providing an incentive for developers to work on important projects that will benefit Peercoin in the future. Peer4commit was adapted by Sigmike from Tip4commit.
+Peer4commit is a website where people raise funds for any kind of project.
 
-What is a Commit?
------------------
-Each time someone adds changes to the source code of a supported project, he receives 1% of the project balance. A set of changes is called a "commit". Here is an example commit for Peercoin v0.4: https://github.com/ppcoin/ppcoin/commit/5941effd0085dd26ce9b793ec09dcaffae8e5678
+Anyone can start collecting funds in a few clicks. You just have to explain what you're going to do with the funds and why people can trust you.
 
-How do I Receive a Tip for my Commit?
--------------------------------------
-We use the email address included in the commit to identify the author and notify him. To receive the tip, the author must follow the link in the email he received and set his Peercoin address. If he doesn't do that within 1 month, the tip goes back to the project balance.
+People can easily donate to the projects they want to support by sending cryptocurrencies. The fundraiser can then distribute the funds to the people who make the project happen.
 
-How do I Donate to a Project I Like?
+How is it different than other crowdfunding sites?
+--------------------------------------------------
+On Peer4commit the fundraiser is not expected to do the actual work. His job is to collect funds and distribute them to the people who work on the project. He may for example reward commits on an open source project or pay a lobbyist.
+
+Why?
+----
+The goal is give the initiative to the people, and not only to those who are able to achieve projects.
+
+For example imagine you want a feature in an open source software but the developers don't care about it and you can't implement it yourself. You can start a project on Peer4commit to make it happen. If you get enough funds you can pay someone to implement the feature. There are many freelance developers and companies who will be happy to do that for you.
+
+Or imagine you favorite band has given up. You can raise funds to pay them to work on a new album.
+
+
+Why give control to a fundraiser and not directly to the people?
+----------------------------------------------------------------
+Giving direct control to multiple persons is a complex task with no ideal solution. For example are decisions made at the majority? Is there a quorum? Can people vote for multiple choices? Are votes proportional to the amount you gave?
+
+And there is a big risk. For example if all decisions are made proportional to the amount given, then someone can easily take over the funds by sending more than everybody else. He can then send the whole funds to himself.
+
+So we decided all these choices will be made by the fundraiser. He can start a project where he decides everything as a benevolent dictator, but he can also create more democratic projects where important decisions will be taken at the majority among choices he selects.
+
+The fundraiser will also have the responsibility of deciding what can and cannot be changed. For example the main goal of the project is not likely to change. Even if you give a small amount and have an insignificant weight in the decisions you can rest assured that your money will still be used for the same goal. Someone who gave 90% of the funds won't be able to change that.
+
+
+Why use Peer4commit and not send funds directly to the fundraiser?
+------------------------------------------------------------------
+
+Peer4commit provides tools to the donors and the fundraisers.
+
+The donors can browse the fundraiser history: what projects he managed, how he distributed funds, what comments he received, etc. The fundraisers are forced to distribute the funds through Peer4commit so that anyone can see the details. For example if the fundraiser decided to send money to a GitHub account, then the GitHub account name will be displayed, not only the payment address.
+
+The fundraisers have tools to easily distribute money. They can for example send funds to an email address. Peer4commit will take charge of getting payment information from the owner of this email address. They can also send funds to a GitHub users or to the author of a particular commit. More options will be added later (sending to a Reddit user, to a forum member, etc.).
+
+We also provide tools to identify donors. When they donate they can provide a address. This address can be used whenever Peer4commit, the fundraiser or anyone wants to identify a donor. Anyone able to sign with this address will be considered the sender of the associated money. This can be used to return the funds, to organize votes, to send rewards, etc.
+
+
+Can I trust the fundraisers?
+----------------------------
+
+Not blindly. You should do some researches before you give money.
+
+For example the fact a project has a lot of donations is not an indication that many people trust the fundraiser. He may have sent the money himself.
+
+Peer4commit provides some tools to help you check the fundraiser. We keep track of all the projects he managed and all the funds he distributed. You can browse that and see how he managed previous projects. Anyone can comment the projects, distributions and users so if he did something wrong then there are good chances he received bad comments.
+
+The fundraiser should also explain in the project description why you can trust him. If he doesn't do that you should be skeptical. Then you'll have to evaluate what he says. It's particularly important to check the identity of the fundraiser. He should provide proofs he really is who he claims to be.
+
+But an important point is that the fundraisers will actually compete on trust. Since anyone can raise funds a big part of the difference will be made on trustworthiness.
+
+Some other skills may be important too. For example the project may require some technical skills to evaluate the work made by others. You should ensure the fundraiser has these abilities.
+
+Refund
+------
+When you make a donation you explicitly give to the fundraiser the full control of the money you send. He may have committed himself to refund the donations under certain circumstances but you still need to evaluate whether you can trust him on that.
+
+When you donate Peer4commit asks you for a return address. This address will be used if the fundraiser wants to send funds back to you. It may also be used for other things where you need to prove you are the sender (a vote, a reward, etc.). All the donation addresses will be displayed publicly so you should use a newly generated address without history. And you must keep the associated private key in a safe place.
+
+Does it work?
+-------------
+Peer4commit is still young but yes. Some projects were successfully managed.
+
+We initially started as a [tip4commit](http://tip4commit.com/) clone where GitHub commits were automatically rewarded 1% of the balance. We moved recently to the more generic system described here.
+
+Examples of successful projects:
+* [Peer4commit](http://peer4commit.com/projects/1) itself
+* [A Peercoin marketing video](http://peer4commit.com/projects/68)
+* [Peerunity](http://peer4commit.com/projects/74)
+
+Currency
+--------
+For now the only supported currency is [Peercoin](http://peercoin.net/). Other currencies will be added later.
+
+
+How can I raise funds?
+----------------------
+Click on the <%= link_to '"Create a project"', new_project_path %> button. You'll have to fill a detailed description. Here are some recommendations:
+
+* State the main goal of your peer4commit project, and decide what can and cannot be changed for the project. The main goal cannot be changed.
+* Provide your identity and convince donators why they should trust you.
+* Decide and state if you will be a benevolent dictator (more efficient), or create a more democratic project (finer control for stakeholders).
+* Describe your techical skills and other relevant qualifications if they are needed to evaluate the work made by others.
+* State policy of tipping for potential developers. Use other projects as templates or references.
+
+The project will be visible on Peer4commit but it will not be particularly highlighted. You will have to communicate about it, that's part of your job.
+
+
+Can fundraisers get paid for their work?
+----------------------------------------
+Yes. A fundraisers can send money to himself for his raising and distributing jobs. He can also reward himself to do actual work. That's up to him.
+
+Fundraisers should explain in the project description whether they intend to pay themselves and how much.
+
+
+How can I get paid to do the actual work?
+-----------------------------------------
+Check the policies of the projects. Fundraiser can chose to raise bounty or a specific percentage of the donated funds for specific tasks or assign a percentage of the fund for commits in case of a development. If unclear ask the fundraiser. Disputes should be resolved between the developer and the fundraiser.
+
+
+How do I donate to a project I like?
 ------------------------------------
-You can see all supported projects here: http://peer4commit.com/projects. To donate to a specific project, open up the page for that project and just send Peercoins to the address that is displayed. For an example, check out Peercoin's main project page: http://peer4commit.com/projects/19. If the project you want to donate to is not supported yet, go to the supported projects page and just copy/paste its GitHub URL (For example: https://github.com/ppcoin/ppcoin) into the input box above the list. Anyone can add a project to Peer4commit, even if you are not the project maintainer. 99% of your donation will be given as tips. 1% will be kept to host the website and pay the transaction fees.
+Browse the project list and click on the "Donate" button. You will be asked for a personal address that will be used if Peer4commit or the fundraiser ever needs to identify you. Then Peer4commit will give you an address to which you just have to send Peercoins. 99% of your donation will be available to the fundraiser. 1% will be kept to host Peer4commit and pay the transaction fees.
 
-How do I Push my Commits?
--------------------------
-Getting write access to the "Master" of a project involves that the project maintainer provides access to you in Github. This type of access would only be given to people trusted by the maintainer. If you already have write access to the project, just push your commits to the default branch of the project as usual. Otherwise, you'll have to fork the project (i.e. Start your own project based on the supported project), make some changes and create a pull request to propose your changes. If your pull request is accepted (Merged), you'll receive one tip per commit. If the changes are simple enough, you can do them in your browser by editing the files on GitHub. Otherwise, you'll have to use Git to clone your fork, make some changes, commit them and push the commits to GitHub. You can find a lot of information about that on GitHub help and on the web.
+You can also donate without providing an address. But the fundraiser won't be able to return you the funds if he ever wants to. And if the fundraiser organizes a vote or send rewards, you won't be able to participate.
 
-Make Sure You Read the Project Charter & Tipping Policies Before Starting
--------------------------------------------------------------------------
-Project maintainers can refuse your commits for several reasons. It is important to read the "Charter" of the project on its GitHub page, which usually provides guidance on which commits and under what rules they would be accepted. For example, there are very strict rules for contributing to the official ppcoin/ppcoin project. A good way to ensure the maintainer is willing to merge your changes is to first create an issue explaining what you're going to do and ask if they would merge a pull request. Wait for an answer before starting. The project owner can also edit the Tipping Policies section on their Peer4commit project page to include more information on what kind of commits will be tipped. So it's important to read both the project charter on GitHub and the tipping policies that are listed on Peer4commit.
+What's going to happen next?
+----------------------------
+There are many features planed. Their achievement depends on the willingness of donors, fundraisers and developers.
 
-Can Project Owners Change the Amount Donated to Each Commit?
-------------------------------------------------------------
-Yes, they have a new button "Change project settings" on the project page along the project name. In this screen they can change 2 things (for now):
+### Bitcoin support
+Adding support for Bitcoin is an important step. We can easily change Peer4commit to support projects either in Bitcoin or in Peercoin. But supporting multiple currecies in the same project will require more work and an external service to automatically convert currencies.
 
-* A text describing their tipping policies that will be displayed on the project page on peer4commit.
-* A checkbox that will put all new tips on hold when commits are found.
+### Multi-signature
+The most important imminent change is the introduction of multi-signature donation addresses:
 
-When the checkbox is active, each new commit generates an "Undecided" tip and the authors are not notified. The project owners can then click on a new button on the project page to decide the tip amounts. They have these choices:
+When you donate, your money will be sent to a multi-signature address:
+* 1 key will be owned by Peer4commit,
+* 1 key will be owned by the fundraiser and
+* 1 key will be owned by yourself (if you want to).
 
-* Leave undecided (To decide later)
-* Free (The commit won't get any tip and the author won't be notified)
-* Tiny: 0.1% of the project balance.
-* Small: 0.5% of the project balance.
-* Normal: 1%
-* Big: 2%
-* Huge: 5%
+And 2 keys will be required to use the funds.
 
-The authors are notified when the tip amount is decided (Unless they have recently been notified already, or if they said they don't want any more notification, or if they have configured their Peercoin address). The 2 buttons are only available to project collaborators (Those who can push changes to the supported repository). There should be more options in the future. Your ideas are welcome.
+To distribute coins the fundraiser will use the website and fill some forms. The website will generate a transaction and ask the fundraiser to provide a signature for it. Then the website will sign the transaction too and propagate it.
 
-Do You Have an Audit Page Setup for Peer4commit?
-------------------------------------------------
-Yes, Peer4commit does have an audit page. It shows different information, such as amount donated, available balance, transaction fees, amount in cold storage and includes addresses for each project. You can view the page here: http://peer4commit.com/audit.
+So if the website is hacked the funds can't be stolen. And the fundraiser cannot spend the funds outside the website. 
 
-What Measures Have Been Taken to Secure the Funds on Peer4Commit?
+Also if a fundraiser is clearly misbehaving the website and the supporter can decide to return the funds. If the website itself is misbehaving (a very bad policy change, abandoned, hacked...) the fundraiser and the supporter can decide to move the funds elsewhere.
+
+### Decentralization
+Peer4commit can probably run completely decentralized, maybe on its own blockchain, maybe as a [Peershares](http://peershares.net/) implementation. But this will require a lot of thoughts. For now we focus on more practical things, but decentralization is certainly an ultimate goal.
+
+Multi-signature will already be a big step toward decentralization.
+
+### Other
+We will also improve the various tools provided by the website:
+* add new recipients the fundraisers can distribute funds to: all the people involved in a GitHub issue, another Peer4commit project, a Reddit user, etc.
+* project categorization, tags, sorting, filtering, etc.
+* browsing the history of projects (description changes, distribution changes, etc). The data are already there but just not displayed.
+* etc.
+
+We may also add some kind of discussion boards, unless the community thinks this is better kept externalized.
+
+
+What measures have been taken to secure the funds on Peer4commit?
 -----------------------------------------------------------------
-The project funds are isolated in different accounts in the wallet, so if someone ever finds a way to get more tips than the project balance, Peercoin will not take the funds from another project and will refuse the transaction. Projects with a high balance have a part of its funds moved to cold storage. This is still a manual operation, but will soon be automated. The website runs in an isolated virtual server running only this service.
+The project funds are isolated in different accounts in the wallet, so if someone ever finds a way to distribute more funds than the project balance, Peercoin will not take the funds from another project and will refuse the transaction. Projects with a high balance have a part of its funds moved to cold storage. The website runs in an isolated virtual server running only this service. There's an <%= link_to "audit page", audit_path %> that shows the status of all project accounts.
 
-Conclusion
------------
-The commit may not be the best item to identify the value of a contribution, but it's a very convenient way to identify contributors and send them donations. The maintainer of the project doesn't even have to do anything. Supporters can add a project from GitHub and start donating without any extra work on the project side (Except setting their address if they want the tips). A commit can include very important changes that took a very long time to build (Like the v0.4 changes) or a very small change like adding a comma.
+When multisignatures are implemented Peer4commit will not have direct the control over the funds (see above).
 
 Contact
 -------
-If you have any questions, either post them in this thread, message Sigmike on PeercoinTalk.org: http://www.peercointalk.org/index.php?action=profile;u=30141 on Reddit: http://www.reddit.com/user/sigmike or open an issue on GitHub: https://github.com/sigmike/peer4commit/issues.
+If you have any question send a message to <%= mail_to "contact@peer4commit.com" %> or [open an issue on GitHub](https://github.com/sigmike/peer4commit/issues/new).
 
-References:
------------
-Fork: https://help.github.com/articles/fork-a-repo
-Pull Request: https://help.github.com/articles/using-pull-requests
-Git: https://help.github.com/articles/set-up-git
-Github Help: https://help.github.com/

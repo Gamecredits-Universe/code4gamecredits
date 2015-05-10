@@ -7,7 +7,7 @@
     %meta{content: "", name: "author"}/
     %link{href: image_path("primecoin.png"), rel: "shortcut icon"}/
     
-    %title= "Prime4commit — " + (content_for?(:title) ? yield(:title) : "Contribute to Open Source")
+    %title= content_for?(:title) ? yield(:title) : "Prime4commit"
 
     %meta{name: 'description', content: (content_for?(:title) ? yield(:title) : "Donate primecoins to open source projects or make commits and get tips for it.")}
     %meta{name: 'keywords', content: 'open source,contribute,github,community,git,bitcoin,primecoin,xpm,tips,perks'}
@@ -16,6 +16,12 @@
 
     = stylesheet_link_tag    "application", media: "all", data: { "turbolinks-track" => true }
     = javascript_include_tag "application", data: { "turbolinks-track" => true }
+
+    /[if lt IE 9]
+      %script{:src => "https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"}
+      %script{:src => "https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"}
+
+
     
     = csrf_meta_tags
   %body
@@ -27,33 +33,37 @@
 
       ga('create', 'UA-11108334-7', 'prime4commit.com');
       ga('send', 'pageview');
-    .container
-      .masthead
-        %div.pull-right
-          %small
-            - if current_user
-              = current_user.full_name
-              \/
-              = link_to btc_human(current_user.balance), current_user
-              \/
-              = link_to 'Sign Out', destroy_user_session_path, method: :delete
-            - else
-              %a{href: user_omniauth_authorize_path(:github)} Sign in
-        %h3.text-muted.code-pro Prime4commit
+    #top-bar
+      .container
+        #session-menu
+          - if current_user
+            = link_to current_user.full_name, edit_registration_path(current_user), class: "edit-profile-link"
+            = link_to 'Sign Out', destroy_user_session_path, method: :delete, class: "btn btn-default"
+          - else
+            = link_to "Sign in", new_user_session_path(return_url: request.url), class: "btn btn-default"
+        %a#main-logo{href: root_path}
+          %h3 Prime4commit
         = render 'common/menu'
         = render_flash_message
-      = yield
-      / Site footer
-      .footer
-        %p
-          ©
-          = link_to 'Prime4commit', 'http://prime4commit.com/', target: '_blank'
-          2014. Source code is available at #{link_to('github', 'https://github.com/sigmike/prime4commit', target: '_blank')},
-          based on #{link_to "Tip4commit", "http://tip4commit.com/"}.
-          You can support its development with
-          = link_to('peercoins', 'http://peer4commit.com/projects/16')
-          or
-          = link_to('bitcoins', 'http://tip4commit.com/projects/615')
+    #main-content
+      - if content_for?(:main_content)
+        = yield :main_content
+      - else
+        .container#main-container
+          = yield
+    #footer
+      .container
+        / Site footer
+        .footer
+          %p
+            ©
+            = link_to 'Prime4commit', 'http://prime4commit.com/', target: '_blank'
+            2014. Source code is available at #{link_to('github', 'https://github.com/sigmike/prime4commit', target: '_blank')},
+            based on #{link_to "Peer4commit", "http://peer4commit.com/"} and #{link_to "Tip4commit", "http://tip4commit.com/"}.
+            You can support its development with
+            = link_to('peercoins', 'http://peer4commit.com/projects/16')
+            or
+            = link_to('bitcoins', 'http://tip4commit.com/projects/615')
     / /container
     /
       Bootstrap core JavaScript

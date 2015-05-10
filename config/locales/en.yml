@@ -26,3 +26,10 @@ en:
     attributes:
       user:
         bitcoin_address: Primecoin address
+      project:
+        github_url: GitHub URL
+        detailed_description: Detailed description
+      tip:
+        coin_amount: Amount
+        description: Comment
+        _destroy: Remove

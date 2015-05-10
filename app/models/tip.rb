@@ -1,13 +1,15 @@
 class Tip < ActiveRecord::Base
   belongs_to :user
-  belongs_to :sendmany
+  belongs_to :distribution, touch: true
   belongs_to :project, inverse_of: :tips
+  belongs_to :reason, polymorphic: true
 
   validates :amount, numericality: {greater_or_equal_than: 0, allow_nil: true}
+  validate :validate_reason
 
-  scope :not_sent,      -> { where(sendmany_id: nil) }
+  scope :not_sent,      -> { where(distribution_id: nil) }
   def not_sent?
-    sendmany_id.nil?
+    distribution_id.nil?
   end
 
   scope :unpaid,        -> { non_refunded.not_sent }
@@ -26,9 +28,9 @@ class Tip < ActiveRecord::Base
     amount == 0
   end
 
-  scope :paid,          -> { where.not(sendmany_id: nil) }
+  scope :paid,          -> { where.not(distribution_id: nil) }
   def paid?
-    !!sendmany_id
+    !!distribution_id
   end
 
   scope :refunded,      -> { where.not(refunded_at: nil) }
@@ -57,9 +59,11 @@ class Tip < ActiveRecord::Base
   def undecided?
     !decided?
   end
+  def was_undecided?
+    amount_was.nil?
+  end
 
 
-  before_save :check_amount_against_project
   after_save :notify_user_if_just_decided
 
 
@@ -75,15 +79,8 @@ class Tip < ActiveRecord::Base
     project.commit_url(commit)
   end
 
-  def amount_percentage
-    nil
-  end
-
-  def amount_percentage=(percentage)
-    if undecided? and percentage.present?
-      self.amount = project.available_amount * (percentage.to_f / 100)
-    end
-  end
+  attr_accessor :decided_amount_percentage
+  attr_accessor :decided_free_amount
 
   def notify_user
     if amount and amount > 0 and user.bitcoin_address.blank? and !user.unsubscribed
@@ -95,16 +92,46 @@ class Tip < ActiveRecord::Base
   end
 
   def notify_user_if_just_decided
+    return if distribution_id
     notify_user if amount_was.nil? and amount
   end
 
-  def check_amount_against_project
-    if amount
-      available_amount = project.available_amount
-      available_amount -= amount_was if amount_was
-      if amount > available_amount
-        raise "Not enough funds on project to save #{inspect} (available: #{available_amount})"
-      end
+  def coin_amount
+    amount.to_f / COIN if amount
+  end
+
+  def coin_amount=(coin_amount)
+    if coin_amount.present?
+      self.amount = (coin_amount.to_f * COIN).round
+    else
+      self.amount = nil
+    end
+  end
+
+  def self.build_from_commit(commit)
+    if commit.username.present?
+      user = User.enabled.where(nickname: commit.username).first_or_initialize(email: commit.email)
+    elsif commit.email =~ Devise::email_regexp
+      user = User.enabled.where(email: commit.email).first_or_initialize
+    else
+      return nil
+    end
+    if user.new_record?
+      raise "Invalid email address" unless user.email =~ Devise::email_regexp
+      user.skip_confirmation_notification!
+      user.save!
+    end
+    new(user_id: user.id, reason: commit)
+  end
+
+  def validate_reason
+    case reason_type
+    when nil, ""
+      errors.add(:reason_id, :present) unless reason_id.blank?
+    when "Commit"
+      errors.add(:reason_id, :invalid) unless project.commits.include?(reason)
+    else
+      errors.add(:reason_type, :invalid)
     end
   end
 end

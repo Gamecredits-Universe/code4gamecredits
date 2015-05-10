@@ -44,6 +44,7 @@ gem 'devise'
 gem 'omniauth'
 gem 'omniauth-github', github: 'alexandrz/omniauth-github', branch: 'provide_emails'
 gem 'cancancan'
+gem 'twitter_bootstrap_form_for', github: 'stouset/twitter_bootstrap_form_for'
 
 gem 'octokit'
 
@@ -70,9 +71,14 @@ gem 'whenever'
 gem 'rqrcode-rails3'
 gem 'exception_notification'
 gem 'rack-canonical-host'
-gem 'bootstrap_form', github: 'sigmike/rails-bootstrap-forms', branch: 'removed_for_on_radio_label'
+gem 'bootstrap_form', github: 'bootstrap-ruby/rails-bootstrap-forms'
 gem 'html_pipeline_rails'
 gem 'rails_autolink'
+gem 'redcarpet'
+gem 'sanitize'
+gem 'twitter-typeahead-rails'
+gem 'commontator', '~> 4.6.0'
+gem 'compass-rails'
 
 group :test do
   gem 'cucumber-rails', :require => false
@@ -80,4 +86,7 @@ group :test do
   gem 'database_cleaner'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
+  gem 'poltergeist'
+  gem 'timecop'
+  gem 'capybara-screenshot'
 end

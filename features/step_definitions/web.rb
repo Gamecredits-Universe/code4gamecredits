@@ -9,7 +9,20 @@ Given(/^I'm logged in as "(.*?)"$/) do |arg1|
   }
   visit root_path
   click_on "Sign in"
+  click_on "Sign in with Github"
   page.should have_content("Successfully authenticated")
+  @current_user = User.find_by(nickname: arg1)
+end
+
+Given(/^I'm logged in on GitHub as "(.*?)"$/) do |arg1|
+  OmniAuth.config.test_mode = true
+  OmniAuth.config.mock_auth[:github] = {
+    "info" => {
+      "nickname" => arg1,
+      "primary_email" => "#{arg1.gsub(/\s+/,'')}@example.com",
+      "verified_emails" => [],
+    },
+  }
 end
 
 Given(/^I'm not logged in$/) do
@@ -22,6 +35,24 @@ Given(/^I'm not logged in$/) do
   end
 end
 
+When(/^I log out$/) do
+  click_on "Sign Out"
+  page.should have_content "Signed out successfully"
+end
+
+When(/^I log in as "(.*?)"$/) do |arg1|
+  step "I'm logged in as \"#{arg1}\""
+end
+
+
+When(/^I visit the home page$/) do
+  visit '/'
+end
+
+When(/^I fill "(.*?)" with "(.*?)"$/) do |arg1, arg2|
+  fill_in arg1, with: arg2
+end
+
 Given(/^I go to the project page$/) do
   visit project_path(@project)
 end
@@ -30,8 +61,18 @@ Given(/^I click on "(.*?)"$/) do |arg1|
   click_on(arg1)
 end
 
+Given(/^I click on "(.*?)" in the sign in form$/) do |arg1|
+  within "#sign-in-form" do
+    click_on(arg1)
+  end
+end
+
 Given(/^I check "(.*?)"$/) do |arg1|
   check(arg1)
+end
+
+Given(/^I uncheck "(.*?)"$/) do |arg1|
+  uncheck(arg1)
 end
 
 Then(/^I should see "(.*?)"$/) do |arg1|
@@ -40,6 +81,10 @@ end
 
 Then(/^I should not see "(.*?)"$/) do |arg1|
   page.should have_no_content(arg1)
+end
+
+Then(/^I should not see the button "(.*?)"$/) do |arg1|
+  page.should have_no_button(arg1)
 end
 
 Given(/^I fill "(.*?)" with:$/) do |arg1, string|
@@ -57,6 +102,43 @@ Then(/^I should see the project donation address$/) do
 end
 
 Then(/^I should see the project balance is "(.*?)"$/) do |arg1|
-  page.should have_content("Balance #{arg1}")
+  page.should have_content("Funds #{arg1}")
 end
 
+Then(/^I should see a link "(.*?)" to "(.*?)"$/) do |arg1, arg2|
+  link = find("a", text: arg1, exact: true)
+  link["href"].should eq(arg2)
+end
+
+Then(/^I should not see a link "(.*?)" to "(.*?)"$/) do |arg1, arg2|
+  link = all("a", text: arg1, exact: true).first
+  (link.nil? or link["href"] != arg2).should be_true
+end
+
+Then(/^I should not see the image "(.*?)"$/) do |arg1|
+  find("img[src=\"#{arg1}\"]")
+end
+
+When(/^I click on the "(.*?)" link in the email$/) do |arg1|
+  begin
+    link = Nokogiri::HTML.parse(@email.body.decoded).css("a").detect { |el| el.text == arg1 }
+    link.should_not be_nil
+  rescue
+    puts @email.body
+    raise
+  end
+  url = URI.parse(link["href"]).request_uri
+  visit url
+end
+
+When(/^I click on "(.*?)" in the email$/) do |arg1|
+  step "I click on the \"#{arg1}\" link in the email"
+end
+
+Then(/^the user with email "(.*?)" should have his email confirmed$/) do |arg1|
+  User.find_by(email: arg1).confirmed?.should be_true
+end
+
+When(/^I go to edit my profile$/) do
+  find(".edit-profile-link").click
+end

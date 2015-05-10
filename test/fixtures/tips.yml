@@ -3,11 +3,11 @@
 one:
   user_id: 
   amount: 1
-  sendmany_id: 
+  distribution_id: 
   refunded_at: false
 
 two:
   user_id: 
   amount: 1
-  sendmany_id: 
+  distribution_id: 
   refunded_at: false

@@ -4,7 +4,7 @@
   %p
     Some cells may take up to #{distance_of_time_in_words eval CONFIG['tipper_delay']} to be updated.
 
-  - projects = Project.order(disabled: :asc, account_balance: :desc).includes(:cold_storage_transfers, :sendmanies, :tips, :deposits)
+  - projects = Project.order(disabled: :asc, account_balance: :desc).includes(:cold_storage_transfers, :distributions, :tips, :deposits)
   - with_btc_human_defaults(precision: 0, display_currency: false) do
     %p
       %table.table
@@ -35,7 +35,7 @@
             - project_slice.each do |project|
               %tr{class: project.disabled ? "text-muted" : nil}
                 %td
-                  %strong= link_to project.full_name, project
+                  %strong= link_to project.name, project
                 %td
                   - address_explorers.each_with_index do |explorer, i|
                     = link_to "[#{i + 1}]", address_url(project.bitcoin_address, explorer)
