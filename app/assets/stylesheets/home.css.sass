@@ -76,20 +76,20 @@ h1:first-child
 
 body
   +verdana
-  background: #f9f9f9
+  background: #a1cf14
   a
-    $base: #457f05
+    $base: #000000
     color: $base
     &:hover, &:active
       color: $base
 
 .jumbotron
   background: #1c191f
-  background: #1c191f image-url("blackboard.jpg") center top repeat-y
+  background: #1c191f image-url("blackboard.jpg") center top no-repeat
   text-align: center
   color: white
-  padding: 50px 0
-  h1
+  margin: 10px auto
+  h6
     text-transform: uppercase
     font-size: 48px
     font-weight: bold
@@ -119,6 +119,16 @@ h4
   color: #363636
   font-size: 14px
 
+h5
+  +oldsansblack
+  font-size: 36px
+  color: #FFFFFF
+
+h6
+  +oldsansblack
+  font-size: 18px
+  color: #000000
+
 #home-page
   .main-panel
     .btn-primary
@@ -136,16 +146,16 @@ h4
       margin: 10px auto
 
     &.how-it-works:before
-      background: #98cc3d image-url("picto-books.png") center center no-repeat
+      background: #a1cf14 image-url("picto-books.png") center center no-repeat
 
     &.raise:before
-      background: #98cc3d image-url("picto-plane.png") 44% 52% no-repeat
+      background: #a1cf14 image-url("picto-plane.png") 44% 52% no-repeat
 
     &.donate:before
-      background: #ffc000 image-url("picto-peerheart.png") 50% 54% no-repeat
+      background: #a1cf14 image-url("picto-peerheart.png") center center no-repeat
 
     &.contribute:before
-      background: #98cc3d image-url("picto-tasks.png") 50% 48% no-repeat
+      background: #a1cf14 image-url("picto-tasks.png") 50% 48% no-repeat
 
     h2
       text-align: center
