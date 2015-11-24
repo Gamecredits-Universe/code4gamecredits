@@ -3,9 +3,14 @@
     / Jumbotron
     .jumbotron
       .container
-        %h1 Make anything happen
+        %br
+        %br
+        %br
+        %h1 Teamwork makes the dream work
         %p.lead 
 
+        %h8 Revolutionary ideas powered by revolutionary technology
+        %br
         %a.btn.btn-lg.btn-success{href: projects_path} See projects
 
     .container.container-md-height
@@ -13,16 +18,16 @@
       .row.row-md-height
         .col-lg-3.col-md-height.col-top.main-panel.donate
           .panel-content
-            %h2 Donate
+            %h2 Donate GameCredits
             %p
-              Donate to projects to make them happen.
+              People donate GameCredits to Gaming projects.
             .button-container
               %a.btn.btn-primary.btn-block{href: projects_path} See projects
         .col-lg-3.col-md-height.col-top.main-panel.contribute
           .panel-content
             %h2 Contribute
             %p
-              Get paid to contribute to a project.
+              When someone's commit is accepted into the project repository we automatically tip the author.
             .button-container
               %a.btn.btn-primary.btn-block{href: projects_path} See projects
         .col-lg-3.col-md-height.col-top.main-panel.raise
@@ -40,6 +45,8 @@
             .button-container
               %a.btn.btn-primary.btn-block{href: faq_path} FAQ
       / - if current_user
-      /         %a.btn.btn-primary{href: user_path(current_user)} Change your gamecredits address »
+      /         %a.btn.btn-primary{href: user_path(current_user)} Change your GameCredits address »
       /       - else
-      /         %a.btn.btn-primary{href: user_omniauth_authorize_path(:github)} Sign In »      
+	  /         %a.btn.btn-primary{href: user_omniauth_authorize_path(:github)} Sign In »      
+      /         %a.btn.btn-
+	  
