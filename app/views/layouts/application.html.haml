@@ -7,10 +7,10 @@
     %meta{content: "", name: "author"}/
     %link{href: image_path("ppcoin.png"), rel: "shortcut icon"}/
     
-    %title= content_for?(:title) ? yield(:title) : "Peer4commit"
+    %title= content_for?(:title) ? yield(:title) : "Code4gamecredits"
 
-    %meta{name: 'description', content: (content_for?(:title) ? yield(:title) : "Donate peercoins to open source projects or make commits and get tips for it.")}
-    %meta{name: 'keywords', content: 'open source,contribute,github,community,git,bitcoin,peercoin,ppc,tips,perks'}
+    %meta{name: 'description', content: (content_for?(:title) ? yield(:title) : "Donate gamecredits to open source projects or make commits and get tips for it.")}
+    %meta{name: 'keywords', content: 'open source,contribute,github,community,git,bitcoin,gamecredits,gmc,tips,perks'}
     / %meta{:property => 'og:image', :content => asset_path('logo.png')}
     / %link{:rel => 'image_src', :type => 'image/png', :href => asset_path('logo.png')}
 
@@ -32,7 +32,7 @@
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-        ga('create', 'UA-11108334-6', 'peer4commit.com');
+        ga('create', 'UA-11108334-6', 'code4gamecredits.com');
         ga('send', 'pageview');
     #top-bar
       .container
@@ -43,7 +43,7 @@
           - else
             = link_to "Sign in", new_user_session_path(return_url: request.url), class: "btn btn-default"
         %a#main-logo{href: root_path}
-          %h3 Peer4commit
+          %h3 Code4gamecredits
         = render 'common/menu'
         = render_flash_message
     #main-content
@@ -58,11 +58,11 @@
         .footer
           %p
             ©
-            = link_to 'Peer4commit', 'http://peer4commit.com/', target: '_blank'
-            2014. Source code is available at #{link_to('github', 'https://github.com/sigmike/peer4commit', target: '_blank')},
+            = link_to 'Code4gamecredits', 'http://code4gamecredits.com/', target: '_blank'
+            2014. Source code is available at #{link_to('github', 'https://github.com/sigmike/code4gamecredits', target: '_blank')},
             based on #{link_to "Tip4commit", "http://tip4commit.com/"}.
             You can support its development with
-            = link_to('peercoins', 'http://peer4commit.com/projects/1')
+            = link_to('gamecredits', 'http://code4gamecredits.com/projects/1')
             or
             = link_to('bitcoins', 'http://tip4commit.com/projects/560')
     / /container

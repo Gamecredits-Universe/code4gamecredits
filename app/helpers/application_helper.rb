@@ -26,7 +26,7 @@ module ApplicationHelper
   end
 
   def transaction_url(txid)
-    "http://bkchain.org/ppc/tx/#{txid}"
+    "http://bkchain.org/gmc/tx/#{txid}"
   end
 
   def address_explorers
@@ -35,9 +35,9 @@ module ApplicationHelper
 
   def address_url(address, explorer = address_explorers.first)
     case explorer
-    when :blockr then "http://ppc.blockr.io/address/info/#{address}"
-    when :bkchain then "http://bkchain.org/ppc/address/#{address}"
-    when :cryptocoin then "http://ppc.cryptocoinexplorer.com/address/#{address}"
+    when :blockr then "http://gmc.blockr.io/address/info/#{address}"
+    when :bkchain then "http://bkchain.org/gmc/address/#{address}"
+    when :cryptocoin then "http://gmc.cryptocoinexplorer.com/address/#{address}"
     else raise "Unknown provider: #{provider.inspect}"
     end
   end

@@ -1,14 +1,14 @@
 %h4 Hello, #{@user.full_name}!
 
-%p You were tipped #{btc_human @tip.amount} for your commit on Project #{@tip.project.full_name}. Please, log in and tell us your peercoin address to get it.
+%p You were tipped #{btc_human @tip.amount} for your commit on Project #{@tip.project.full_name}. Please, log in and tell us your gamecredits address to get it.
 
-%p Your current balance is #{btc_human @user.balance}. If you don't enter a peercoin address your tips will be returned to the project in 30 days.
+%p Your current balance is #{btc_human @user.balance}. If you don't enter a gamecredits address your tips will be returned to the project in 30 days.
 
-%p= link_to 'Set your password and Peercoin address', set_password_and_address_user_url(@user, token: @user.confirmation_token)
+%p= link_to 'Set your password and Gamecredits address', set_password_and_address_user_url(@user, token: @user.confirmation_token)
 
 %p Thanks for contributing to Open Source!
 
-%p= link_to "peer4commit.com", "http://peer4commit.com/"
+%p= link_to "code4gamecredits.com", "http://code4gamecredits.com/"
 
 %p
   %small

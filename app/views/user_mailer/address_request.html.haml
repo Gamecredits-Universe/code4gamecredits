@@ -5,16 +5,16 @@
   = link_to "More details on the distribution", project_distribution_url(@tip.project, @tip.distribution)
 
 %p
-  To get your reward you must provide a Peercoin address.
+  To get your reward you must provide a Gamecredits address.
 
 - if @user.confirmed?
-  %p= link_to "Set your Peercoin address", edit_registration_url(@user)
+  %p= link_to "Set your Gamecredits address", edit_registration_url(@user)
 - else
-  %p= link_to 'Set your password and Peercoin address', set_password_and_address_user_url(@user, token: @user.confirmation_token)
+  %p= link_to 'Set your password and Gamecredits address', set_password_and_address_user_url(@user, token: @user.confirmation_token)
 
 %p Thank you.
 
-%p= link_to "peer4commit.com", "http://peer4commit.com/"
+%p= link_to "code4gamecredits.com", "http://code4gamecredits.com/"
 
 %p
   %small

@@ -1,17 +1,17 @@
-Peer4commit
+Code4gamecredits
 ==========
 
-[![peercoin tip for next commit](http://peer4commit.com/projects/1.svg)](http://peer4commit.com/projects/1)
+[![gamecredits tip for next commit](http://code4gamecredits.com/projects/1.svg)](http://code4gamecredits.com/projects/1)
 [![bitcoin tip for next commit](http://tip4commit.com/projects/560.svg)](http://tip4commit.com/projects/560)
 
-Donate peercoins to open source projects or make commits and get tips for it.
+Donate gamecredits to open source projects or make commits and get tips for it.
 
-Official site: http://peer4commit.com/
+Official site: http://code4gamecredits.com/
 
 Development
 ===========
 
-To run peer4commit in development mode follow these instructions:
+To run code4gamecredits in development mode follow these instructions:
 
 * Install [Ruby](https://www.ruby-lang.org/en/downloads/) 1.9+
 
@@ -24,8 +24,8 @@ gem install bundler
 
 * Clone the repository
 ```
-git clone git@github.com:sigmike/peer4commit.git
-cd peer4commit
+git clone git@github.com:sigmike/code4gamecredits.git
+cd code4gamecredits
 ```
 
 * Install the sqlite3 development libraries
@@ -75,6 +75,6 @@ To retreive commits and send tips on project that do not hold tips:
 License
 =======
 
-[MIT License](https://github.com/sigmike/peer4commit/blob/master/LICENSE)
+[MIT License](https://github.com/sigmike/code4gamecredits/blob/master/LICENSE)
 
 Based on [Tip4commit](http://tip4commit.com/), [MIT License](https://github.com/tip4commit/tip4commit/blob/master/LICENSE), copyright (c) 2013-2014 tip4commit

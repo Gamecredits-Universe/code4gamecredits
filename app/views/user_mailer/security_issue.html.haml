@@ -1,17 +1,17 @@
 %h4 Hello #{@user.full_name},
 
-%p We recently discovered a security issue on Peer4commit. This issue allowed someone to change the Peercoin address of other users.
+%p We recently discovered a security issue on Code4gamecredits. This issue allowed someone to change the Gamecredits address of other users.
 
 %p
   The problem is now fixed. To ensure our database is clean we decided to clear all the addresses.
-  Please set your Peercoin address again:
+  Please set your Gamecredits address again:
   = link_to('Sign in', login_users_url(token: @user.login_token)) + "."
 
 %p We think only one tip was stolen. It will be sent again to its owner when he sets his address.
 
 %p Sorry for this inconvenience.
 
-%p= link_to "peer4commit.com", "http://peer4commit.com/"
+%p= link_to "code4gamecredits.com", "http://code4gamecredits.com/"
 
 %p
   %small

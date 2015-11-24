@@ -10,7 +10,7 @@
       %div
         Currently waiting confirmation for: #{resource.unconfirmed_email}
 
-    = f.text_field :bitcoin_address, placeholder: 'Your peercoin address'
+    = f.text_field :bitcoin_address, placeholder: 'Your gamecredits address'
     %div
       = f.password_field :password, autocomplete: 'off', help: "(leave blank if you don't want to change it)"
     %div
@@ -25,7 +25,7 @@
     .send-tips-back-block
       %p
         If you don't want the tips, you can send the funds back to the supported projects:
-        = button_to "Send all my tips back to their project", send_tips_back_user_path(@user), class: "btn btn-danger btn-block", confirm: "All the #{to_btc @user.balance} peercoins you received will be sent back to their project. Are you sure?"
+        = button_to "Send all my tips back to their project", send_tips_back_user_path(@user), class: "btn btn-danger btn-block", confirm: "All the #{to_btc @user.balance} gamecredits you received will be sent back to their project. Are you sure?"
 
   %h3 Cancel my account
   %p

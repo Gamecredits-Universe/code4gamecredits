@@ -52,7 +52,7 @@
         = link_to "Edit the distribution", edit_project_distribution_path(@project, @distribution), class: "btn btn-default"
     - if total and can? :send_transaction, @distribution
       .distribution-action
-        = button_to "Send the transaction", send_transaction_project_distribution_path(@project, @distribution), class: "btn btn-danger", data: {confirm: "#{total.to_f / COIN} peercoins will be sent. Are you sure?"}
+        = button_to "Send the transaction", send_transaction_project_distribution_path(@project, @distribution), class: "btn btn-danger", data: {confirm: "#{total.to_f / COIN} gamecredits will be sent. Are you sure?"}
 
 %hr
 = commontator_thread(@distribution)

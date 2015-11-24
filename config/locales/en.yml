@@ -25,7 +25,7 @@ en:
   activerecord:
     attributes:
       user:
-        bitcoin_address: Peercoin address
+        bitcoin_address: Gamecredits address
       project:
         github_url: GitHub URL
         detailed_description: Detailed description

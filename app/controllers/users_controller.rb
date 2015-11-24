@@ -24,7 +24,7 @@ class UsersController < ApplicationController
     if @user.update(users_params)
       redirect_to @user, notice: 'Your information was saved.'
     else
-      render :show, alert: 'Error updating peercoin address'
+      render :show, alert: 'Error updating gamecredits address'
     end
   end
 
@@ -33,7 +33,7 @@ class UsersController < ApplicationController
     if @user
       if params[:unsubscribe]
         @user.update unsubscribed: true
-        flash[:alert] = 'You unsubscribed! Sorry for bothering you. Although, you still can leave us your peercoin address to get your tips.'
+        flash[:alert] = 'You unsubscribed! Sorry for bothering you. Although, you still can leave us your gamecredits address to get your tips.'
       end
       sign_in_and_redirect @user, event: :authentication
     else
@@ -53,7 +53,7 @@ class UsersController < ApplicationController
     raise "Blank token" if params[:token].blank?
     
     if @user.confirmed?
-      redirect_to new_session_path(User), notice: "Your account is already confirmed. Please sign in to set your Peercoin address."
+      redirect_to new_session_path(User), notice: "Your account is already confirmed. Please sign in to set your Gamecredits address."
       return
     end
 
