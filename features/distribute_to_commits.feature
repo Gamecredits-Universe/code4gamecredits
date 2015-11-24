@@ -40,7 +40,7 @@ Feature: A project collaborator distribute to commit authors
     Then I should see these distribution lines:
       | recipient | reason                    | address                            | amount | percentage |
       | yugo      | Commit BBB: Tiny change   | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 |    0.5 |        100 |
-    And I should see "Total amount: 0.50 PPC"
+    And I should see "Total amount: 0.50 GMC"
     When the new commits are read
 
     When I go to the project page

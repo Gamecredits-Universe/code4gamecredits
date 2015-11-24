@@ -23,7 +23,7 @@
             - options = [["Free: 0%", "0"], ["Tiny: 0.1%", "0.1"], ["Small: 0.5%", "0.5"], ["Normal: 1%", "1"], ["Big: 2%", "2"], ["Huge: 5%", "5"]]
             = tip_fields.select :decided_amount_percentage, options, hide_label: true, include_blank: true
           %td.col-sm-2
-            = tip_fields.text_field :decided_free_amount, inline: true, hide_label: true, append: "PPC"
+            = tip_fields.text_field :decided_free_amount, inline: true, hide_label: true, append: "GMC"
 
   .text-center
     = f.submit 'Send the selected tip amounts'

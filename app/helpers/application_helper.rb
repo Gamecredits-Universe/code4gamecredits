@@ -7,7 +7,7 @@ module ApplicationHelper
     precision = options[:precision] || 2
     display_currency = options.fetch(:display_currency, true)
     btc = "%.#{precision}f" % to_btc(amount)
-    btc += " PPC" if display_currency
+    btc += " GMC" if display_currency
     btc = "<span class='convert-from-btc' data-to='#{currency.upcase}'>#{btc}</span>" if currency
     btc = "<nobr>#{btc}</nobr>" if nobr
     btc.html_safe

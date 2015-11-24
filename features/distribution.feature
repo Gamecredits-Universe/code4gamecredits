@@ -17,7 +17,7 @@ Feature: Fundraisers can distribute funds
     Then I should see these distribution lines:
       | recipient | address                            | amount | percentage |
       | bob       | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 |     10 |        100 |
-    And I should see "Total amount: 10.00 PPC"
+    And I should see "Total amount: 10.00 GMC"
 
     When the tipper is started
     Then no coins should have been sent
@@ -53,7 +53,7 @@ Feature: Fundraisers can distribute funds
       | recipient | address                            | amount | percentage |
       | bob       | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 |     10 |       42.4 |
       | carol     | mi9SLroAgc8eUNuLwnZmdyqWdShbNtvr3n |  13.56 |       57.6 |
-    And I should see "Total amount: 23.56 PPC"
+    And I should see "Total amount: 23.56 GMC"
 
     When the tipper is started
     Then no coins should have been sent
@@ -84,7 +84,7 @@ Feature: Fundraisers can distribute funds
     Then I should see these distribution lines:
       | recipient | address                            | amount | percentage |
       | bob       |                                    |     10 |      100.0 |
-    And I should see "Total amount: 10.00 PPC"
+    And I should see "Total amount: 10.00 GMC"
     And I should not see "Send the transaction"
     And I should see "The transaction cannot be sent because some addresses are missing"
 
@@ -127,7 +127,7 @@ Feature: Fundraisers can distribute funds
     When I save the distribution
     Then I should see these distribution lines:
       | recipient | address                            | amount | percentage |
-    And I should see "Total amount: 0.00 PPC"
+    And I should see "Total amount: 0.00 GMC"
 
   @javascript
   Scenario: Send to an user without an address
@@ -147,7 +147,7 @@ Feature: Fundraisers can distribute funds
     Then I should see these distribution lines:
       | recipient | address                            | amount | percentage |
       | bob       |                                    |     10 |      100.0 |
-    And I should see "Total amount: 10.00 PPC"
+    And I should see "Total amount: 10.00 GMC"
     And I should not see "Send the transaction"
     And I should see "The transaction cannot be sent because some addresses are missing"
 
@@ -202,7 +202,7 @@ Feature: Fundraisers can distribute funds
     Then I should see these distribution lines:
       | recipient | address                            | amount | percentage |
       | bob       | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 |     10 |        100 |
-    And I should see "Total amount: 10.00 PPC"
+    And I should see "Total amount: 10.00 GMC"
 
     Given a GitHub user "carol" who has set his address to "mi9SLroAgc8eUNuLwnZmdyqWdShbNtvr3n"
 
@@ -360,7 +360,7 @@ Feature: Fundraisers can distribute funds
       | recipient | address                            | amount | percentage |
       | bob       | mxWfjaZJTNN5QKeZZYQ5HW3vgALFBsnuG1 |     10 |      100.0 |
       | carol     | mi9SLroAgc8eUNuLwnZmdyqWdShbNtvr3n |      0 |        0.0 |
-    And I should see "Total amount: 10.00 PPC"
+    And I should see "Total amount: 10.00 GMC"
 
     When the tipper is started
     Then no coins should have been sent

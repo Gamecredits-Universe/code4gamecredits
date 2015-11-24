@@ -52,7 +52,7 @@ cp config/config.yml{.example,}
     bundle exec rake db:migrate
 ```
 
-* Make sure `ppcoind` is running with RPC enabled
+* Make sure `gamecreditsd` is running with RPC enabled
 
 * Run the server
 
